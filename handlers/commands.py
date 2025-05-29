@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from aiogram import types
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.exceptions import TelegramForbiddenError
 
 from texts.messages import WELCOME, HELP
 from fsm.quest_logic import QuestStates
@@ -168,11 +169,9 @@ async def notify_team_except_current(team_id: int, current_player_id: int, messa
                 await bot.send_message(player_id, message_text)
             except Exception as e:
                 print(f"Не удалось отправить сообщение игроку {player_id}: {e}")
+            except TelegramForbiddenError:
+                print(f"Пользователь {player_id} не начал диалог с ботом")
 
 async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
-    # user_data = await state.get_data()
-    # current_idx = user_data["current_player_idx"]
-    # players = user_data["players_order"]
-    # current_player = players[current_idx]
     await callback.answer()
     await send_question(callback.message.from_user.id, callback.message, state)

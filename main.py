@@ -21,7 +21,7 @@ def register_handlers(dp: Dispatcher):
     # dp.message.register(handlers.cmd_start, Command('start'))
     dp.message.register(handlers.start_quest, Command('begin'))
     dp.message.register(handlers.cmd_help, Command('help'))
-    # dp.message.register(QuestStates.waiting_for_answer, handlers.process_answer)
+    dp.message.register(QuestStates.waiting_for_answer, handlers.process_answer)
     # dp.callback_query.register(handlers.start_quest, F.data == 'start_quest')
     dp.callback_query.register(handlers.confirm_arrival, QuestStates.waiting_for_location_confirmation, F.data == 'arrived')
     dp.message.register(handlers.cmd_create_team, Command("create_team"))

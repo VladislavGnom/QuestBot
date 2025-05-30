@@ -7,7 +7,9 @@ from aiogram.exceptions import TelegramForbiddenError
 from texts.messages import WELCOME, HELP
 from fsm.quest_logic import QuestStates
 from db.help_db_commands import (add_player_to_team, get_team_players, 
-                                 update_game_state, get_exist_teams, create_team_if_not_exists, update_game_progress)
+                                 update_game_state, get_exist_teams, create_team_if_not_exists, 
+                                 update_game_progress, generate_invite_link, create_team, join_team,
+                                 get_team_name, is_admin)
 from main import BASE_DIR, bot
 
 
@@ -175,3 +177,45 @@ async def notify_team_except_current(team_id: int, current_player_id: int, messa
 async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer()
     await send_question(callback.message.from_user.id, callback.message, state)
+
+
+async def cmd_create_team(message: types.Message):
+    """Команда для создания новой команды (только для админов)"""
+    if not await is_admin(message.from_user.id):  # Ваша функция проверки админа
+        return await message.answer("Только админы могут создавать команды!")
+    
+    team_name = message.text.split(maxsplit=1)[1] if len(message.text.split()) > 1 else None
+    if not team_name:
+        return await message.answer("Укажите название команды: /create_team НазваниеКоманды")
+    
+    team_id = await create_team(message.from_user.id, team_name)
+    invite_link = await generate_invite_link(message.bot, team_id, team_name)
+    
+    await message.answer(
+        f"Команда '{team_name}' создана!\n"
+        f"Пригласительная ссылка:\n{invite_link}\n\n"
+        "Отправьте эту ссылку участникам вашей команды.",
+        disable_web_page_preview=True
+    )
+
+async def handle_start(message: types.Message, state: FSMContext):
+    """Обработка стартовой команды с инвайт-ссылкой"""
+    await state.clear()
+    args = message.text.split()[1] if len(message.text.split()) > 1 else None
+    
+    if args and args.startswith('join_'):
+        _, team_id, token = args.split('_', maxsplit=2)[:3]
+        try:
+            team_id = int(team_id)
+        except ValueError:
+            return await message.answer("Некорректная ссылка!")
+        
+        success, text_info = await join_team(message.from_user.id, team_id, token)
+
+        if success:
+            team_name = await get_team_name(team_id)
+            return await message.answer(text_info.format(team_name=team_name))
+        return await message.answer(text_info)
+    
+    # Обычный старт без ссылки
+    await message.answer("Добро пожаловать! Для вступления в команду используйте инвайт-ссылку.")

@@ -9,8 +9,21 @@ async def init_db():
             await cursor.execute('''
             CREATE TABLE IF NOT EXISTS teams (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
+                name TEXT NOT NULL,
+                admin_id INTEGER NOT NULL,
+                invite_token TEXT UNIQUE,
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP
+            )
+            ''')
+            
+            # Таблица участников
+            await cursor.execute('''
+            CREATE TABLE IF NOT EXISTS team_members (
+                user_id INTEGER NOT NULL,
+                team_id INTEGER NOT NULL,
+                joined_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (user_id, team_id),
+                FOREIGN KEY (team_id) REFERENCES teams(id)
             )
             ''')
             

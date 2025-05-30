@@ -9,7 +9,7 @@ from fsm.quest_logic import QuestStates
 from db.help_db_commands import (add_player_to_team, get_team_players, 
                                  update_game_state, get_exist_teams, create_team_if_not_exists, 
                                  update_game_progress, generate_invite_link, create_team, join_team,
-                                 get_team_name, is_admin)
+                                 get_team_name, is_admin, get_team_captain, mention_user, get_user_team)
 from main import BASE_DIR, bot
 
 
@@ -31,51 +31,59 @@ QUEST_DATA = {
     }
 }
 
-async def cmd_start(message: types.Message, state: FSMContext):
-    await state.clear()
-    team_id = 1
-    team_name = 'fisrt'
+# async def cmd_start(message: types.Message, state: FSMContext):
+#     await state.clear()
+#     team_id = 1
+#     team_name = 'fisrt'
 
-    if team_id not in await get_exist_teams():
-        team_id, created = await create_team_if_not_exists(team_name)
-        if not created:
-            await message.answer("Ошибка: команда не создана.")
-            return
+#     if team_id not in await get_exist_teams():
+#         team_id, created = await create_team_if_not_exists(team_name)
+#         if not created:
+#             await message.answer("Ошибка: команда не создана.")
+#             return
             
-    if message.from_user.id not in await get_team_players(team_id):
-        await add_player_to_team(
-            message.from_user.id,
-            message.from_user.username,
-            team_id
-        )
-        await message.answer("Вы в команде! Ожидайте начала игры.")
-    else:
-        await message.answer("Вы уже в команде!")
+#     if message.from_user.id not in await get_team_players(team_id):
+#         await add_player_to_team(
+#             message.from_user.id,
+#             message.from_user.username,
+#             team_id
+#         )
+#         await message.answer("Вы в команде! Ожидайте начала игры.")
+#     else:
+#         await message.answer("Вы уже в команде!")
+
+async def cmd_show_player_number_position_in_team(message: types.Message, state: FSMContext):
+    await state.clear()
+    user_id = message.from_user.id
+    
 
 async def cmd_help(message: types.Message):
     await message.answer(HELP)
 
 async def start_quest(message: types.Message, state: FSMContext):
-    team_id = 1
+    user_id = message.from_user.id
+    team_id = await get_user_team(user_id)
     players = await get_team_players(team_id)
-    
+
     if not players:
         await message.answer("В команде нет игроков!")
         return
     
     first_player = players[0]
-    await update_game_progress(team_id, first_player, 1, "playing")
+    first_player_id = first_player["id"]
+
+    await update_game_progress(team_id, first_player_id, 1, "playing")
     
     question = QUEST_DATA[team_id]["player_1"]["question"]
     await bot.send_message(
-        first_player, 
+        first_player_id, 
         f"Игра началась! Ваш вопрос: {question}"
     )
 
     # Уведомляем остальных участников команды
     await notify_team_except_current(
         team_id, 
-        first_player, 
+        first_player_id, 
         "Квест начат! Первый игрок получил вопрос."
     )
     
@@ -113,7 +121,7 @@ async def process_answer(message: types.Message, state: FSMContext):
     question_num = user_data["question_num"]
     players = user_data["players_order"]
     
-    if message.from_user.id != players[current_idx]:
+    if message.from_user.id != players[current_idx].get('id'):
         await message.answer("Сейчас не ваш ход!")
         return
     
@@ -136,7 +144,7 @@ async def process_answer(message: types.Message, state: FSMContext):
         
     await update_game_progress(
         team_id, 
-        players[next_player_num-1],
+        players[next_player_num-1].get('id'),
         next_player_num,
         "playing"
     )
@@ -165,7 +173,8 @@ async def notify_team_except_current(team_id: int, current_player_id: int, messa
     players = await get_team_players(team_id)
     
     # Отправляем сообщение всем, кроме текущего игрока
-    for player_id in players:
+    for player_data in players:
+        player_id = player_data.get('id')
         if player_id != current_player_id:
             try:
                 await bot.send_message(player_id, message_text)
@@ -201,6 +210,25 @@ async def cmd_create_team(message: types.Message):
 async def handle_start(message: types.Message, state: FSMContext):
     """Обработка стартовой команды с инвайт-ссылкой"""
     await state.clear()
+
+    user_id = message.from_user.id
+    
+    # Проверяем, состоит ли пользователь уже в какой-либо команде
+    current_team = await get_user_team(user_id)
+
+    if current_team:
+        # Пользователь уже в команде - особое сообщение
+        team_name = await get_team_name(current_team)
+        captain_id = await get_team_captain(current_team)
+        
+        text = (
+            f"Вы уже состоите в команде '{team_name}'\n\n"
+            "Ожидайте начала квеста от капитана команды.\n"
+            f"Капитан: {await mention_user(captain_id)}"
+        )
+            
+        return await message.answer(text)
+
     args = message.text.split()[1] if len(message.text.split()) > 1 else None
     
     if args and args.startswith('join_'):
@@ -210,12 +238,12 @@ async def handle_start(message: types.Message, state: FSMContext):
         except ValueError:
             return await message.answer("Некорректная ссылка!")
         
-        success, text_info = await join_team(message.from_user.id, team_id, token)
+        success = await join_team(message, team_id, token)
 
         if success:
             team_name = await get_team_name(team_id)
-            return await message.answer(text_info.format(team_name=team_name))
-        return await message.answer(text_info)
+            return await message.answer(f'Вы успешно присоединились к команде {team_name}!')
+        return await message.answer("Не удалось вступить: неверный токен или вы уже в этой команде")
     
     # Обычный старт без ссылки
     await message.answer("Добро пожаловать! Для вступления в команду используйте инвайт-ссылку.")

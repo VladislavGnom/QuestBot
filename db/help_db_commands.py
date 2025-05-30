@@ -1,6 +1,7 @@
 import secrets
 import aiosqlite
 from aiogram import Bot
+from aiogram.types import Message
 from db.database import get_db_connection
 
 async def add_player_to_team(user_id: int, username: str, team_id: int):
@@ -103,14 +104,16 @@ async def create_team(admin_id: int, team_name: str):
 
 ADMIN_IDS = [1636968793]
 
-async def join_team(user_id: int, team_id: int, token: str) -> tuple[bool, str]:
+async def join_team(message: Message, team_id: int, token: str) -> bool:
     """
-    Пытается добавить пользователя в команду
-    Возвращает True если успешно, False если:
-    - неверный токен
-    - пользователь уже в другой команде
-    - пользователь уже в этой команде
+    Добавляет игрока в команду с проверками.
+    Возвращает:
+    - True: успешное вступление
+    - False: неверный токен или уже в команде
     """
+    user_id = message.from_user.id
+    print(f"Добавляем игрока {user_id} в команду {team_id}")
+
     async with get_db_connection() as conn:
         # Проверяем валидность токена
         cursor = await conn.execute(
@@ -120,27 +123,34 @@ async def join_team(user_id: int, team_id: int, token: str) -> tuple[bool, str]:
         valid = await cursor.fetchone()
 
         if not valid:
-            return False, 'Не удалось подсоединиться: ссылка недействительна.'
+            print(f"Ошибка при добавлении игрока {user_id} в команду {team_id}: токен недействителен")
+            return False
         
-        # Проверяем, не состоит ли уже пользователь в какой-либо команде
+        # Проверка, что пользователь еще не в команде
         cursor = await conn.execute(
-            "SELECT team_id FROM team_members WHERE user_id = ?",
+            "SELECT 1 FROM players WHERE user_id = ?",
             (user_id,)
         )
-        existing_team = await cursor.fetchone()
+        existing = await cursor.fetchone()
         
-        if existing_team:
-            # Пользователь уже в команде
-            text = 'Вы уже находитесь в этой команде - {team_name}.' if existing_team[0] == team_id else 'Вы не можете подсоединиться к другой команде, когда уже подключились к предыдущей.'
-            return existing_team[0] == team_id, text    # True если это та же команда
+        if existing:
+            return False
             
-        # Добавляем пользователя в команду
-        await conn.execute(
-            "INSERT INTO team_members (user_id, team_id) VALUES (?, ?)",
-            (user_id, team_id)
-        )
-        await conn.commit()
-        return True, 'Вы успешно присоединились к команде {team_name}!'
+        # Добавляем игрока в команду
+        try:
+            await conn.execute(
+                """INSERT INTO players 
+                (user_id, team_id, username, full_name) 
+                VALUES (?, ?, ?, ?)""",
+                (user_id, team_id, 
+                 message.from_user.username,
+                 message.from_user.full_name)
+            )
+            await conn.commit()
+            print(f"Успешно добавлен игрок {user_id} в команду {team_id}")
+            return True
+        except aiosqlite.IntegrityError as error:
+            return False
         
 async def get_team_name(team_id: int):
     async with get_db_connection() as conn:
@@ -164,3 +174,70 @@ async def is_admin(user_id: int):
     # Здесь реализуйте проверку, является ли пользователь админом
     # Например, можно хранить список админов в БД или конфиге
     return user_id in ADMIN_IDS  # Замените на вашу логику
+
+
+async def get_team_captain(team_id: int) -> int:
+    """Получает ID капитана (админа) команды"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT admin_id FROM teams WHERE id = ?", 
+            (team_id,)
+        )
+        result = await cursor.fetchone()
+        return result[0] if result else None
+
+async def mention_user(user_id: int) -> str:
+    """Форматирует упоминание пользователя"""
+    username = await get_username(user_id)
+
+    return f"@{username}"  
+
+# async def get_quest_status(team_id: int) -> str:
+#     """Проверяет статус квеста команды"""
+#     async with get_db_connection() as conn:
+#         cursor = await conn.execute(
+#             "SELECT status FROM game_progress WHERE team_id = ?",
+#             (team_id,)
+#         )
+#         result = await cursor.fetchone()
+#         return result[0] if result else None
+
+async def get_user_team(user_id: int) -> int | None:
+    """Возвращает ID команды игрока или None"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT team_id FROM players WHERE user_id = ?",
+            (user_id,)
+        )
+        result = await cursor.fetchone()
+        return result[0] if result else None
+    
+async def get_team_players(team_id: int) -> list[dict]:
+    """Возвращает список игроков команды для квеста"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            """SELECT user_id, username, full_name, is_captain 
+            FROM players 
+            WHERE team_id = ? 
+            ORDER BY joined_at""",
+            (team_id,)
+        )
+        return [{
+            'id': row[0],
+            'username': row[1],
+            'name': row[2],
+            'is_captain': bool(row[3])
+        } for row in await cursor.fetchall()]
+    
+async def get_username(user_id: int) -> int | None:
+    """Возвращает USERNAME игрока или None"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT username FROM players WHERE user_id = ?",
+            (user_id,)
+        )
+        result = await cursor.fetchone()
+        return result[0] if result else None
+    
+
+

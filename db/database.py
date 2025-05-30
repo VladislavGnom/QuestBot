@@ -15,25 +15,16 @@ async def init_db():
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP
             )
             ''')
-            
-            # Таблица участников
-            await cursor.execute('''
-            CREATE TABLE IF NOT EXISTS team_members (
-                user_id INTEGER NOT NULL,
-                team_id INTEGER NOT NULL,
-                joined_at TEXT DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (user_id, team_id),
-                FOREIGN KEY (team_id) REFERENCES teams(id)
-            )
-            ''')
-            
-            # Таблица игроков
+            # Единая таблица игроков (заменяет team_members и players)
             await cursor.execute('''
             CREATE TABLE IF NOT EXISTS players (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER UNIQUE,
-                username TEXT,
-                team_id INTEGER,
+                user_id INTEGER PRIMARY KEY, 
+                username TEXT, 
+                full_name TEXT,
+                team_id INTEGER NOT NULL,
+                is_captain BOOLEAN DEFAULT FALSE,
+                location INTEGER DEFAULT 1,  -- Номер стартовой локации
+                joined_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (team_id) REFERENCES teams(id)
             )
             ''')

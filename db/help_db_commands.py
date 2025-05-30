@@ -102,8 +102,6 @@ async def create_team(admin_id: int, team_name: str):
         await conn.commit()
     return team_id
 
-ADMIN_IDS = [1636968793]
-
 async def join_team(message: Message, team_id: int, token: str) -> bool:
     """
     Добавляет игрока в команду с проверками.
@@ -171,9 +169,15 @@ async def get_team_members(team_id: int):
         return [row[0] for row in await cursor.fetchall()]
 
 async def is_admin(user_id: int):
-    # Здесь реализуйте проверку, является ли пользователь админом
-    # Например, можно хранить список админов в БД или конфиге
-    return user_id in ADMIN_IDS  # Замените на вашу логику
+    """Возвращает True если админ существует и пользователь им является иначе False"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT is_admin FROM players WHERE user_id = ?",
+            (user_id,)
+        )
+        result = await cursor.fetchone()
+
+        return result[0] if result else False
 
 
 async def get_team_captain(team_id: int) -> int:
@@ -280,4 +284,59 @@ async def is_team_captain(user_id: int) -> bool:
             (user_id, team_id))
         result = await cursor.fetchone()
         
-        return result[0]
+        return result[0] if result else False
+
+async def create_or_upgrade_captain(user_id: int, username: str, full_name: str, team_id: int) -> bool:
+    """
+    Создает запись капитана команды в таблице players или повышает права текущего
+    """
+    async with get_db_connection() as conn:
+        try:
+            await conn.execute(
+                """
+                INSERT INTO players 
+                (user_id, username, full_name, team_id, is_captain) 
+                VALUES (?, ?, ?, ?, TRUE)
+                """,
+                (user_id, username, full_name, team_id)
+            )
+            await conn.commit()
+            return True
+        except aiosqlite.IntegrityError as e:
+            await conn.execute(
+                """
+                UPDATE players
+                SET is_captain = TRUE, team_id = ?
+                """, 
+                (team_id, )
+            )
+            await conn.commit()
+            return False
+    
+
+async def create_or_upgrade_admin(user_id: int, username: str, full_name: str, team_id: int) -> bool:
+    """
+    Создает запись админа в таблице players или повышает права текущего
+    """
+    async with get_db_connection() as conn:
+        try:
+            await conn.execute(
+                """
+                INSERT INTO players 
+                (user_id, username, full_name, team_id, is_admin) 
+                VALUES (?, ?, ?, ?, TRUE)
+                """,
+                (user_id, username, full_name, team_id)
+            )
+            await conn.commit()
+            return True
+        except aiosqlite.IntegrityError as e:
+            await conn.execute(
+                """
+                UPDATE players
+                SET is_admin = TRUE
+                """
+            )
+            await conn.commit()
+            return False
+    

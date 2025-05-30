@@ -21,8 +21,9 @@ async def init_db():
                 user_id INTEGER PRIMARY KEY, 
                 username TEXT, 
                 full_name TEXT,
-                team_id INTEGER NOT NULL,
+                team_id INTEGER,
                 is_captain BOOLEAN DEFAULT FALSE,
+                is_admin BOOLEAN DEFAULT FALSE,
                 location INTEGER DEFAULT 1,  -- Номер стартовой локации
                 joined_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (team_id) REFERENCES teams(id)

@@ -216,7 +216,7 @@ async def get_team_players(team_id: int) -> list[dict]:
     """Возвращает список игроков команды для квеста"""
     async with get_db_connection() as conn:
         cursor = await conn.execute(
-            """SELECT user_id, username, full_name, is_captain 
+            """SELECT user_id, username, full_name, is_captain, location 
             FROM players 
             WHERE team_id = ? 
             ORDER BY joined_at""",
@@ -226,7 +226,8 @@ async def get_team_players(team_id: int) -> list[dict]:
             'id': row[0],
             'username': row[1],
             'name': row[2],
-            'is_captain': bool(row[3])
+            'is_captain': bool(row[3]),
+            'location': row[4],
         } for row in await cursor.fetchall()]
     
 async def get_username(user_id: int) -> int | None:
@@ -240,4 +241,43 @@ async def get_username(user_id: int) -> int | None:
         return result[0] if result else None
     
 
+async def set_player_location(user_id: int, location: int):
+    """Устанавливает локацию игрока"""
+    async with get_db_connection() as conn:
+        await conn.execute(
+            "UPDATE players SET location = ? WHERE user_id = ?",
+            (location, user_id)
+        )
+        await conn.commit()
 
+async def get_player_location(user_id: int) -> int:
+    """Возвращает текущую локацию игрока"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT location FROM players WHERE user_id = ?",
+            (user_id,))
+        result = await cursor.fetchone()
+        return result[0] if result else 1  # Возвращаем 1 если игрок не найден
+
+async def get_players_at_location(team_id: int, location: int) -> list:
+    """Возвращает всех игроков команды на указанной локации"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute('''
+            SELECT user_id, username 
+            FROM players 
+            WHERE team_id = ? AND location = ?
+            ORDER BY joined_at
+        ''', (team_id, location))
+        return await cursor.fetchall()
+    
+async def is_team_captain(user_id: int) -> bool:
+    """Проверяет является ли игрок капитаном"""
+    team_id = await get_user_team(user_id)
+
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT is_captain FROM players WHERE user_id = ? AND team_id = ?",
+            (user_id, team_id))
+        result = await cursor.fetchone()
+        
+        return result[0]

@@ -9,7 +9,8 @@ from fsm.quest_logic import QuestStates
 from db.help_db_commands import (add_player_to_team, get_team_players, 
                                  update_game_state, get_exist_teams, create_team_if_not_exists, 
                                  update_game_progress, generate_invite_link, create_team, join_team,
-                                 get_team_name, is_admin, get_team_captain, mention_user, get_user_team)
+                                 get_team_name, is_admin, get_team_captain, mention_user, get_user_team,
+                                 get_player_location, is_team_captain, set_player_location)
 from main import BASE_DIR, bot
 
 
@@ -52,16 +53,84 @@ QUEST_DATA = {
 #     else:
 #         await message.answer("Вы уже в команде!")
 
-async def cmd_show_player_number_position_in_team(message: types.Message, state: FSMContext):
+async def cmd_my_location(message: types.Message, state: FSMContext):
+    """Показывает текущую локацию игрока"""
     await state.clear()
-    user_id = message.from_user.id
-    
 
-async def cmd_help(message: types.Message):
+    user_id = message.from_user.id
+    location = await get_player_location(user_id)
+    await message.answer(f"Ваша текущая локация: {location}")
+
+async def cmd_set_location(message: types.Message, state: FSMContext):
+    """Запрос на изменение локации"""
+    await state.clear()
+
+    # Проверяем, что это капитан команды
+    if not await is_team_captain(message.from_user.id):
+        return await message.answer("Только капитан может менять локации!")
+    
+    await message.answer(
+        "Введите номер новой локации:",
+        reply_markup=types.ForceReply(selective=True)
+    )
+
+async def handle_location_reply(message: types.Message, state: FSMContext):
+    """Обработка ответа с номером локации"""
+    await state.clear()
+
+    if not message.reply_to_message.text == "Введите номер новой локации:":
+        return
+    
+    try:
+        new_location = int(message.text)
+        if new_location < 1 or new_location > 10:  # Предположим, у нас 10 локаций
+            raise ValueError
+    except ValueError:
+        return await message.answer("Некорректный номер локации. Введите число от 1 до 10")
+    
+    # Получаем всех игроков команды
+    team_id = await get_user_team(message.from_user.id)
+    players = await get_team_players(team_id)
+    
+    # Создаем клавиатуру для выбора игрока
+    builder = InlineKeyboardBuilder()
+    for player in players:
+        builder.button(
+            text=f"{player['username']} (локация {player['location']})", 
+            callback_data=f"setloc_{player['id']}_{new_location}"
+        )
+    builder.adjust(1)
+    
+    await message.answer(
+        f"Выберите игрока для перемещения на локацию {new_location}:",
+        reply_markup=builder.as_markup()
+    )
+
+async def handle_player_location_change(callback: types.CallbackQuery):
+    """Обработка выбора игрока для перемещения"""
+    _, user_id, new_location = callback.data.split('_')
+    user_id = int(user_id)
+    new_location = int(new_location)
+    
+    await set_player_location(user_id, new_location)
+    await callback.message.edit_text(
+        f"Игрок перемещен на локацию {new_location}",
+        reply_markup=None
+    )
+    await callback.answer()
+
+async def cmd_help(message: types.Message, state: FSMContext):
+    await state.clear()
     await message.answer(HELP)
 
 async def start_quest(message: types.Message, state: FSMContext):
+    await state.clear()
+
     user_id = message.from_user.id
+
+    if not await is_team_captain(user_id):
+        return await message.answer("Только капитан может начинать квест!")
+
     team_id = await get_user_team(user_id)
     players = await get_team_players(team_id)
 
@@ -140,6 +209,7 @@ async def process_answer(message: types.Message, state: FSMContext):
     next_player_num = int(next_player.split("_")[1])
     if next_player_num > len(players):
         await message.answer("Ошибка: нет следующего игрока")
+        await state.clear()
         return
         
     await update_game_progress(
@@ -188,8 +258,10 @@ async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
     await send_question(callback.message.from_user.id, callback.message, state)
 
 
-async def cmd_create_team(message: types.Message):
+async def cmd_create_team(message: types.Message, state: FSMContext):
     """Команда для создания новой команды (только для админов)"""
+    await state.clear()
+
     if not await is_admin(message.from_user.id):  # Ваша функция проверки админа
         return await message.answer("Только админы могут создавать команды!")
     
@@ -211,6 +283,9 @@ async def handle_start(message: types.Message, state: FSMContext):
     """Обработка стартовой команды с инвайт-ссылкой"""
     await state.clear()
 
+    print(f"Текущее состояние: {await state.get_state()}")
+    print(f"Данные состояния: {await state.get_data()}")
+
     user_id = message.from_user.id
     
     # Проверяем, состоит ли пользователь уже в какой-либо команде
@@ -219,7 +294,7 @@ async def handle_start(message: types.Message, state: FSMContext):
     if current_team:
         # Пользователь уже в команде - особое сообщение
         team_name = await get_team_name(current_team)
-        captain_id = await get_team_captain(current_team)
+        captain_id = await (current_team)
         
         text = (
             f"Вы уже состоите в команде '{team_name}'\n\n"

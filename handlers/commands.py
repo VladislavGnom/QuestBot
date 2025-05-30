@@ -5,14 +5,18 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.exceptions import TelegramForbiddenError
 
 from texts.messages import WELCOME, HELP
-from fsm.quest_logic import QuestStates
+from fsm.quest_logic import QuestStates, WaitForPassword
 from db.help_db_commands import (add_player_to_team, get_team_players, 
                                  update_game_state, get_exist_teams, create_team_if_not_exists, 
                                  update_game_progress, generate_invite_link, create_team, join_team,
                                  get_team_name, is_admin, get_team_captain, mention_user, get_user_team,
-                                 get_player_location, is_team_captain, set_player_location)
+                                 get_player_location, is_team_captain, set_player_location, create_or_upgrade_captain,
+                                 create_or_upgrade_admin)
 from main import BASE_DIR, bot
 
+
+CAPTAIN_PASSWORD = '1234'
+ADMIN_PASSWORD = '12345'
 
 # Пример данных квеста (можно тоже хранить в БД)
 QUEST_DATA = {
@@ -118,6 +122,84 @@ async def handle_player_location_change(callback: types.CallbackQuery):
         reply_markup=None
     )
     await callback.answer()
+
+async def request_captain_role(message: types.Message, state: FSMContext):
+    await message.answer(
+        "Для регистрации команды введите секретный пароль:\n"
+        "(запросите его у организатора)"
+    )
+    await state.set_state(WaitForPassword.waiting_for_captain_password)
+
+async def process_captain_password(message: types.Message, state: FSMContext):
+    if message.text != CAPTAIN_PASSWORD:  # Пароль из конфига
+        await message.answer("Неверный пароль!")
+        return await state.clear()
+    
+    user_id = message.from_user.id
+    if await is_team_captain(user_id):
+        await message.answer("Вы уже капитан!")
+        return await state.clear()
+    
+    # Создаем команду
+    team_name = f"Команда {message.from_user.full_name}"
+    team_id = await create_team(message.from_user.id, team_name)
+    
+    await message.answer(f"Команда '{team_name}' создана!")
+
+    # Создаём капитана
+    success = await create_or_upgrade_captain(
+        user_id=message.from_user.id,
+        username=message.from_user.username,
+        full_name=message.from_user.full_name,
+        team_id=team_id  # ID созданной ранее команды
+    )
+
+    if success:
+        await message.answer("Вы успешно зарегистрированы как капитан команды!")
+    else:
+        await message.answer("Ваши права успешно повышены")
+
+    invite_link = await generate_invite_link(message.bot, team_id, team_name)
+    
+    await message.answer(
+        f"Команда '{team_name}' создана!\n"
+        f"Пригласительная ссылка:\n{invite_link}\n\n"
+        "Отправьте эту ссылку участникам вашей команды.",
+        disable_web_page_preview=True
+    )
+    await state.clear()
+
+async def request_admin_role(message: types.Message, state: FSMContext):
+    await message.answer(
+        "Для регистрации админа введите секретный пароль:\n"
+        "(запросите его у организатора)"
+    )
+    await state.set_state(WaitForPassword.waiting_for_admin_password)
+
+async def process_admin_password(message: types.Message, state: FSMContext):
+    if message.text != ADMIN_PASSWORD:  # Пароль из конфига
+        await message.answer("Неверный пароль!")
+        return await state.clear()
+    
+    user_id = message.from_user.id
+    if await is_admin(user_id):
+        await message.answer("Вы уже админ!")
+        return await state.clear()
+
+    # Создаём админа
+    success = await create_or_upgrade_admin(
+        user_id=message.from_user.id,
+        username=message.from_user.username,
+        full_name=message.from_user.full_name,
+        team_id=None
+    )
+
+    if success:
+        await message.answer("Вы успешно зарегистрированы как админ в системе!")
+    else:
+        await message.answer("Ваши права успешно повышены до уровня админа")
+    
+    await state.clear()
 
 async def cmd_help(message: types.Message, state: FSMContext):
     await state.clear()
@@ -294,7 +376,7 @@ async def handle_start(message: types.Message, state: FSMContext):
     if current_team:
         # Пользователь уже в команде - особое сообщение
         team_name = await get_team_name(current_team)
-        captain_id = await (current_team)
+        captain_id = await get_team_captain(current_team)
         
         text = (
             f"Вы уже состоите в команде '{team_name}'\n\n"

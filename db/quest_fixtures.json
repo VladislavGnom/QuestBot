@@ -1,0 +1,84 @@
+{
+    "locations": [
+      {
+        "id": 1,
+        "name": "Центральная площадь",
+        "description": "Главная площадь города с фонтаном",
+        "coordinates": "55.751244,37.618423",
+        "image_path": "square.jpg",
+        "is_hidden": false,
+        "unlock_condition": ""
+      },
+      {
+        "id": 2,
+        "name": "Старая библиотека",
+        "description": "Здание XIX века с редкими книгами",
+        "coordinates": "55.753456,37.620987",
+        "image_path": "library.jpg",
+        "is_hidden": false,
+        "unlock_condition": ""
+      },
+      {
+        "id": 3,
+        "name": "Тайный бункер",
+        "description": "Секретное подземное помещение",
+        "coordinates": null,
+        "image_path": "bunker.jpg",
+        "is_hidden": true,
+        "unlock_condition": "secret_code:1984"
+      }
+    ],
+    "questions": [
+      {
+        "location_id": 1,
+        "question_text": "Сколько струй у фонтана?",
+        "answer": "12",
+        "answer_hint": "Посчитайте основные струи",
+        "difficulty": 2,
+        "question_type": "text",
+        "media_path": null,
+        "cost": 15
+      },
+      {
+        "location_id": 1,
+        "question_text": "Какой символ изображен в центре площади?",
+        "answer": "Герб",
+        "answer_hint": "Посмотрите под ноги",
+        "difficulty": 1,
+        "question_type": "photo",
+        "media_path": "emblem.jpg",
+        "cost": 10
+      },
+      {
+        "location_id": 2,
+        "question_text": "Назовите год постройки библиотеки",
+        "answer": "1897",
+        "answer_hint": "Посмотрите на фасад",
+        "difficulty": 3,
+        "question_type": "text",
+        "media_path": null,
+        "cost": 20
+      }
+    ],
+    "quests": [
+      {
+        "id": 1,
+        "name": "Тайны старого города",
+        "description": "Исторический квест по центру",
+        "start_location_id": 1,
+        "is_active": true
+      }
+    ],
+    "quest_locations": [
+      {
+        "quest_id": 1,
+        "location_id": 1,
+        "order_num": 1
+      },
+      {
+        "quest_id": 1,
+        "location_id": 2,
+        "order_num": 2
+      }
+    ]
+  }

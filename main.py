@@ -12,6 +12,7 @@ from fsm.quest_logic import QuestStates, WaitForPassword
 
 BOT_TOKEN = '7928066551:AAEqGRKKAdWHo0MswWNTUAE9Q7B9OTN63-I'
 BASE_DIR = os.path.dirname(__file__)
+DEBUG_MODE = True
 
 storage = MemoryStorage()
 bot = Bot(token=BOT_TOKEN)
@@ -35,11 +36,23 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.cmd_my_location, Command("mylocation"))
     dp.message.register(handlers.cmd_set_location, Command("setlocation"))
 
-async def main():
+async def on_startup():
     register_handlers(dp=dp)
 
     # Инициализация БД при старте
     await init_db()
+    
+    # Заполнение тестовыми данными (только для разработки!)
+    if DEBUG_MODE:  # Добавьте флаг в конфиг
+        from db.fixtures import load_fixtures_from_json
+        try:
+            await load_fixtures_from_json()
+        except Exception as e:
+            print(f"⚠️ Ошибка загрузки фикстур: {e}")
+
+
+async def main():
+    await on_startup()
     await dp.start_polling(bot)
 
 

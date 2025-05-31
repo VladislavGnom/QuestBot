@@ -197,6 +197,11 @@ async def start_quest(message: types.Message, state: FSMContext):
 
     team_id = await get_user_team(user_id)
     players = await get_team_players(team_id)
+    print(players)
+
+    # me = players[0]
+    # players = [me, me, me, me]
+    print(players)
 
     if not players:
         await message.answer("В команде нет игроков!")
@@ -247,6 +252,7 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     location_id = current_player['location']
     questions = await get_location_questions(location_id=location_id)
     question = choice(questions)    # берём рандомный вопрос из соответственной локации
+    question_id = question.get('id')
 
     await bot.send_message(
         player_id, 
@@ -255,6 +261,7 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     
     await state.update_data(
         correct_answers=question.get("answer"),
+        current_question_idx=question_id,
         deadline=datetime.now() + timedelta(minutes=5)
     )
     await state.set_state(QuestStates.waiting_for_answer)
@@ -292,19 +299,23 @@ async def process_answer(message: types.Message, state: FSMContext):
     #     await message.answer("Ошибка: нет следующего игрока")
     #     await state.clear()
     #     return
-        
+    
+    cur_user_id = players[current_player_idx].get('id')
+
     await update_game_progress(
         team_id, 
-        players[current_player_idx].get('id'),
+        cur_user_id,
         question_num,
         "playing"
     )
     
     try:
-        photo = types.FSInputFile(question.get("image"))
+        photo = types.FSInputFile(question.get("media_path"))
         await message.answer_photo(photo, caption="Следующая точка маршрута!")
     except FileNotFoundError:
         await message.answer("Карта не найдена")
+    except TypeError:
+        await message.answer("Карта не требуется")
     
     builder = InlineKeyboardBuilder()
     builder.button(text="Я на месте", callback_data="arrived")
@@ -335,8 +346,18 @@ async def notify_team_except_current(team_id: int, current_player_id: int, messa
                 print(f"Пользователь {player_id} не начал диалог с ботом")
 
 async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
+    user_data = await state.get_data()
+    current_player_idx = user_data["current_player_idx"]
+    players = user_data["players"]
+
+    cur_user_id = players[current_player_idx].get('id')
+
+    await bot.send_message(
+        cur_user_id, 
+        f"Предыдущий игрок закончил свой ход, ваша очередь!"
+    )
     await callback.answer()
-    await send_question(callback.message.from_user.id, callback.message, state)
+    await send_question(cur_user_id, callback.message, state)
 
 
 async def cmd_create_team(message: types.Message, state: FSMContext):

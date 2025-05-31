@@ -251,14 +251,7 @@ async def start_quest(message: types.Message, state: FSMContext):
     )
 
     await start_quest_for_team(team_id=team_id, question_id=question_id)
-
-    # await state.update_data(
-    #     team_id=team_id,
-    #     current_player_idx=0,
-    #     current_question_idx=question_id,
-    #     question_num=1,
-    #     players=players  # Сохраняем порядок игроков
-    # )
+    
     await state.set_state(QuestStates.waiting_for_answer) 
 
 async def send_question(player_id: int, message: types.Message, state: FSMContext):
@@ -266,7 +259,6 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     team_id = await get_user_team(user_id=user_id)
     user_data = await get_team_state(team_id=team_id)
     print(user_data)
-    # user_data = await state.get_data()
     team_id = user_data["team_id"]
     current_player_idx = user_data["current_player_idx"]
     players_ids=user_data["players_order"]
@@ -290,11 +282,6 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
         current_question_idx=question_id,
     )
 
-    # await state.update_data(
-    #     correct_answers=question.get("answer"),
-    #     current_question_idx=question_id,
-    #     deadline=datetime.now() + timedelta(minutes=5)
-    # )
     await state.set_state(QuestStates.waiting_for_answer)
 
 async def process_answer(message: types.Message, state: FSMContext):
@@ -376,10 +363,6 @@ async def process_answer(message: types.Message, state: FSMContext):
         current_question_num=question_num + 1
     )
 
-    # await state.update_data(
-    #     current_player_idx=current_player_idx,
-    #     question_num=question_num + 1,
-    # )
     await state.set_state(QuestStates.waiting_for_location_confirmation)
 
 async def notify_team_except_current(team_id: int, current_player_id: int, message_text: str):
@@ -401,7 +384,6 @@ async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
     team_id = await get_user_team(user_id=user_id)
     user_data = await get_team_state(team_id=team_id)
     print(user_data)
-    # user_data = await state.get_data()
     current_player_idx = user_data["current_player_idx"]
     players_ids = user_data["players_order"]
 

@@ -340,3 +340,81 @@ async def create_or_upgrade_admin(user_id: int, username: str, full_name: str, t
             await conn.commit()
             return False
     
+async def add_location(
+    name: str,
+    description: str,
+    coordinates: str,
+    image_path: str = None
+) -> int:
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            """INSERT INTO locations 
+            (name, description, coordinates, image_path) 
+            VALUES (?, ?, ?, ?)""",
+            (name, description, coordinates, image_path)
+        )
+        await conn.commit()
+        return cursor.lastrowid
+
+async def add_question(
+    location_id: int,
+    question_text: str,
+    answer: str,
+    difficulty: int = 1,
+    question_type: str = 'text'
+) -> int:
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            """INSERT INTO questions 
+            (location_id, question_text, answer, difficulty, question_type) 
+            VALUES (?, ?, ?, ?, ?)""",
+            (location_id, question_text, answer, difficulty, question_type)
+        )
+        await conn.commit()
+        return cursor.lastrowid
+    
+async def get_location_questions(location_id: int) -> list[dict]:
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            """SELECT id, question_text, answer_hint, difficulty 
+            FROM questions 
+            WHERE location_id = ? 
+            ORDER BY difficulty""",
+            (location_id,)
+        )
+        return [dict(row) for row in await cursor.fetchall()]
+    
+async def get_full_location(location_id: int) -> dict:
+    async with get_db_connection() as conn:
+        # Получаем данные локации
+        cursor = await conn.execute(
+            "SELECT * FROM locations WHERE id = ?",
+            (location_id,))
+        location = dict(await cursor.fetchone())
+        
+        # Получаем вопросы локации
+        cursor = await conn.execute(
+            "SELECT * FROM questions WHERE location_id = ?",
+            (location_id,))
+        location['questions'] = [dict(row) for row in await cursor.fetchall()]
+        
+        return location
+
+async def create_quest(name: str, location_ids: list[int]) -> int:
+    async with get_db_connection() as conn:
+        # Создаем квест
+        cursor = await conn.execute(
+            "INSERT INTO quests (name) VALUES (?)",
+            (name,))
+        quest_id = cursor.lastrowid
+        
+        # Добавляем локации в квест
+        for order, loc_id in enumerate(location_ids, 1):
+            await conn.execute(
+                """INSERT INTO quest_locations 
+                (quest_id, location_id, order_num) 
+                VALUES (?, ?, ?)""",
+                (quest_id, loc_id, order))
+        
+        await conn.commit()
+        return quest_id

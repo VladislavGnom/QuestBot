@@ -439,3 +439,27 @@ async def create_quest(name: str, location_ids: list[int]) -> int:
         
         await conn.commit()
         return quest_id
+    
+async def share_question_state(sender_id: int, receiver_id: int):
+    """Передает состояние вопроса другому игроку"""
+    async with get_db_connection() as conn:
+        # Получаем состояние отправителя
+        cursor = await conn.execute(
+            "SELECT question_id, progress FROM player_states WHERE user_id = ?",
+            (sender_id,)
+        )
+        state = await cursor.fetchone()
+        
+        if not state:
+            return False
+            
+        # Сохраняем состояние для получателя
+        await conn.execute(
+            """INSERT OR REPLACE INTO player_states 
+            (user_id, question_id, progress) 
+            VALUES (?, ?, ?)""",
+            (receiver_id, state[0], state[1])
+        )
+        await conn.commit()
+        return True
+

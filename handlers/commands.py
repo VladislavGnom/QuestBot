@@ -36,29 +36,6 @@ QUEST_DATA = {
     }
 }
 
-# async def cmd_start(message: types.Message, state: FSMContext):
-#     await state.clear()
-#     team_id = 1
-#     team_name = 'fisrt'
-
-#     if team_id not in await get_exist_teams():
-#         team_id, created = await create_team_if_not_exists(team_name)
-#         if not created:
-#             await message.answer("Ошибка: команда не создана.")
-#             return
-            
-#     if message.from_user.id not in await get_team_players(team_id):
-#         await add_player_to_team(
-#             message.from_user.id,
-#             message.from_user.username,
-#             team_id
-#         )
-#         await message.answer("Вы в команде! Ожидайте начала игры.")
-#     else:
-#         await message.answer("Вы уже в команде!")
-
-
-
 async def cmd_my_location(message: types.Message, state: FSMContext):
     """Показывает текущую локацию игрока"""
     await state.clear()

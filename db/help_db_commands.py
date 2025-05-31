@@ -374,15 +374,25 @@ async def add_question(
         return cursor.lastrowid
     
 async def get_location_questions(location_id: int) -> list[dict]:
+    """Возвращает список вопросов для локации в виде словарей"""
     async with get_db_connection() as conn:
         cursor = await conn.execute(
-            """SELECT id, question_text, answer_hint, difficulty 
-            FROM questions 
-            WHERE location_id = ? 
-            ORDER BY difficulty""",
+            """SELECT id, question_text, answer, answer_hint, 
+                      difficulty, question_type, media_path, cost
+               FROM questions 
+               WHERE location_id = ?""",
             (location_id,)
         )
-        return [dict(row) for row in await cursor.fetchall()]
+        
+        # Получаем названия колонок
+        columns = [column[0] for column in cursor.description]
+        
+        # Преобразуем каждую строку в словарь
+        questions = []
+        async for row in cursor:
+            questions.append(dict(zip(columns, row)))
+            
+        return questions
     
 async def get_full_location(location_id: int) -> dict:
     async with get_db_connection() as conn:
@@ -390,14 +400,25 @@ async def get_full_location(location_id: int) -> dict:
         cursor = await conn.execute(
             "SELECT * FROM locations WHERE id = ?",
             (location_id,))
-        location = dict(await cursor.fetchone())
+        location_row = await cursor.fetchone()
+        
+        if not location_row:
+            return None
+            
+        # Преобразуем строку в словарь
+        columns = [desc[0] for desc in cursor.description]
+        location = dict(zip(columns, location_row))
         
         # Получаем вопросы локации
         cursor = await conn.execute(
             "SELECT * FROM questions WHERE location_id = ?",
             (location_id,))
-        location['questions'] = [dict(row) for row in await cursor.fetchall()]
         
+        questions = []
+        async for row in cursor:
+            questions.append(dict(zip(columns, row)))
+        
+        location['questions'] = questions
         return location
 
 async def create_quest(name: str, location_ids: list[int]) -> int:

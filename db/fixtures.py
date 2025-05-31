@@ -16,9 +16,10 @@ async def load_fixtures_from_json(db_path: str = 'quest_bot.db',
         await conn.execute("PRAGMA foreign_keys = ON")
         
         # Заполняем таблицы
+        # Правильный порядок загрузки:
         await _load_table(conn, "locations", data["locations"])
-        await _load_table(conn, "questions", data["questions"])
         await _load_table(conn, "quests", data["quests"])
+        await _load_table(conn, "questions", data["questions"])
         await _load_table(conn, "quest_locations", data["quest_locations"])
         
         await conn.commit()

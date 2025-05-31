@@ -1,3 +1,4 @@
+from random import choice
 from datetime import datetime, timedelta
 from aiogram import types
 from aiogram.fsm.context import FSMContext
@@ -11,7 +12,7 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  update_game_progress, generate_invite_link, create_team, join_team,
                                  get_team_name, is_admin, get_team_captain, mention_user, get_user_team,
                                  get_player_location, is_team_captain, set_player_location, create_or_upgrade_captain,
-                                 create_or_upgrade_admin)
+                                 create_or_upgrade_admin, get_full_location, get_location_questions)
 from main import BASE_DIR, bot
 
 
@@ -184,6 +185,8 @@ async def cmd_help(message: types.Message, state: FSMContext):
     await state.clear()
     await message.answer(HELP)
 
+
+
 async def start_quest(message: types.Message, state: FSMContext):
     await state.clear()
 
@@ -199,15 +202,22 @@ async def start_quest(message: types.Message, state: FSMContext):
         await message.answer("В команде нет игроков!")
         return
     
+    # сортировка игроков по локации
+    players = list(filter(lambda pl: pl['location'], players))
+
     first_player = players[0]
     first_player_id = first_player["id"]
 
     await update_game_progress(team_id, first_player_id, 1, "playing")
     
-    question = QUEST_DATA[team_id]["player_1"]["question"]
+    location_id = first_player['location']
+    questions = await get_location_questions(location_id=location_id)
+    question = choice(questions)    # берём рандомный вопрос из соответственной локации
+    question_id = question.get('id')
+
     await bot.send_message(
         first_player_id, 
-        f"Игра началась! Ваш вопрос: {question}"
+        f"Игра началась! Ваш вопрос: {question.get('question_text')}"
     )
 
     # Уведомляем остальных участников команды
@@ -220,26 +230,31 @@ async def start_quest(message: types.Message, state: FSMContext):
     await state.update_data(
         team_id=team_id,
         current_player_idx=0,
+        current_question_idx=question_id,
         question_num=1,
-        players_order=players  # Сохраняем порядок игроков
+        players=players  # Сохраняем порядок игроков
     )
     await state.set_state(QuestStates.waiting_for_answer) 
 
 async def send_question(player_id: int, message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     team_id = user_data["team_id"]
+    current_player_idx = user_data["current_player_idx"]
+    players=user_data["players"]
     question_num = user_data["question_num"]
     
-    question_data = QUEST_DATA[team_id][f"player_{question_num}"]
+    current_player = players[current_player_idx]
+    location_id = current_player['location']
+    questions = await get_location_questions(location_id=location_id)
+    question = choice(questions)    # берём рандомный вопрос из соответственной локации
 
     await bot.send_message(
         player_id, 
-        f"Вопрос {question_num}: {question_data['question']}"
+        f"Вопрос {question_num}: {question.get('question_text')}"
     )
     
     await state.update_data(
-        correct_answers=question_data["answers"],
-        next_player=question_data["next_player"],
+        correct_answers=question.get("answer"),
         deadline=datetime.now() + timedelta(minutes=5)
     )
     await state.set_state(QuestStates.waiting_for_answer)
@@ -247,41 +262,46 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
 async def process_answer(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     team_id = user_data["team_id"]
-    current_idx = user_data["current_player_idx"]
+    current_player_idx = user_data["current_player_idx"]
+    current_question_idx = user_data["current_question_idx"]
     question_num = user_data["question_num"]
-    players = user_data["players_order"]
+    players = user_data["players"]
     
-    if message.from_user.id != players[current_idx].get('id'):
+    if message.from_user.id != players[current_player_idx].get('id'):
         await message.answer("Сейчас не ваш ход!")
         return
     
-    question_data = QUEST_DATA[team_id][f"player_{question_num}"]
-    
-    if message.text.lower() not in [a.lower() for a in question_data["answers"]]:
+    current_player = players[current_player_idx]
+    location_id = current_player["location"]
+    questions = await get_location_questions(location_id=location_id)
+    question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    # берём рандомный вопрос из соответственной локации
+
+
+    if message.text.lower() != question.get("answer").lower():
         await message.answer("❌ Неверно! Попробуйте еще раз.")
         return
     
-    next_player = question_data["next_player"]
-    if not next_player:
+    current_player_idx += 1
+    next_players = players[current_player_idx:]
+    if not next_players:
         await message.answer("🎉 Команда завершила квест!")
         await state.clear()
         return
     
-    next_player_num = int(next_player.split("_")[1])
-    if next_player_num > len(players):
-        await message.answer("Ошибка: нет следующего игрока")
-        await state.clear()
-        return
+    # if next_player_num > len(players):
+    #     await message.answer("Ошибка: нет следующего игрока")
+    #     await state.clear()
+    #     return
         
     await update_game_progress(
         team_id, 
-        players[next_player_num-1].get('id'),
-        next_player_num,
+        players[current_player_idx].get('id'),
+        question_num,
         "playing"
     )
     
     try:
-        photo = types.FSInputFile(question_data["image"])
+        photo = types.FSInputFile(question.get("image"))
         await message.answer_photo(photo, caption="Следующая точка маршрута!")
     except FileNotFoundError:
         await message.answer("Карта не найдена")
@@ -295,8 +315,8 @@ async def process_answer(message: types.Message, state: FSMContext):
     )
     
     await state.update_data(
-        current_player_idx=next_player_num-1,
-        question_num=next_player_num
+        current_player_idx=current_player_idx,
+        question_num=question_num + 1,
     )
     await state.set_state(QuestStates.waiting_for_location_confirmation)
 

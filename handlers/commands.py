@@ -1,3 +1,4 @@
+import json
 from random import choice
 from datetime import datetime, timedelta
 from aiogram import types
@@ -12,7 +13,9 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  update_game_progress, generate_invite_link, create_team, join_team,
                                  get_team_name, is_admin, get_team_captain, mention_user, get_user_team,
                                  get_player_location, is_team_captain, set_player_location, create_or_upgrade_captain,
-                                 create_or_upgrade_admin, get_full_location, get_location_questions)
+                                 create_or_upgrade_admin, get_full_location, get_location_questions,
+                                 init_team_state, update_team_state, get_team_state, get_player_by_id,
+                                 update_team_state)
 from main import BASE_DIR, bot
 
 
@@ -185,6 +188,22 @@ async def cmd_help(message: types.Message, state: FSMContext):
     await state.clear()
     await message.answer(HELP)
 
+async def start_quest_for_team(team_id: int, question_id: int):
+    """Инициализирует квест для команды""" 
+    players = await get_team_players(team_id)
+    players_ids = [pl["id"] for pl in players]    # [user_id1, user_id2, ...]
+    await init_team_state(team_id=team_id, players=players_ids)
+
+    await update_team_state(
+        team_id,
+        current_player_idx=0,
+        players_order=json.dumps(players_ids),
+        current_question_num=1,
+        current_question_idx=question_id,
+        correct_answers=0,
+        status='playing',
+        deadline=datetime.now() + timedelta(hours=1)  # +1 час на прохождение
+    )
 
 
 async def start_quest(message: types.Message, state: FSMContext):
@@ -197,8 +216,6 @@ async def start_quest(message: types.Message, state: FSMContext):
 
     team_id = await get_user_team(user_id)
     players = await get_team_players(team_id)
-    print(players)
-
     # me = players[0]
     # players = [me, me, me, me]
     print(players)
@@ -208,11 +225,12 @@ async def start_quest(message: types.Message, state: FSMContext):
         return
     
     # сортировка игроков по локации
-    players = list(filter(lambda pl: pl['location'], players))
+    players.sort(key=lambda pl: pl['location'])
 
     first_player = players[0]
     first_player_id = first_player["id"]
 
+    # function is unuseful
     await update_game_progress(team_id, first_player_id, 1, "playing")
     
     location_id = first_player['location']
@@ -231,22 +249,31 @@ async def start_quest(message: types.Message, state: FSMContext):
         first_player_id, 
         "Квест начат! Первый игрок получил вопрос."
     )
-    
-    await state.update_data(
-        team_id=team_id,
-        current_player_idx=0,
-        current_question_idx=question_id,
-        question_num=1,
-        players=players  # Сохраняем порядок игроков
-    )
+
+    await start_quest_for_team(team_id=team_id, question_id=question_id)
+
+    # await state.update_data(
+    #     team_id=team_id,
+    #     current_player_idx=0,
+    #     current_question_idx=question_id,
+    #     question_num=1,
+    #     players=players  # Сохраняем порядок игроков
+    # )
     await state.set_state(QuestStates.waiting_for_answer) 
 
 async def send_question(player_id: int, message: types.Message, state: FSMContext):
-    user_data = await state.get_data()
+    user_id = message.from_user.id
+    team_id = await get_user_team(user_id=user_id)
+    user_data = await get_team_state(team_id=team_id)
+    print(user_data)
+    # user_data = await state.get_data()
     team_id = user_data["team_id"]
     current_player_idx = user_data["current_player_idx"]
-    players=user_data["players"]
-    question_num = user_data["question_num"]
+    players_ids=user_data["players_order"]
+    question_num = user_data["current_question_num"]
+
+    # получение экземпляров игроков
+    players = [get_player_by_id(user_id=user_id) for user_id in players_ids]
     
     current_player = players[current_player_idx]
     location_id = current_player['location']
@@ -259,28 +286,41 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
         f"Вопрос {question_num}: {question.get('question_text')}"
     )
     
-    await state.update_data(
-        correct_answers=question.get("answer"),
+    await update_team_state(
         current_question_idx=question_id,
-        deadline=datetime.now() + timedelta(minutes=5)
     )
+
+    # await state.update_data(
+    #     correct_answers=question.get("answer"),
+    #     current_question_idx=question_id,
+    #     deadline=datetime.now() + timedelta(minutes=5)
+    # )
     await state.set_state(QuestStates.waiting_for_answer)
 
 async def process_answer(message: types.Message, state: FSMContext):
-    user_data = await state.get_data()
+    user_id = message.from_user.id
+    team_id = await get_user_team(user_id=user_id)
+    user_data = await get_team_state(team_id=team_id)
+    print(user_data)
+    # user_data = await state.get_data()
     team_id = user_data["team_id"]
     current_player_idx = user_data["current_player_idx"]
     current_question_idx = user_data["current_question_idx"]
-    question_num = user_data["question_num"]
-    players = user_data["players"]
-    
-    if message.from_user.id != players[current_player_idx].get('id'):
+    question_num = user_data["current_question_num"]
+    correct_answers = user_data["correct_answers"]
+    players_ids = user_data["players_order"]
+    print(players_ids)
+    # получение экземпляров игроков
+    players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
+    print(players)
+    if message.from_user.id != players[current_player_idx].get('user_id'):
         await message.answer("Сейчас не ваш ход!")
         return
     
     current_player = players[current_player_idx]
     location_id = current_player["location"]
     questions = await get_location_questions(location_id=location_id)
+    print(current_question_idx)
     question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    # берём рандомный вопрос из соответственной локации
 
 
@@ -288,20 +328,25 @@ async def process_answer(message: types.Message, state: FSMContext):
         await message.answer("❌ Неверно! Попробуйте еще раз.")
         return
     
+    correct_answers += 1
     current_player_idx += 1
     next_players = players[current_player_idx:]
     if not next_players:
+        await update_team_state(
+            team_id=team_id, 
+            current_player_idx=current_player_idx - 1, 
+            current_question_num=question_num,
+            correct_answers=correct_answers,
+            status='finished',
+        )
+
         await message.answer("🎉 Команда завершила квест!")
         await state.clear()
         return
     
-    # if next_player_num > len(players):
-    #     await message.answer("Ошибка: нет следующего игрока")
-    #     await state.clear()
-    #     return
-    
-    cur_user_id = players[current_player_idx].get('id')
+    cur_user_id = players[current_player_idx].get('user_id')
 
+    # function is unuseful
     await update_game_progress(
         team_id, 
         cur_user_id,
@@ -325,10 +370,16 @@ async def process_answer(message: types.Message, state: FSMContext):
         reply_markup=builder.as_markup()
     )
     
-    await state.update_data(
-        current_player_idx=current_player_idx,
-        question_num=question_num + 1,
+    await update_team_state(
+        team_id=team_id, 
+        current_player_idx=current_player_idx, 
+        current_question_num=question_num + 1
     )
+
+    # await state.update_data(
+    #     current_player_idx=current_player_idx,
+    #     question_num=question_num + 1,
+    # )
     await state.set_state(QuestStates.waiting_for_location_confirmation)
 
 async def notify_team_except_current(team_id: int, current_player_id: int, message_text: str):
@@ -346,11 +397,18 @@ async def notify_team_except_current(team_id: int, current_player_id: int, messa
                 print(f"Пользователь {player_id} не начал диалог с ботом")
 
 async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
-    user_data = await state.get_data()
+    user_id = callback.message.from_user.id
+    team_id = await get_user_team(user_id=user_id)
+    user_data = await get_team_state(team_id=team_id)
+    print(user_data)
+    # user_data = await state.get_data()
     current_player_idx = user_data["current_player_idx"]
-    players = user_data["players"]
+    players_ids = user_data["players_order"]
 
-    cur_user_id = players[current_player_idx].get('id')
+    # получение экземпляров игроков
+    players = [get_player_by_id(user_id=user_id) for user_id in players_ids]
+
+    cur_user_id = players[current_player_idx].get('user_id')
 
     await bot.send_message(
         cur_user_id, 

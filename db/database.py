@@ -31,6 +31,22 @@ async def init_db():
             ''')
 
             await cursor.execute('''
+            CREATE TABLE IF NOT EXISTS team_game_states (
+                team_id INTEGER PRIMARY KEY,
+                current_player_idx INTEGER DEFAULT 0,
+                players_order TEXT,  -- JSON массив [user_id1, user_id2, ...]
+                current_question_num INTEGER DEFAULT 1,
+                current_question_idx INTEGER DEFAULT 0,
+                deadline TEXT,       -- TIMESTAMP
+                correct_answers INTEGER DEFAULT 0,
+                status TEXT DEFAULT 'waiting',  -- waiting/playing/finished
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (team_id) REFERENCES teams(id)
+            )
+            ''')
+
+            await cursor.execute('''
             CREATE TABLE IF NOT EXISTS locations (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,               -- Название локации

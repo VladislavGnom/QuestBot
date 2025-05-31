@@ -57,6 +57,8 @@ QUEST_DATA = {
 #     else:
 #         await message.answer("Вы уже в команде!")
 
+
+
 async def cmd_my_location(message: types.Message, state: FSMContext):
     """Показывает текущую локацию игрока"""
     await state.clear()

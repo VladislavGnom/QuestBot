@@ -29,6 +29,55 @@ async def init_db():
                 FOREIGN KEY (team_id) REFERENCES teams(id)
             )
             ''')
+
+            await cursor.execute('''
+            CREATE TABLE IF NOT EXISTS locations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,               -- Название локации
+                description TEXT,                 -- Описание для игроков
+                coordinates TEXT,                 -- "lat,lon" или "x,y,z"
+                image_path TEXT,                  -- Путь к изображению
+                is_hidden BOOLEAN DEFAULT FALSE,  -- Скрыта ли локация
+                unlock_condition TEXT             -- Условие разблокировки
+            )
+            ''')
+
+            await cursor.execute('''
+            CREATE TABLE IF NOT EXISTS questions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                location_id INTEGER NOT NULL,     -- К какой локации привязан
+                question_text TEXT NOT NULL,      -- Текст вопроса
+                answer TEXT NOT NULL,             -- Правильный ответ
+                answer_hint TEXT,                 -- Подсказка
+                difficulty INTEGER DEFAULT 1,     -- Сложность (1-5)
+                question_type TEXT DEFAULT 'text',-- text/photo/video/audio
+                media_path TEXT,                  -- Путь к медиафайлу
+                cost INTEGER DEFAULT 10,          -- Баллы за правильный ответ
+                FOREIGN KEY (location_id) REFERENCES locations(id)
+            )
+            ''')
+
+            await cursor.execute('''
+            CREATE TABLE IF NOT EXISTS quests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                description TEXT,
+                start_location_id INTEGER,
+                is_active BOOLEAN DEFAULT FALSE,
+                FOREIGN KEY (start_location_id) REFERENCES locations(id)
+            )
+            ''')
+
+            await cursor.execute('''
+            CREATE TABLE IF NOT EXISTS quest_locations (
+                quest_id INTEGER NOT NULL,
+                location_id INTEGER NOT NULL,
+                order_num INTEGER,                -- Порядковый номер в квесте
+                PRIMARY KEY (quest_id, location_id),
+                FOREIGN KEY (quest_id) REFERENCES quests(id),
+                FOREIGN KEY (location_id) REFERENCES locations(id)
+            )
+            ''')
             
             # Таблица состояния игры
             await cursor.execute('''

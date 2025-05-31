@@ -1,3 +1,4 @@
+import json
 import secrets
 import aiosqlite
 from aiogram import Bot
@@ -160,14 +161,6 @@ async def get_team_name(team_id: int):
         row = await cursor.fetchone()
         return row[0] if row else None
 
-async def get_team_members(team_id: int):
-    async with get_db_connection() as conn:
-        cursor = await conn.execute(
-            "SELECT user_id FROM team_members WHERE team_id = ?",
-            (team_id,)
-        )
-        return [row[0] for row in await cursor.fetchall()]
-
 async def is_admin(user_id: int):
     """Возвращает True если админ существует и пользователь им является иначе False"""
     async with get_db_connection() as conn:
@@ -262,6 +255,27 @@ async def get_player_location(user_id: int) -> int:
             (user_id,))
         result = await cursor.fetchone()
         return result[0] if result else 1  # Возвращаем 1 если игрок не найден
+
+async def get_player_by_id(user_id: int) -> dict | None:
+    """Возвращает игрока по ID в виде словаря или None"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT * FROM players WHERE user_id = ?",
+            (user_id,)
+        )
+        
+        # Получаем названия колонок из описания курсора
+        columns = [column[0] for column in cursor.description]
+        
+        # Получаем данные
+        row = await cursor.fetchone()
+        
+        if not row:
+            return None
+            
+        # Собираем словарь {название_колонки: значение}
+        return dict(zip(columns, row))
+
 
 async def get_players_at_location(team_id: int, location: int) -> list:
     """Возвращает всех игроков команды на указанной локации"""
@@ -440,26 +454,111 @@ async def create_quest(name: str, location_ids: list[int]) -> int:
         await conn.commit()
         return quest_id
     
-async def share_question_state(sender_id: int, receiver_id: int):
-    """Передает состояние вопроса другому игроку"""
-    async with get_db_connection() as conn:
-        # Получаем состояние отправителя
-        cursor = await conn.execute(
-            "SELECT question_id, progress FROM player_states WHERE user_id = ?",
-            (sender_id,)
-        )
-        state = await cursor.fetchone()
+# async def share_question_state(sender_id: int, receiver_id: int):
+#     """Передает состояние вопроса другому игроку"""
+#     async with get_db_connection() as conn:
+#         # Получаем состояние отправителя
+#         cursor = await conn.execute(
+#             "SELECT question_id, progress FROM player_states WHERE user_id = ?",
+#             (sender_id,)
+#         )
+#         state = await cursor.fetchone()
         
-        if not state:
-            return False
+#         if not state:
+#             return False
             
-        # Сохраняем состояние для получателя
+#         # Сохраняем состояние для получателя
+#         await conn.execute(
+#             """INSERT OR REPLACE INTO player_states 
+#             (user_id, question_id, progress) 
+#             VALUES (?, ?, ?)""",
+#             (receiver_id, state[0], state[1])
+#         )
+#         await conn.commit()
+#         return True
+
+async def init_team_state(team_id: int, players: list[int]):
+    """Создает начальное состояние для команды"""
+    async with get_db_connection() as conn:
         await conn.execute(
-            """INSERT OR REPLACE INTO player_states 
-            (user_id, question_id, progress) 
+            """INSERT OR IGNORE INTO team_game_states
+            (team_id, players_order, status)
             VALUES (?, ?, ?)""",
-            (receiver_id, state[0], state[1])
+            (team_id, json.dumps(players), 'waiting')
         )
         await conn.commit()
-        return True
+
+async def update_team_state(team_id: int, **updates):
+    """Обновляет несколько полей состояния команды"""
+    if not updates:
+        return
+
+    set_clause = ', '.join(f"{k} = ?" for k in updates.keys())
+    values = list(updates.values()) + [team_id]
+    
+    async with get_db_connection() as conn:
+        await conn.execute(
+            f"""UPDATE team_game_states
+            SET {set_clause}, updated_at = datetime('now')
+            WHERE team_id = ?""",
+            values
+        )
+        await conn.commit()
+
+async def get_team_state(team_id: int) -> dict:
+    """Возвращает текущее состояние команды"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT * FROM team_game_states WHERE team_id = ?",
+            (team_id,)
+        )
+        row = await cursor.fetchone()
+        
+        if not row:
+            return None
+            
+        columns = [col[0] for col in cursor.description]
+        state = dict(zip(columns, row))
+        
+        # Декодируем JSON-поля
+        if state.get('players_order'):
+            state['players_order'] = json.loads(state['players_order'])
+            
+        return state
+    
+async def next_player(team_id: int) -> int:
+    """Передает ход следующему игроку, возвращает user_id"""
+    async with get_db_connection() as conn:
+        # Блокируем строку для конкурентного доступа
+        await conn.execute("BEGIN IMMEDIATE")
+        
+        state = await get_team_state(team_id)
+        if not state:
+            return None
+            
+        players = state['players_order']
+        next_idx = (state['current_player_idx'] + 1) % len(players)
+        
+        await conn.execute(
+            """UPDATE team_game_states
+            SET current_player_idx = ?, updated_at = datetime('now')
+            WHERE team_id = ?""",
+            (next_idx, team_id)
+        )
+        await conn.commit()
+        
+        return players[next_idx]
+    
+async def handle_correct_answer(team_id: int):
+    """Обновляет состояние после правильного ответа"""
+    async with get_db_connection() as conn:
+        await conn.execute(
+            """UPDATE team_game_states
+            SET correct_answers = correct_answers + 1,
+                current_question_idx = current_question_idx + 1,
+                updated_at = datetime('now')
+            WHERE team_id = ?""",
+            (team_id,)
+        )
+        await conn.commit()
 

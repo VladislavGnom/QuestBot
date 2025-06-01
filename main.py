@@ -30,6 +30,7 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.handle_start, Command("start"))
     dp.message.register(handlers.start_quest, Command('begin'))
     dp.message.register(handlers.cmd_create_team, Command("create_team"))
+    dp.message.register(handlers.cmd_team_status, Command("team_status"))
     dp.message.register(handlers.cmd_help, Command('help'))
     dp.message.register(handlers.cmd_accept_state, Command("accept_state"))
     dp.message.register(handlers.request_captain_role, Command("become_captain"))

@@ -609,3 +609,29 @@ async def apply_state_transfer(receiver_id: int, state: FSMContext) -> bool:
         
         return True
 
+async def get_game_state_for_team(team_id: int):
+    """Получает полное состояние игры для команды"""
+    async with get_db_connection() as conn:
+        # Получаем состояние игры
+        game_state = await get_team_state(team_id=team_id)
+
+        # Получаем список игроков
+        players = await get_team_players(team_id=team_id)
+        
+        # Получаем текущий вопрос
+        question = None
+        if game_state['current_question_idx']:
+            cursor = await conn.execute('''
+                SELECT q.*, l.name as location_name
+                FROM questions q
+                JOIN locations l ON q.location_id = l.id
+                WHERE q.id = ?
+            ''', (game_state['current_question_idx'],))
+
+            question = await cursor.fetchone()
+                
+        return {
+            'info': game_state,
+            'players': players,
+            'current_question': question
+        }

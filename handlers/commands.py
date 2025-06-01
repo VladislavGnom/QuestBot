@@ -16,7 +16,8 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  get_player_location, is_team_captain, set_player_location, create_or_upgrade_captain,
                                  create_or_upgrade_admin, get_full_location, get_location_questions,
                                  init_team_state, update_team_state, get_team_state, get_player_by_id,
-                                 update_team_state, prepare_state_transfer, apply_state_transfer)
+                                 update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team)
+from handlers.messages import format_game_state
 from main import BASE_DIR, bot, dp
 
 
@@ -553,3 +554,21 @@ async def handle_start(message: types.Message, state: FSMContext):
     
     # Обычный старт без ссылки
     await message.answer("Добро пожаловать! Для вступления в команду используйте инвайт-ссылку.")
+
+async def cmd_team_status(message: types.Message):
+    user_id = message.from_user.id
+    team_id = await get_user_team(user_id=user_id)
+            
+    if not team_id:
+        await message.answer("Вы не в команде!")
+        return
+        
+    state = await get_game_state_for_team(team_id)
+    if not state:
+        await message.answer("Игра еще не начата")
+        return
+        
+    await message.answer(
+        await format_game_state(state),
+        parse_mode="HTML"
+    )

@@ -1,7 +1,7 @@
 import json
 from random import choice
 from datetime import datetime, timedelta
-from aiogram import types, Dispatcher
+from aiogram import types, Dispatcher, Bot
 from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -16,7 +16,8 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  get_player_location, is_team_captain, set_player_location, create_or_upgrade_captain,
                                  create_or_upgrade_admin, get_full_location, get_location_questions,
                                  init_team_state, update_team_state, get_team_state, get_player_by_id,
-                                 update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team)
+                                 update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team,
+                                 get_status_team_game)
 from handlers.messages import format_game_state
 from main import BASE_DIR, bot, dp
 
@@ -110,7 +111,7 @@ async def handle_player_location_change(callback: types.CallbackQuery):
 
 async def request_captain_role(message: types.Message, state: FSMContext):
     await message.answer(
-        "Для регистрации команды введите секретный пароль:\n"
+        "Для регистрации командира введите секретный пароль:\n"
         "(запросите его у организатора)"
     )
     await state.set_state(WaitForPassword.waiting_for_captain_password)
@@ -188,7 +189,7 @@ async def process_admin_password(message: types.Message, state: FSMContext):
 
 async def cmd_help(message: types.Message, state: FSMContext):
     await state.clear()
-    await message.answer(HELP)
+    await message.answer(HELP, parse_mode="HTML")
 
 async def start_quest_for_team(team_id: int, question_id: int):
     """Инициализирует квест для команды""" 
@@ -217,6 +218,11 @@ async def start_quest(message: types.Message, state: FSMContext):
         return await message.answer("Только капитан может начинать квест!")
 
     team_id = await get_user_team(user_id)
+    status_quest = await get_status_team_game(team_id=team_id)
+    
+    if status_quest.lower() == 'finished':
+        return await message.answer("Квест уже закончен, его нельзя начать снова! \n\nЗа подробностями обратитесь к организатору.")
+
     players = await get_team_players(team_id)
     # me = players[0]
     # players = [me, me, me, me]
@@ -310,14 +316,16 @@ async def process_answer(message: types.Message, state: FSMContext):
     location_id = current_player["location"]
     questions = await get_location_questions(location_id=location_id)
     print(current_question_idx)
-    question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    # берём рандомный вопрос из соответственной локации
+    question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    
 
 
     if message.text.lower() != question.get("answer").lower():
         await message.answer("❌ Неверно! Попробуйте еще раз.")
         return
+    else:
+        correct_answers += 1
+        await message.answer("✅ Верно, молодец!")
     
-    correct_answers += 1
     current_player_idx += 1
     next_players = players[current_player_idx:]
     if not next_players:
@@ -347,15 +355,23 @@ async def process_answer(message: types.Message, state: FSMContext):
         question_num,
         "playing"
     )
+
     
     try:
-        photo = types.FSInputFile(question.get("media_path"))
-        await message.answer_photo(photo, caption="Следующая точка маршрута!")
-    except FileNotFoundError:
+        location_data = await get_full_location(location_id=location_id)
+        latitude, longtitude = location_data.get('coordinates').split(',')
+        await message.answer_location(latitude=latitude, longitude=longtitude)
+        await message.answer('Следующая точка маршрута!')
+        # photo = types.FSInputFile(question.get("media_path"))
+        # await message.answer_photo(photo, caption="Следующая точка маршрута!")
+    # except FileNotFoundError:
+    #     await message.answer("Карта не найдена")
+    # except TypeError:
+    #     await message.answer("Карта не требуется")
+    except:
         await message.answer("Карта не найдена")
-    except TypeError:
-        await message.answer("Карта не требуется")
-    
+        
+
     builder = InlineKeyboardBuilder()
     builder.button(text="Я на месте", callback_data="arrived")
     
@@ -551,7 +567,7 @@ async def handle_start(message: types.Message, state: FSMContext):
             team_name = await get_team_name(team_id)
             return await message.answer(f'Вы успешно присоединились к команде {team_name}!')
         return await message.answer("Не удалось вступить: неверный токен или вы уже в этой команде")
-    
+
     # Обычный старт без ссылки
     await message.answer("Добро пожаловать! Для вступления в команду используйте инвайт-ссылку.")
 

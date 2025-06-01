@@ -527,6 +527,17 @@ async def get_team_state(team_id: int) -> dict:
             
         return state
     
+async def get_status_team_game(team_id: int) -> dict:
+    """Возвращает текущее состояние игры команды или None"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT status FROM team_game_states WHERE team_id = ?",
+            (team_id,)
+        )
+        status = await cursor.fetchone()
+            
+        return status[0] if status else None
+    
 async def next_player(team_id: int) -> int:
     """Передает ход следующему игроку, возвращает user_id"""
     async with get_db_connection() as conn:

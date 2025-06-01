@@ -47,6 +47,19 @@ async def init_db():
             ''')
 
             await cursor.execute('''
+            CREATE TABLE IF NOT EXISTS state_transfers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                sender_id INTEGER NOT NULL,
+                receiver_id INTEGER NOT NULL,
+                state_data TEXT NOT NULL,  -- JSON с состоянием
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                expires_at TEXT DEFAULT (datetime('now', '+1 hour')),
+                FOREIGN KEY (sender_id) REFERENCES players(user_id),
+                FOREIGN KEY (receiver_id) REFERENCES players(user_id)
+            )
+            ''')
+
+            await cursor.execute('''
             CREATE TABLE IF NOT EXISTS locations (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,               -- Название локации

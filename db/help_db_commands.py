@@ -3,6 +3,7 @@ import secrets
 import aiosqlite
 from aiogram import Bot
 from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
 from db.database import get_db_connection
 
 async def add_player_to_team(user_id: int, username: str, team_id: int):
@@ -561,4 +562,50 @@ async def handle_correct_answer(team_id: int):
             (team_id,)
         )
         await conn.commit()
+
+
+async def prepare_state_transfer(sender_id: int, receiver_id: int, state: FSMContext):
+    """Подготавливает состояние для передачи другому игроку"""
+    state_data = await state.get_data()
+    
+    async with get_db_connection() as conn:
+        await conn.execute(
+            """INSERT INTO state_transfers
+            (sender_id, receiver_id, state_data)
+            VALUES (?, ?, ?)""",
+            (sender_id, receiver_id, json.dumps(state_data))
+        )
+        await conn.commit()
+    
+    # Очищаем состояние у отправителя
+    await state.clear()
+
+
+async def apply_state_transfer(receiver_id: int, state: FSMContext) -> bool:
+    """Применяет переданное состояние для получателя"""
+    async with get_db_connection() as conn:
+        # Получаем последнюю передачу
+        cursor = await conn.execute(
+            """SELECT state_data FROM state_transfers
+            WHERE receiver_id = ? AND datetime(expires_at) > datetime('now')
+            ORDER BY created_at DESC LIMIT 1""",
+            (receiver_id,)
+        )
+        transfer = await cursor.fetchone()
+        
+        if not transfer:
+            return False
+        
+        # Применяем состояние
+        state_data = json.loads(transfer[0])
+        await state.set_data(state_data)
+        
+        # Удаляем использованную передачу
+        await conn.execute(
+            "DELETE FROM state_transfers WHERE receiver_id = ?",
+            (receiver_id,)
+        )
+        await conn.commit()
+        
+        return True
 

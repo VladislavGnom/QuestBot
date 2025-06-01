@@ -1,7 +1,8 @@
 import json
 from random import choice
 from datetime import datetime, timedelta
-from aiogram import types
+from aiogram import types, Dispatcher
+from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.exceptions import TelegramForbiddenError
@@ -15,8 +16,8 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  get_player_location, is_team_captain, set_player_location, create_or_upgrade_captain,
                                  create_or_upgrade_admin, get_full_location, get_location_questions,
                                  init_team_state, update_team_state, get_team_state, get_player_by_id,
-                                 update_team_state)
-from main import BASE_DIR, bot
+                                 update_team_state, prepare_state_transfer, apply_state_transfer)
+from main import BASE_DIR, bot, dp
 
 
 CAPTAIN_PASSWORD = '1234'
@@ -251,21 +252,20 @@ async def start_quest(message: types.Message, state: FSMContext):
     )
 
     await start_quest_for_team(team_id=team_id, question_id=question_id)
-    
+
     await state.set_state(QuestStates.waiting_for_answer) 
 
-async def send_question(player_id: int, message: types.Message, state: FSMContext):
+async def send_question(player_id: int, message: types.Message, state: FSMContext): 
     user_id = message.from_user.id
     team_id = await get_user_team(user_id=user_id)
     user_data = await get_team_state(team_id=team_id)
-    print(user_data)
     team_id = user_data["team_id"]
     current_player_idx = user_data["current_player_idx"]
     players_ids=user_data["players_order"]
     question_num = user_data["current_question_num"]
 
     # получение экземпляров игроков
-    players = [get_player_by_id(user_id=user_id) for user_id in players_ids]
+    players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
     
     current_player = players[current_player_idx]
     location_id = current_player['location']
@@ -279,6 +279,7 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     )
     
     await update_team_state(
+        team_id=team_id,
         current_question_idx=question_id,
     )
 
@@ -326,8 +327,13 @@ async def process_answer(message: types.Message, state: FSMContext):
             correct_answers=correct_answers,
             status='finished',
         )
+        # Уведомляем всех участников команды
+        await notify_team_except_current(
+            team_id, 
+            None, 
+            "🎉 Команда завершила квест!"
+        )
 
-        await message.answer("🎉 Команда завершила квест!")
         await state.clear()
         return
     
@@ -380,24 +386,77 @@ async def notify_team_except_current(team_id: int, current_player_id: int, messa
                 print(f"Пользователь {player_id} не начал диалог с ботом")
 
 async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
-    user_id = callback.message.from_user.id
+    user_id = callback.from_user.id
     team_id = await get_user_team(user_id=user_id)
     user_data = await get_team_state(team_id=team_id)
-    print(user_data)
     current_player_idx = user_data["current_player_idx"]
     players_ids = user_data["players_order"]
 
     # получение экземпляров игроков
-    players = [get_player_by_id(user_id=user_id) for user_id in players_ids]
+    players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
 
-    cur_user_id = players[current_player_idx].get('user_id')
+    target_user = players[current_player_idx]
+    target_user_id = target_user.get('user_id')
 
     await bot.send_message(
-        cur_user_id, 
-        f"Предыдущий игрок закончил свой ход, ваша очередь!"
+        target_user_id, 
+        f"Предыдущий игрок закончил свой ход, ваша очередь!\n\nДля перехода на свой ход используйте /accept_state"
     )
+
+    # # Подготавливаем передачу
+    # await prepare_state_transfer(
+    #     sender_id=callback.from_user.id,
+    #     receiver_id=target_user_id,
+    #     state=state
+    # )
+
+    await state.clear()
+    await callback.message.answer(f"Так точно, ход передан другому игроку - @{target_user.get('username')}. Следите за состоянием игры!")
     await callback.answer()
-    await send_question(cur_user_id, callback.message, state)
+
+
+async def cmd_accept_state(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+
+    try:
+        team_id = await get_user_team(user_id=user_id)
+        user_data = await get_team_state(team_id=team_id)
+        current_player_idx = user_data["current_player_idx"]
+        players_ids = user_data["players_order"]
+    except:
+        await message.answer("Ошибка: вы не состоите в системе или не имеете права на эту команду.")
+        return
+
+    status_game = user_data.get('status')
+
+    if status_game == 'finished':
+        await message.answer("Ошибка: игра уже закончена.")
+        return
+
+    # получение экземпляров игроков
+    players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
+
+    target_user = players[current_player_idx]
+    target_user_id = target_user.get('user_id')
+
+    if user_id != target_user_id: 
+        await message.answer("Сейчас не ваш ход для получения состояния.")
+        return
+    
+    await message.answer(
+            "Вы успешно перешли на свой ход!"
+        )
+    await send_question(target_user_id, message, state)
+    
+    # success = await apply_state_transfer(message.from_user.id, state)
+    
+    # if success:
+    #     await message.answer(
+    #         "Вы успешно перешли на свой ход!"
+    #     )
+    #     await send_question(target_user_id, message, state)
+    # else:
+    #     await message.answer("Нет ожидающих передач состояния")
 
 
 async def cmd_create_team(message: types.Message, state: FSMContext):
@@ -421,13 +480,39 @@ async def cmd_create_team(message: types.Message, state: FSMContext):
         disable_web_page_preview=True
     )
 
+async def set_state(dp: Dispatcher, bot, chat_id: int, user_id: int, new_state: str):
+    """
+    Устанавливает новое состояние для пользователя через диспетчер
+    
+    :param dp: Dispatcher (из aiogram)
+    :param bot: Bot instance (для получения bot.id)
+    :param chat_id: ID чата
+    :param user_id: ID пользователя
+    :param new_state: Новое состояние (например, "QuestStates:waiting_for_answer")
+    """
+    storage_key = StorageKey(chat_id=chat_id, user_id=user_id, bot_id=bot.id)
+    await dp.storage.set_state(key=storage_key, state=new_state)
+
+async def get_state(dp: Dispatcher, bot, chat_id: int, user_id: int) -> str:
+    """
+    Получает текущее состояние пользователя через диспетчер
+    
+    :param dp: Dispatcher
+    :param bot: Bot instance
+    :param chat_id: ID чата
+    :param user_id: ID пользователя
+    :return: Текущее состояние или None, если состояние не установлено
+    """
+    storage_key = StorageKey(chat_id=chat_id, user_id=user_id, bot_id=bot.id)
+    return await dp.storage.get_state(key=storage_key)
+
 async def handle_start(message: types.Message, state: FSMContext):
     """Обработка стартовой команды с инвайт-ссылкой"""
     await state.clear()
 
     print(f"Текущее состояние: {await state.get_state()}")
     print(f"Данные состояния: {await state.get_data()}")
-
+    
     user_id = message.from_user.id
     
     # Проверяем, состоит ли пользователь уже в какой-либо команде

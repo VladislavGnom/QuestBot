@@ -31,6 +31,7 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.start_quest, Command('begin'))
     dp.message.register(handlers.cmd_create_team, Command("create_team"))
     dp.message.register(handlers.cmd_help, Command('help'))
+    dp.message.register(handlers.cmd_accept_state, Command("accept_state"))
     dp.message.register(handlers.request_captain_role, Command("become_captain"))
     dp.message.register(handlers.request_admin_role, Command("become_admin"))
     dp.message.register(handlers.cmd_my_location, Command("mylocation"))
@@ -49,7 +50,6 @@ async def on_startup():
             await load_fixtures_from_json()
         except Exception as e:
             print(f"⚠️ Ошибка загрузки фикстур: {e}")
-
 
 async def main():
     await on_startup()

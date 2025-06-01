@@ -366,7 +366,8 @@ async def process_answer(message: types.Message, state: FSMContext):
     await update_team_state(
         team_id=team_id, 
         current_player_idx=current_player_idx, 
-        current_question_num=question_num + 1
+        current_question_num=question_num + 1,
+        correct_answers=correct_answers,
     )
 
     await state.set_state(QuestStates.waiting_for_location_confirmation)
@@ -431,6 +432,9 @@ async def cmd_accept_state(message: types.Message, state: FSMContext):
 
     if status_game == 'finished':
         await message.answer("Ошибка: игра уже закончена.")
+        return
+    elif status_game == 'waiting':
+        await message.answer("Ошибка: игра ещё не началась.")
         return
 
     # получение экземпляров игроков

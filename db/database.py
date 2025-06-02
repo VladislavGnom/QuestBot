@@ -38,6 +38,7 @@ async def init_db():
                 current_question_num INTEGER DEFAULT 1,
                 current_question_idx INTEGER DEFAULT 0,
                 deadline TEXT,       -- TIMESTAMP
+                question_deadline TEXT,
                 correct_answers INTEGER DEFAULT 0,
                 status TEXT DEFAULT 'waiting',  -- waiting/playing/finished
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,

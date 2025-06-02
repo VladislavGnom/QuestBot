@@ -19,29 +19,19 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team,
                                  get_status_team_game)
 from handlers.messages import format_game_state
+from handlers.help_functions import schedule_message
+from handlers.timer_manager import TimerManager
 from main import BASE_DIR, bot, dp
 
 
 CAPTAIN_PASSWORD = '1234'
 ADMIN_PASSWORD = '12345'
+QUESTION_TIME_LIMIT = 5    # в минутах
+FIRST_CLUE_OF_QUESTION = 1    # в минутах
+SECOND_CLUE_OF_QUESTION = 3    # в минутах
+THIRD_CLUE_OF_QUESTION = 4    # в минутах
 
-# Пример данных квеста (можно тоже хранить в БД)
-QUEST_DATA = {
-    1: {  # team_id
-        "player_1": {
-            "question": "Что растёт в огороде?",
-            "answers": ["лук", "морковь", "картошка"],
-            "next_player": "player_2",
-            "image": f"{BASE_DIR}/images/map1.png",
-        },
-        "player_2": {
-            "question": "Какой металл самый легкий?",
-            "answers": ["алюминий", "литий", "магний"],
-            "next_player": None,
-            "image": f"{BASE_DIR}/images/map2.png",
-        },
-    }
-}
+timer_manager = TimerManager()
 
 async def cmd_my_location(message: types.Message, state: FSMContext):
     """Показывает текущую локацию игрока"""
@@ -195,6 +185,7 @@ async def start_quest_for_team(team_id: int, question_id: int):
     """Инициализирует квест для команды""" 
     players = await get_team_players(team_id)
     players_ids = [pl["id"] for pl in players]    # [user_id1, user_id2, ...]
+    question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
     await init_team_state(team_id=team_id, players=players_ids)
 
     await update_team_state(
@@ -204,6 +195,7 @@ async def start_quest_for_team(team_id: int, question_id: int):
         current_question_num=1,
         current_question_idx=question_id,
         correct_answers=0,
+        question_deadline = question_deadline,
         status='playing',
         deadline=datetime.now() + timedelta(hours=1)  # +1 час на прохождение
     )
@@ -213,6 +205,7 @@ async def start_quest(message: types.Message, state: FSMContext):
     await state.clear()
 
     user_id = message.from_user.id
+    chat_id = message.chat.id
 
     if not await is_team_captain(user_id):
         return await message.answer("Только капитан может начинать квест!")
@@ -220,8 +213,11 @@ async def start_quest(message: types.Message, state: FSMContext):
     team_id = await get_user_team(user_id)
     status_quest = await get_status_team_game(team_id=team_id)
     
-    if status_quest.lower() == 'finished':
-        return await message.answer("Квест уже закончен, его нельзя начать снова! \n\nЗа подробностями обратитесь к организатору.")
+    if status_quest is None:    # первый заход в квест
+        ...
+    else:
+        if status_quest.lower() == 'finished':
+            return await message.answer("Квест уже закончен, его нельзя начать снова! \n\nЗа подробностями обратитесь к организатору.")
 
     players = await get_team_players(team_id)
     # me = players[0]
@@ -251,19 +247,28 @@ async def start_quest(message: types.Message, state: FSMContext):
         f"Игра началась! Ваш вопрос: {question.get('question_text')}"
     )
 
+    # планируем сообщения подсказок
+    fisrt_clue_of_question = "Clue 1"
+    await timer_manager.add_timer(chat_id, bot, FIRST_CLUE_OF_QUESTION, message=fisrt_clue_of_question, timer_id="clue1")
+    second_clue_of_question = "Clue 2"
+    await timer_manager.add_timer(chat_id, bot, SECOND_CLUE_OF_QUESTION, message=second_clue_of_question, timer_id="clue2")
+    third_clue_of_question = "Clue 3"
+    await timer_manager.add_timer(chat_id, bot, THIRD_CLUE_OF_QUESTION, message=third_clue_of_question, timer_id="clue3")
+
     # Уведомляем остальных участников команды
     await notify_team_except_current(
         team_id, 
         first_player_id, 
         "Квест начат! Первый игрок получил вопрос."
     )
-
     await start_quest_for_team(team_id=team_id, question_id=question_id)
 
     await state.set_state(QuestStates.waiting_for_answer) 
 
 async def send_question(player_id: int, message: types.Message, state: FSMContext): 
     user_id = message.from_user.id
+    chat_id = message.chat.id
+
     team_id = await get_user_team(user_id=user_id)
     user_data = await get_team_state(team_id=team_id)
     team_id = user_data["team_id"]
@@ -284,26 +289,38 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
         player_id, 
         f"Вопрос {question_num}: {question.get('question_text')}"
     )
+
+    question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
     
+    # планируем сообщение об истечении времени ответа на вопрос
+    message_text = ""
+    await timer_manager.start(chat_id, bot, QUESTION_TIME_LIMIT, message_text=message_text)
+
     await update_team_state(
         team_id=team_id,
         current_question_idx=question_id,
+        question_deadline = question_deadline,
     )
 
     await state.set_state(QuestStates.waiting_for_answer)
 
 async def process_answer(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    chat_id = message.chat.id
+
     team_id = await get_user_team(user_id=user_id)
     user_data = await get_team_state(team_id=team_id)
-    print(user_data)
-    # user_data = await state.get_data()
+
     team_id = user_data["team_id"]
     current_player_idx = user_data["current_player_idx"]
     current_question_idx = user_data["current_question_idx"]
     question_num = user_data["current_question_num"]
     correct_answers = user_data["correct_answers"]
     players_ids = user_data["players_order"]
+    question_deadline = user_data["question_deadline"]
+
+    is_question_deadline_passed = False
+
     print(players_ids)
     # получение экземпляров игроков
     players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
@@ -312,19 +329,27 @@ async def process_answer(message: types.Message, state: FSMContext):
         await message.answer("Сейчас не ваш ход!")
         return
     
+    
     current_player = players[current_player_idx]
     location_id = current_player["location"]
     questions = await get_location_questions(location_id=location_id)
     print(current_question_idx)
     question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    
 
+    if question_deadline and datetime.fromisoformat(question_deadline) < datetime.now():
+        is_question_deadline_passed = True
+        await message.answer("❌ Время на ответ истекло!")
+        await message.answer(f"Правильный ответ: {question.get('answer')}")
 
-    if message.text.lower() != question.get("answer").lower():
-        await message.answer("❌ Неверно! Попробуйте еще раз.")
-        return
-    else:
-        correct_answers += 1
-        await message.answer("✅ Верно, молодец!")
+    if not is_question_deadline_passed:
+        if message.text.lower() != question.get("answer").lower():
+            await message.answer("❌ Неверно! Попробуйте еще раз.")
+            return
+        else:
+            # Отменяем все таймеры при правильном ответе
+            await timer_manager.cancel_timer(chat_id)
+            correct_answers += 1
+            await message.answer("✅ Верно, молодец!")
     
     current_player_idx += 1
     next_players = players[current_player_idx:]

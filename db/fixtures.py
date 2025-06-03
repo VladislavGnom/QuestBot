@@ -35,14 +35,24 @@ async def _load_table(conn, table_name: str, items: list):
     # Получаем список колонок из первой записи
     columns = list(items[0].keys())
     placeholders = ', '.join([':' + col for col in columns])
-    
+
     # Удаляем существующие записи
     await conn.execute(f"DELETE FROM {table_name}")
 
     await conn.commit()
+
+    prepared_data = []
+    for row in items:
+        prepared_row = []
+        for value in row.values():
+            if isinstance(value, list):
+                prepared_row.append(json.dumps(value))
+            else:
+                prepared_row.append(value)
+        prepared_data.append(tuple(prepared_row))
     
     # Вставляем новые данные
     await conn.executemany(
         f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({placeholders})",
-        items
+        prepared_data
     )

@@ -35,9 +35,8 @@ class TimerManager:
     
     async def _send_timed_message(self, chat_id: int, bot: Bot, delay: int, message: str, timer_id: str):
         try:
-            clue_num = timer_id[-1:]
             await asyncio.sleep(delay * 60)    # минуты
-            await bot.send_message(chat_id, f"Подсказка #{clue_num}: {message}")
+            await bot.send_message(chat_id, message)
         except asyncio.CancelledError:
             pass
         finally:

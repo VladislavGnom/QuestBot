@@ -241,6 +241,7 @@ async def start_quest(message: types.Message, state: FSMContext):
     questions = await get_location_questions(location_id=location_id)
     question = choice(questions)    # берём рандомный вопрос из соответственной локации
     question_id = question.get('id')
+    answer_hints = json.loads(question.get('answer_hints'))
 
     await bot.send_message(
         first_player_id, 
@@ -248,12 +249,13 @@ async def start_quest(message: types.Message, state: FSMContext):
     )
 
     # планируем сообщения подсказок
-    fisrt_clue_of_question = "Clue 1"
-    await timer_manager.add_timer(chat_id, bot, FIRST_CLUE_OF_QUESTION, message=fisrt_clue_of_question, timer_id="clue1")
-    second_clue_of_question = "Clue 2"
-    await timer_manager.add_timer(chat_id, bot, SECOND_CLUE_OF_QUESTION, message=second_clue_of_question, timer_id="clue2")
-    third_clue_of_question = "Clue 3"
-    await timer_manager.add_timer(chat_id, bot, THIRD_CLUE_OF_QUESTION, message=third_clue_of_question, timer_id="clue3")
+    try:
+        fisrt_clue, second_clue, third_clue = answer_hints
+        await timer_manager.add_timer(chat_id, bot, FIRST_CLUE_OF_QUESTION, message=f"Подсказка #1: {fisrt_clue}", timer_id="clue1")
+        await timer_manager.add_timer(chat_id, bot, SECOND_CLUE_OF_QUESTION, message=f"Подсказка #2: {second_clue}", timer_id="clue2")
+        await timer_manager.add_timer(chat_id, bot, THIRD_CLUE_OF_QUESTION, message=f"Подсказка #3: {third_clue}", timer_id="clue3")
+    except:
+        ...
 
     # Уведомляем остальных участников команды
     await notify_team_except_current(
@@ -291,11 +293,17 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     )
 
     question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
-    
-    # планируем сообщение об истечении времени ответа на вопрос
-    message_text = ""
-    await timer_manager.start(chat_id, bot, QUESTION_TIME_LIMIT, message_text=message_text)
+    answer_hints = json.loads(question.get('answer_hints'))
 
+    # планируем сообщения подсказок
+    try:
+        fisrt_clue, second_clue, third_clue = answer_hints
+        await timer_manager.add_timer(chat_id, bot, FIRST_CLUE_OF_QUESTION, message=f"Подсказка #1: {fisrt_clue}", timer_id="clue1")
+        await timer_manager.add_timer(chat_id, bot, SECOND_CLUE_OF_QUESTION, message=f"Подсказка #2: {second_clue}", timer_id="clue2")
+        await timer_manager.add_timer(chat_id, bot, THIRD_CLUE_OF_QUESTION, message=f"Подсказка #3: {third_clue}", timer_id="clue3")
+    except:
+        ...
+    
     await update_team_state(
         team_id=team_id,
         current_question_idx=question_id,

@@ -78,7 +78,7 @@ async def init_db():
                 location_id INTEGER NOT NULL,     -- К какой локации привязан
                 question_text TEXT NOT NULL,      -- Текст вопроса
                 answer TEXT NOT NULL,             -- Правильный ответ
-                answer_hint TEXT,                 -- Подсказка
+                answer_hints TEXT,                 -- Подсказки JSON массив [clue1, clue2, clue3]
                 difficulty INTEGER DEFAULT 1,     -- Сложность (1-5)
                 question_type TEXT DEFAULT 'text',-- text/photo/video/audio
                 media_path TEXT,                  -- Путь к медиафайлу

@@ -33,7 +33,11 @@
         "location_id": 1,
         "question_text": "Сколько струй у фонтана?",
         "answer": "12",
-        "answer_hint": "Посчитайте основные струи",
+        "answer_hints": [
+          "Посчитайте основные струи", 
+          "Посчитайте другие струи",
+          "Посмотрите внимательнее на небо"
+        ],
         "difficulty": 2,
         "question_type": "text",
         "media_path": null,
@@ -43,7 +47,11 @@
         "location_id": 1,
         "question_text": "Какой символ изображен в центре площади?",
         "answer": "Герб",
-        "answer_hint": "Посмотрите под ноги",
+        "answer_hints": [
+          "Посмотрите под ноги",
+          "Глубоко вдохните",
+          "Оглянитесь назад"
+        ],
         "difficulty": 1,
         "question_type": "photo",
         "media_path": "emblem.jpg",
@@ -53,7 +61,7 @@
         "location_id": 2,
         "question_text": "Назовите год постройки библиотеки",
         "answer": "1897",
-        "answer_hint": "Посмотрите на фасад",
+        "answer_hints": "Посмотрите на фасад",
         "difficulty": 3,
         "question_type": "text",
         "media_path": null,

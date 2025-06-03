@@ -5,7 +5,7 @@
         "name": "Центральная площадь",
         "description": "Главная площадь города с фонтаном",
         "coordinates": "55.751244,37.618423",
-        "image_path": "square.jpg",
+        "image_path": "images/map1.png",
         "is_hidden": false,
         "unlock_condition": ""
       },
@@ -14,7 +14,7 @@
         "name": "Старая библиотека",
         "description": "Здание XIX века с редкими книгами",
         "coordinates": "55.753456,37.620987",
-        "image_path": "library.jpg",
+        "image_path": "images/map2.png",
         "is_hidden": false,
         "unlock_condition": ""
       },
@@ -23,7 +23,7 @@
         "name": "Тайный бункер",
         "description": "Секретное подземное помещение",
         "coordinates": null,
-        "image_path": "bunker.jpg",
+        "image_path": "images/map3.png",
         "is_hidden": true,
         "unlock_condition": "secret_code:1984"
       }
@@ -40,7 +40,7 @@
         ],
         "difficulty": 2,
         "question_type": "text",
-        "media_path": null,
+        "media_path": "images/map1.png",
         "cost": 15
       },
       {
@@ -54,7 +54,7 @@
         ],
         "difficulty": 1,
         "question_type": "photo",
-        "media_path": "emblem.jpg",
+        "media_path": "images/map2.png",
         "cost": 10
       },
       {
@@ -64,7 +64,7 @@
         "answer_hints": "Посмотрите на фасад",
         "difficulty": 3,
         "question_type": "text",
-        "media_path": null,
+        "media_path": "images/map3.png",
         "cost": 20
       }
     ],

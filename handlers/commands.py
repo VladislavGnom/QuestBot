@@ -1,3 +1,4 @@
+import os
 import json
 from random import choice
 from datetime import datetime, timedelta
@@ -242,11 +243,17 @@ async def start_quest(message: types.Message, state: FSMContext):
     question = choice(questions)    # берём рандомный вопрос из соответственной локации
     question_id = question.get('id')
     answer_hints = json.loads(question.get('answer_hints'))
+    question_media_path = question.get('media_path')
 
-    await bot.send_message(
-        first_player_id, 
-        f"Игра началась! Ваш вопрос: {question.get('question_text')}"
-    )
+    try:
+        path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
+        photo = types.FSInputFile(path_to_question_photo)
+        await bot.send_photo(first_player_id, photo, caption=f"Игра началась! Ваш вопрос: {question.get('question_text')}")
+    except Exception:
+        await bot.send_message(
+            first_player_id, 
+            f"Игра началась! Ваш вопрос: {question.get('question_text')}"
+        )
 
     # планируем сообщения подсказок
     try:
@@ -286,11 +293,17 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     questions = await get_location_questions(location_id=location_id)
     question = choice(questions)    # берём рандомный вопрос из соответственной локации
     question_id = question.get('id')
+    question_media_path = question.get('media_path')
 
-    await bot.send_message(
-        player_id, 
-        f"Вопрос {question_num}: {question.get('question_text')}"
-    )
+    try:
+        path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
+        photo = types.FSInputFile(path_to_question_photo)
+        await bot.send_photo(player_id, photo, caption=f"Вопрос {question_num}: {question.get('question_text')}")
+    except Exception:        
+        await bot.send_message(
+            player_id, 
+            f"Вопрос {question_num}: {question.get('question_text')}"
+        )
 
     question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
     answer_hints = json.loads(question.get('answer_hints'))

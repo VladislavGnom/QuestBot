@@ -500,7 +500,7 @@ async def update_team_state(team_id: int, **updates):
     async with get_db_connection() as conn:
         await conn.execute(
             f"""UPDATE team_game_states
-            SET {set_clause}, updated_at = datetime('now')
+            SET {set_clause}, updated_at = datetime('now', 'localtime')
             WHERE team_id = ?""",
             values
         )

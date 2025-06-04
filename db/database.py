@@ -41,8 +41,9 @@ async def init_db():
                 question_deadline TEXT,
                 correct_answers INTEGER DEFAULT 0,
                 status TEXT DEFAULT 'waiting',  -- waiting/playing/finished
-                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-                updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                created_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
+                updated_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
+                ended_at TEXT,
                 FOREIGN KEY (team_id) REFERENCES teams(id)
             )
             ''')

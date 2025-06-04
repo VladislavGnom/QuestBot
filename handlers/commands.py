@@ -1,5 +1,6 @@
 import os
 import json
+import asyncio
 from random import choice
 from datetime import datetime, timedelta
 from aiogram import types, Dispatcher, Bot
@@ -21,7 +22,7 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  get_status_team_game)
 from handlers.messages import format_game_state
 from handlers.help_functions import schedule_message
-from handlers.timer_manager import TimerManager
+from handlers.timer_manager import TimerManager, QuestionTimerManager
 from main import BASE_DIR, bot, dp
 
 
@@ -33,6 +34,7 @@ SECOND_CLUE_OF_QUESTION = 3    # в минутах
 THIRD_CLUE_OF_QUESTION = 4    # в минутах
 
 timer_manager = TimerManager()
+question_timer_manager = QuestionTimerManager()
 
 async def cmd_my_location(message: types.Message, state: FSMContext):
     """Показывает текущую локацию игрока"""
@@ -201,7 +203,6 @@ async def start_quest_for_team(team_id: int, question_id: int):
         deadline=datetime.now() + timedelta(hours=1)  # +1 час на прохождение
     )
 
-
 async def start_quest(message: types.Message, state: FSMContext):
     await state.clear()
 
@@ -240,10 +241,16 @@ async def start_quest(message: types.Message, state: FSMContext):
     
     location_id = first_player['location']
     questions = await get_location_questions(location_id=location_id)
-    question = choice(questions)    # берём рандомный вопрос из соответственной локации
-    question_id = question.get('id')
-    answer_hints = json.loads(question.get('answer_hints'))
-    question_media_path = question.get('media_path')
+
+    try:
+        question = choice(questions)    # берём рандомный вопрос из соответственной локации
+        question_id = question.get('id')
+        answer_hints = json.loads(question.get('answer_hints'))
+        question_media_path = question.get('media_path')
+    except IndexError:    # выбрана локация для которой нет вопросов
+        await message.answer("На вашу локацию нет вопросов в БД.")
+        return
+
 
     try:
         path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
@@ -254,6 +261,16 @@ async def start_quest(message: types.Message, state: FSMContext):
             first_player_id, 
             f"Игра началась! Ваш вопрос: {question.get('question_text')}"
         )
+
+    # добавляем таймер для вопроса
+    await question_timer_manager.add_timer(
+        chat_id=chat_id,
+        bot=bot,
+        delay=QUESTION_TIME_LIMIT,
+        message="Время вышло!",
+        timer_id="question_timer"
+    )
+
 
     # планируем сообщения подсказок
     try:
@@ -308,6 +325,15 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
     answer_hints = json.loads(question.get('answer_hints'))
 
+    # добавляем таймер для вопроса
+    await question_timer_manager.add_timer(
+        chat_id=chat_id,
+        bot=bot,
+        delay=QUESTION_TIME_LIMIT,
+        message="Время вышло!",
+        timer_id="question_timer"
+    )
+
     # планируем сообщения подсказок
     try:
         fisrt_clue, second_clue, third_clue = answer_hints
@@ -324,6 +350,25 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     )
 
     await state.set_state(QuestStates.waiting_for_answer)
+
+def format_timedelta(td: timedelta) -> str:
+    """Convert timedelta to human-readable format"""
+    total_seconds = int(td.total_seconds())
+    days, remainder = divmod(total_seconds, 86400)
+    hours, remainder = divmod(remainder, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    
+    parts = []
+    if days:
+        parts.append(f"{days}d")
+    if hours:
+        parts.append(f"{hours}h")
+    if minutes:
+        parts.append(f"{minutes}m")
+    if seconds or not parts:  # Show seconds if nothing else
+        parts.append(f"{seconds}s")
+    
+    return " ".join(parts)
 
 async def process_answer(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
@@ -363,12 +408,14 @@ async def process_answer(message: types.Message, state: FSMContext):
         await message.answer(f"Правильный ответ: {question.get('answer')}")
 
     if not is_question_deadline_passed:
-        if message.text.lower() != question.get("answer").lower():
+        if message.text.lower().strip() != question.get("answer").lower().strip():
             await message.answer("❌ Неверно! Попробуйте еще раз.")
             return
         else:
             # Отменяем все таймеры при правильном ответе
             await timer_manager.cancel_timer(chat_id)
+            await question_timer_manager.cancel_timer(message.chat.id, "question_timer")
+
             correct_answers += 1
             await message.answer("✅ Верно, молодец!")
     
@@ -380,13 +427,20 @@ async def process_answer(message: types.Message, state: FSMContext):
             current_player_idx=current_player_idx - 1, 
             current_question_num=question_num,
             correct_answers=correct_answers,
+            ended_at=datetime.now(),
             status='finished',
         )
+
+        team_name = await get_team_name(team_id=team_id)
+        user_data = await get_team_state(team_id=team_id)
+        quest_time_passed = datetime.fromisoformat(user_data["ended_at"]) - datetime.fromisoformat(user_data["created_at"])
+        quest_time_passed = format_timedelta(quest_time_passed)
+
         # Уведомляем всех участников команды
         await notify_team_except_current(
             team_id, 
             None, 
-            "🎉 Команда завершила квест!"
+            f"🎉 Команда завершила квест!\n\nКоманда: {team_name}\nПравильных ответов: {correct_answers}/{len(players_ids)}\nВремя прохождения: {quest_time_passed}."
         )
 
         await state.clear()

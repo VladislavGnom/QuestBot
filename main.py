@@ -8,13 +8,11 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from db.database import init_db
 
 import handlers.commands as handlers
+from config.config import BOT_TOKEN, DEBUG_MODE
 from handlers.messages import invalid_command
 from fsm.quest_logic import QuestStates, WaitForPassword
 
-
-BOT_TOKEN = '7928066551:AAEqGRKKAdWHo0MswWNTUAE9Q7B9OTN63-I'
 BASE_DIR = os.path.dirname(__file__)
-DEBUG_MODE = True
 
 storage = MemoryStorage()
 bot = Bot(token=BOT_TOKEN)

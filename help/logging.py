@@ -1,5 +1,3 @@
-import logging
-from datetime import datetime
 from main import logger
 
 def log_action(message: str):
@@ -8,8 +6,6 @@ def log_action(message: str):
     Args:
         message: The message to log
     """
-    
-    # Get the appropriate logger method
     
     # Log the message with timestamp
     logger.info(message)

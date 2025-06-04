@@ -5,6 +5,14 @@ from db.help_db_commands import get_location_questions, get_team_name
 async def echo(message: types.Message):
     await message.answer(f"Вы написали: {message.text}")
 
+async def invalid_command(message: types.Message):
+    message_text = message.text
+
+    if message_text.startswith('/'):
+        await message.answer(f"Ошибка! Неверная команда - {message.text}")
+    else:
+        await message.answer(f"Ошибка! Я не понимаю ваш запрос: {message.text}\n\nВоспользуйтесь /help для ознакомления со мной.")
+
 async def format_game_state(state: dict) -> str:
     """Форматирует состояние игры в читаемый текст"""
     info = state['info']

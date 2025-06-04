@@ -22,6 +22,7 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  get_status_team_game)
 from handlers.messages import format_game_state
 from handlers.help_functions import schedule_message
+from help.logging import log_action
 from handlers.timer_manager import TimerManager, QuestionTimerManager
 from main import BASE_DIR, bot, dp
 
@@ -41,12 +42,20 @@ async def cmd_my_location(message: types.Message, state: FSMContext):
     await state.clear()
 
     user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /mylocation")
+
+    user_id = message.from_user.id
     location = await get_player_location(user_id)
     await message.answer(f"Ваша текущая локация: {location}")
 
 async def cmd_set_location(message: types.Message, state: FSMContext):
     """Запрос на изменение локации"""
     await state.clear()
+
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /setlocation")
 
     # Проверяем, что это капитан команды
     if not await is_team_captain(message.from_user.id):
@@ -102,7 +111,13 @@ async def handle_player_location_change(callback: types.CallbackQuery):
     )
     await callback.answer()
 
+    log_action(f"User [id:{user_id}] was changed location to {new_location}")
+
 async def request_captain_role(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /become_captain")
+
     await message.answer(
         "Для регистрации командира введите секретный пароль:\n"
         "(запросите его у организатора)"
@@ -149,6 +164,10 @@ async def process_captain_password(message: types.Message, state: FSMContext):
     await state.clear()
 
 async def request_admin_role(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /become_admin")
+
     await message.answer(
         "Для регистрации админа введите секретный пароль:\n"
         "(запросите его у организатора)"
@@ -182,6 +201,11 @@ async def process_admin_password(message: types.Message, state: FSMContext):
 
 async def cmd_help(message: types.Message, state: FSMContext):
     await state.clear()
+
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /help")
+
     await message.answer(HELP, parse_mode="HTML")
 
 async def start_quest_for_team(team_id: int, question_id: int):
@@ -251,7 +275,6 @@ async def start_quest(message: types.Message, state: FSMContext):
         await message.answer("На вашу локацию нет вопросов в БД.")
         return
 
-
     try:
         path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
         photo = types.FSInputFile(path_to_question_photo)
@@ -290,6 +313,7 @@ async def start_quest(message: types.Message, state: FSMContext):
     await start_quest_for_team(team_id=team_id, question_id=question_id)
 
     await state.set_state(QuestStates.waiting_for_answer) 
+    log_action(f"User [id:{user_id}] started quest [QuestName]")
 
 async def send_question(player_id: int, message: types.Message, state: FSMContext): 
     user_id = message.from_user.id
@@ -418,6 +442,7 @@ async def process_answer(message: types.Message, state: FSMContext):
 
             correct_answers += 1
             await message.answer("✅ Верно, молодец!")
+            log_action(f"User [id:{user_id}] completed question [question_id:{question.get('id')}] in quest [Base Quest]")
     
     current_player_idx += 1
     next_players = players[current_player_idx:]
@@ -510,6 +535,8 @@ async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
     current_player_idx = user_data["current_player_idx"]
     players_ids = user_data["players_order"]
 
+    log_action(f"User [id:{user_id}] used /confirm_arrival")
+
     # получение экземпляров игроков
     players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
 
@@ -535,6 +562,8 @@ async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
 
 async def cmd_accept_state(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /accept_state")
 
     try:
         team_id = await get_user_team(user_id=user_id)
@@ -568,6 +597,8 @@ async def cmd_accept_state(message: types.Message, state: FSMContext):
             "Вы успешно перешли на свой ход!"
         )
     await send_question(target_user_id, message, state)
+
+
     
     # success = await apply_state_transfer(message.from_user.id, state)
     
@@ -583,6 +614,10 @@ async def cmd_accept_state(message: types.Message, state: FSMContext):
 async def cmd_create_team(message: types.Message, state: FSMContext):
     """Команда для создания новой команды (только для админов)"""
     await state.clear()
+
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /create_team")
 
     if not await is_admin(message.from_user.id):  # Ваша функция проверки админа
         return await message.answer("Только админы могут создавать команды!")
@@ -630,12 +665,12 @@ async def get_state(dp: Dispatcher, bot, chat_id: int, user_id: int) -> str:
 async def handle_start(message: types.Message, state: FSMContext):
     """Обработка стартовой команды с инвайт-ссылкой"""
     await state.clear()
-
-    print(f"Текущее состояние: {await state.get_state()}")
-    print(f"Данные состояния: {await state.get_data()}")
     
     user_id = message.from_user.id
-    
+
+    log_action(f"User [id:{user_id}] started the bot")
+    log_action(f"User [id:{user_id}] used /start")
+
     # Проверяем, состоит ли пользователь уже в какой-либо команде
     current_team = await get_user_team(user_id)
 
@@ -674,6 +709,8 @@ async def handle_start(message: types.Message, state: FSMContext):
 async def cmd_team_status(message: types.Message):
     user_id = message.from_user.id
     team_id = await get_user_team(user_id=user_id)
+    
+    log_action(f"User [id:{user_id}] used /team_status")
             
     if not team_id:
         await message.answer("Вы не в команде!")
@@ -688,3 +725,5 @@ async def cmd_team_status(message: types.Message):
         await format_game_state(state),
         parse_mode="HTML"
     )
+
+

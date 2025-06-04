@@ -3,3 +3,4 @@ __pycache__/
 venv
 images/
 quest_bot.db
+mainapp.log

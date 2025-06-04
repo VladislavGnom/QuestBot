@@ -1,0 +1,62 @@
+2025-06-04 19:48:51,434 - INFO - Start polling
+2025-06-04 19:48:51,728 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 19:48:56,720 - INFO - Update id=491368816 is not handled. Duration 0 ms by bot id=7928066551
+2025-06-04 19:48:56,720 - ERROR - Cause exception while process update id=491368816 by bot id=7928066551
+TypeError: 'Logger' object is not callable
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 635, in handle_start
+    log_action("aaa")
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/help/logging.py", line 16, in log_action
+    logger(message, level=level)
+TypeError: 'Logger' object is not callable
+2025-06-04 19:49:39,694 - WARNING - Received SIGINT signal
+2025-06-04 19:49:39,695 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 19:49:39,695 - INFO - Polling stopped
+2025-06-04 19:49:39,789 - WARNING - Received SIGINT signal
+2025-06-04 19:49:44,546 - INFO - Start polling
+2025-06-04 19:49:44,822 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 19:49:44,918 - INFO - aaa
+2025-06-04 19:49:45,226 - INFO - Update id=491368817 is handled. Duration 308 ms by bot id=7928066551
+2025-06-04 19:49:59,229 - WARNING - Received SIGINT signal
+2025-06-04 19:49:59,230 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 19:49:59,230 - INFO - Polling stopped
+2025-06-04 19:49:59,357 - WARNING - Received SIGINT signal

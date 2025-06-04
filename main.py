@@ -1,3 +1,4 @@
+import logging
 import os
 import asyncio
 from aiogram import F
@@ -17,6 +18,7 @@ DEBUG_MODE = True
 storage = MemoryStorage()
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=storage)
+logger = logging.getLogger(__name__)
 
 def register_handlers(dp: Dispatcher):
     # dp.message.register(handlers.cmd_start, Command('start'))
@@ -40,6 +42,16 @@ def register_handlers(dp: Dispatcher):
 
 async def on_startup():
     register_handlers(dp=dp)
+
+    # подключение логов
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler('mainapp.log'),  # Log to file
+            logging.StreamHandler()              # Also print to console
+        ]
+        )
 
     # Инициализация БД при старте
     await init_db()

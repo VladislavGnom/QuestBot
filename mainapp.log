@@ -60,3 +60,27 @@ TypeError: 'Logger' object is not callable
 2025-06-04 19:49:59,230 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
 2025-06-04 19:49:59,230 - INFO - Polling stopped
 2025-06-04 19:49:59,357 - WARNING - Received SIGINT signal
+2025-06-04 20:37:10,342 - INFO - Start polling
+2025-06-04 20:37:10,649 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 20:37:17,197 - INFO - Update id=491368818 is handled. Duration 284 ms by bot id=7928066551
+2025-06-04 20:37:22,439 - INFO - Update id=491368819 is handled. Duration 238 ms by bot id=7928066551
+2025-06-04 20:39:32,862 - WARNING - Received SIGINT signal
+2025-06-04 20:39:32,863 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 20:39:32,863 - INFO - Polling stopped
+2025-06-04 20:39:32,975 - WARNING - Received SIGINT signal
+2025-06-04 20:39:37,972 - INFO - Start polling
+2025-06-04 20:39:38,239 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 20:39:38,651 - INFO - Update id=491368820 is handled. Duration 304 ms by bot id=7928066551
+2025-06-04 20:39:43,397 - INFO - Update id=491368821 is handled. Duration 183 ms by bot id=7928066551
+2025-06-04 20:39:55,310 - WARNING - Received SIGINT signal
+2025-06-04 20:39:55,311 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 20:39:55,311 - INFO - Polling stopped
+2025-06-04 20:39:55,438 - WARNING - Received SIGINT signal
+2025-06-04 20:39:59,968 - INFO - Start polling
+2025-06-04 20:40:00,243 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 20:40:00,829 - INFO - Update id=491368822 is handled. Duration 308 ms by bot id=7928066551
+2025-06-04 20:40:09,294 - INFO - User [id:1636968793] used /help
+2025-06-04 20:40:09,440 - INFO - Update id=491368823 is handled. Duration 146 ms by bot id=7928066551
+2025-06-04 20:40:37,141 - WARNING - Received SIGINT signal
+2025-06-04 20:40:37,141 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'QuestMaster'
+2025-06-04 20:40:37,142 - INFO - Polling stopped

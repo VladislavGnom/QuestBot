@@ -1,5 +1,5 @@
-import logging
 import os
+import logging
 import asyncio
 from aiogram import F
 from aiogram import Dispatcher, Bot
@@ -8,6 +8,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from db.database import init_db
 
 import handlers.commands as handlers
+from handlers.messages import invalid_command
 from fsm.quest_logic import QuestStates, WaitForPassword
 
 
@@ -21,12 +22,10 @@ dp = Dispatcher(storage=storage)
 logger = logging.getLogger(__name__)
 
 def register_handlers(dp: Dispatcher):
-    # dp.message.register(handlers.cmd_start, Command('start'))
     dp.message.register(handlers.process_captain_password, StateFilter(WaitForPassword.waiting_for_captain_password))
     dp.message.register(handlers.process_admin_password, StateFilter(WaitForPassword.waiting_for_admin_password))
     dp.message.register(handlers.process_answer, StateFilter(QuestStates.waiting_for_answer))
     dp.callback_query.register(handlers.confirm_arrival, StateFilter(QuestStates.waiting_for_location_confirmation), F.data == 'arrived')
-    # dp.callback_query.register(handlers.start_quest, F.data == 'start_quest')
     dp.callback_query.register(handlers.handle_player_location_change, F.data.startswith("setloc_"))
     dp.message.register(handlers.handle_location_reply, F.reply_to_message & F.text.isdigit())
     dp.message.register(handlers.handle_start, Command("start"))
@@ -39,6 +38,7 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.request_admin_role, Command("become_admin"))
     dp.message.register(handlers.cmd_my_location, Command("mylocation"))
     dp.message.register(handlers.cmd_set_location, Command("setlocation"))
+    dp.message.register(invalid_command, F.text)
 
 async def on_startup():
     register_handlers(dp=dp)
@@ -56,8 +56,7 @@ async def on_startup():
     # Инициализация БД при старте
     await init_db()
     
-    # Заполнение тестовыми данными (только для разработки!)
-    if DEBUG_MODE:  # Добавьте флаг в конфиг
+    if DEBUG_MODE:
         from db.fixtures import load_fixtures_from_json
         try:
             await load_fixtures_from_json()

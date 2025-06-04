@@ -1,6 +1,5 @@
 import os
 import json
-import asyncio
 from random import choice
 from datetime import datetime, timedelta
 from aiogram import types, Dispatcher, Bot
@@ -21,10 +20,10 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team,
                                  get_status_team_game)
 from handlers.messages import format_game_state
-from handlers.help_functions import schedule_message
+from handlers.help_functions import format_timedelta
 from help.logging import log_action
 from handlers.timer_manager import TimerManager, QuestionTimerManager
-from main import BASE_DIR, bot, dp
+from main import BASE_DIR, bot
 
 
 CAPTAIN_PASSWORD = '1234'
@@ -57,7 +56,6 @@ async def cmd_set_location(message: types.Message, state: FSMContext):
 
     log_action(f"User [id:{user_id}] used /setlocation")
 
-    # Проверяем, что это капитан команды
     if not await is_team_captain(message.from_user.id):
         return await message.answer("Только капитан может менять локации!")
     
@@ -80,11 +78,9 @@ async def handle_location_reply(message: types.Message, state: FSMContext):
     except ValueError:
         return await message.answer("Некорректный номер локации. Введите число от 1 до 10")
     
-    # Получаем всех игроков команды
     team_id = await get_user_team(message.from_user.id)
     players = await get_team_players(team_id)
     
-    # Создаем клавиатуру для выбора игрока
     builder = InlineKeyboardBuilder()
     for player in players:
         builder.button(
@@ -125,7 +121,7 @@ async def request_captain_role(message: types.Message, state: FSMContext):
     await state.set_state(WaitForPassword.waiting_for_captain_password)
 
 async def process_captain_password(message: types.Message, state: FSMContext):
-    if message.text != CAPTAIN_PASSWORD:  # Пароль из конфига
+    if message.text != CAPTAIN_PASSWORD: 
         await message.answer("Неверный пароль!")
         return await state.clear()
     
@@ -134,18 +130,16 @@ async def process_captain_password(message: types.Message, state: FSMContext):
         await message.answer("Вы уже капитан!")
         return await state.clear()
     
-    # Создаем команду
     team_name = f"Команда {message.from_user.full_name}"
     team_id = await create_team(message.from_user.id, team_name)
     
     await message.answer(f"Команда '{team_name}' создана!")
 
-    # Создаём капитана
     success = await create_or_upgrade_captain(
         user_id=message.from_user.id,
         username=message.from_user.username,
         full_name=message.from_user.full_name,
-        team_id=team_id  # ID созданной ранее команды
+        team_id=team_id
     )
 
     if success:
@@ -175,7 +169,7 @@ async def request_admin_role(message: types.Message, state: FSMContext):
     await state.set_state(WaitForPassword.waiting_for_admin_password)
 
 async def process_admin_password(message: types.Message, state: FSMContext):
-    if message.text != ADMIN_PASSWORD:  # Пароль из конфига
+    if message.text != ADMIN_PASSWORD: 
         await message.answer("Неверный пароль!")
         return await state.clear()
     
@@ -184,7 +178,6 @@ async def process_admin_password(message: types.Message, state: FSMContext):
         await message.answer("Вы уже админ!")
         return await state.clear()
 
-    # Создаём админа
     success = await create_or_upgrade_admin(
         user_id=message.from_user.id,
         username=message.from_user.username,
@@ -246,9 +239,8 @@ async def start_quest(message: types.Message, state: FSMContext):
             return await message.answer("Квест уже закончен, его нельзя начать снова! \n\nЗа подробностями обратитесь к организатору.")
 
     players = await get_team_players(team_id)
-    # me = players[0]
-    # players = [me, me, me, me]
-    print(players)
+
+    log_action(f"Players from team [team_id:{team_id}]: {players}")
 
     if not players:
         await message.answer("В команде нет игроков!")
@@ -259,20 +251,18 @@ async def start_quest(message: types.Message, state: FSMContext):
 
     first_player = players[0]
     first_player_id = first_player["id"]
-
-    # function is unuseful
-    await update_game_progress(team_id, first_player_id, 1, "playing")
     
     location_id = first_player['location']
     questions = await get_location_questions(location_id=location_id)
 
     try:
-        question = choice(questions)    # берём рандомный вопрос из соответственной локации
+        question = choice(questions)    # рандомный вопрос из соответственной локации
         question_id = question.get('id')
         answer_hints = json.loads(question.get('answer_hints'))
         question_media_path = question.get('media_path')
     except IndexError:    # выбрана локация для которой нет вопросов
         await message.answer("На вашу локацию нет вопросов в БД.")
+        log_action(f"Error: Location [location_id:{location_id}] has not have any questions.")
         return
 
     try:
@@ -304,7 +294,7 @@ async def start_quest(message: types.Message, state: FSMContext):
     except:
         ...
 
-    # Уведомляем остальных участников команды
+    # уведомляем остальных участников команды
     await notify_team_except_current(
         team_id, 
         first_player_id, 
@@ -313,7 +303,7 @@ async def start_quest(message: types.Message, state: FSMContext):
     await start_quest_for_team(team_id=team_id, question_id=question_id)
 
     await state.set_state(QuestStates.waiting_for_answer) 
-    log_action(f"User [id:{user_id}] started quest [QuestName]")
+    log_action(f"User [id:{user_id}] started quest [Base Quest]")
 
 async def send_question(player_id: int, message: types.Message, state: FSMContext): 
     user_id = message.from_user.id
@@ -332,7 +322,7 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     current_player = players[current_player_idx]
     location_id = current_player['location']
     questions = await get_location_questions(location_id=location_id)
-    question = choice(questions)    # берём рандомный вопрос из соответственной локации
+    question = choice(questions)    # рандомный вопрос из соответственной локации
     question_id = question.get('id')
     question_media_path = question.get('media_path')
 
@@ -375,25 +365,6 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
 
     await state.set_state(QuestStates.waiting_for_answer)
 
-def format_timedelta(td: timedelta) -> str:
-    """Convert timedelta to human-readable format"""
-    total_seconds = int(td.total_seconds())
-    days, remainder = divmod(total_seconds, 86400)
-    hours, remainder = divmod(remainder, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    
-    parts = []
-    if days:
-        parts.append(f"{days}d")
-    if hours:
-        parts.append(f"{hours}h")
-    if minutes:
-        parts.append(f"{minutes}m")
-    if seconds or not parts:  # Show seconds if nothing else
-        parts.append(f"{seconds}s")
-    
-    return " ".join(parts)
-
 async def process_answer(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     chat_id = message.chat.id
@@ -411,10 +382,9 @@ async def process_answer(message: types.Message, state: FSMContext):
 
     is_question_deadline_passed = False
 
-    print(players_ids)
     # получение экземпляров игроков
     players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
-    print(players)
+
     if message.from_user.id != players[current_player_idx].get('user_id'):
         await message.answer("Сейчас не ваш ход!")
         return
@@ -423,17 +393,19 @@ async def process_answer(message: types.Message, state: FSMContext):
     current_player = players[current_player_idx]
     location_id = current_player["location"]
     questions = await get_location_questions(location_id=location_id)
-    print(current_question_idx)
     question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    
 
     if question_deadline and datetime.fromisoformat(question_deadline) < datetime.now():
         is_question_deadline_passed = True
         await message.answer("❌ Время на ответ истекло!")
         await message.answer(f"Правильный ответ: {question.get('answer')}")
+        log_action(f"User [id:{user_id}] has not any time to answer question [question_id:{question.get('id')}] in quest [Base Quest]")
+
 
     if not is_question_deadline_passed:
         if message.text.lower().strip() != question.get("answer").lower().strip():
             await message.answer("❌ Неверно! Попробуйте еще раз.")
+            log_action(f"User [id:{user_id}] unsuccessfully answered question [question_id:{question.get('id')}] in quest [Base Quest]")
             return
         else:
             # Отменяем все таймеры при правильном ответе
@@ -468,31 +440,16 @@ async def process_answer(message: types.Message, state: FSMContext):
             f"🎉 Команда завершила квест!\n\nКоманда: {team_name}\nПравильных ответов: {correct_answers}/{len(players_ids)}\nВремя прохождения: {quest_time_passed}."
         )
 
+        log_action(f"The team [team_id:{team_id}] has finished the quest [Base quest].")
+
         await state.clear()
         return
-    
-    cur_user_id = players[current_player_idx].get('user_id')
-
-    # function is unuseful
-    await update_game_progress(
-        team_id, 
-        cur_user_id,
-        question_num,
-        "playing"
-    )
-
     
     try:
         location_data = await get_full_location(location_id=location_id)
         latitude, longtitude = location_data.get('coordinates').split(',')
         await message.answer_location(latitude=latitude, longitude=longtitude)
         await message.answer('Следующая точка маршрута!')
-        # photo = types.FSInputFile(question.get("media_path"))
-        # await message.answer_photo(photo, caption="Следующая точка маршрута!")
-    # except FileNotFoundError:
-    #     await message.answer("Карта не найдена")
-    # except TypeError:
-    #     await message.answer("Карта не требуется")
     except:
         await message.answer("Карта не найдена")
         
@@ -548,17 +505,10 @@ async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
         f"Предыдущий игрок закончил свой ход, ваша очередь!\n\nДля перехода на свой ход используйте /accept_state"
     )
 
-    # # Подготавливаем передачу
-    # await prepare_state_transfer(
-    #     sender_id=callback.from_user.id,
-    #     receiver_id=target_user_id,
-    #     state=state
-    # )
-
     await state.clear()
     await callback.message.answer(f"Так точно, ход передан другому игроку - @{target_user.get('username')}. Следите за состоянием игры!")
     await callback.answer()
-
+    log_action(f"The move of game passed to next player [user_id:{target_user_id}].")
 
 async def cmd_accept_state(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
@@ -591,6 +541,7 @@ async def cmd_accept_state(message: types.Message, state: FSMContext):
 
     if user_id != target_user_id: 
         await message.answer("Сейчас не ваш ход для получения состояния.")
+        log_action(f"Error: Move of game is transfered unsuccessfully from player1 [user_id:{user_id}] to player2 [user_id:{target_user_id}]. The move is not of player.")
         return
     
     await message.answer(
@@ -598,18 +549,7 @@ async def cmd_accept_state(message: types.Message, state: FSMContext):
         )
     await send_question(target_user_id, message, state)
 
-
-    
-    # success = await apply_state_transfer(message.from_user.id, state)
-    
-    # if success:
-    #     await message.answer(
-    #         "Вы успешно перешли на свой ход!"
-    #     )
-    #     await send_question(target_user_id, message, state)
-    # else:
-    #     await message.answer("Нет ожидающих передач состояния")
-
+    log_action(f"Move of game is transfered successfully from player1 [user_id:{user_id}] to player2 [user_id:{target_user_id}].")
 
 async def cmd_create_team(message: types.Message, state: FSMContext):
     """Команда для создания новой команды (только для админов)"""
@@ -635,32 +575,7 @@ async def cmd_create_team(message: types.Message, state: FSMContext):
         "Отправьте эту ссылку участникам вашей команды.",
         disable_web_page_preview=True
     )
-
-async def set_state(dp: Dispatcher, bot, chat_id: int, user_id: int, new_state: str):
-    """
-    Устанавливает новое состояние для пользователя через диспетчер
-    
-    :param dp: Dispatcher (из aiogram)
-    :param bot: Bot instance (для получения bot.id)
-    :param chat_id: ID чата
-    :param user_id: ID пользователя
-    :param new_state: Новое состояние (например, "QuestStates:waiting_for_answer")
-    """
-    storage_key = StorageKey(chat_id=chat_id, user_id=user_id, bot_id=bot.id)
-    await dp.storage.set_state(key=storage_key, state=new_state)
-
-async def get_state(dp: Dispatcher, bot, chat_id: int, user_id: int) -> str:
-    """
-    Получает текущее состояние пользователя через диспетчер
-    
-    :param dp: Dispatcher
-    :param bot: Bot instance
-    :param chat_id: ID чата
-    :param user_id: ID пользователя
-    :return: Текущее состояние или None, если состояние не установлено
-    """
-    storage_key = StorageKey(chat_id=chat_id, user_id=user_id, bot_id=bot.id)
-    return await dp.storage.get_state(key=storage_key)
+    log_action(f"The team [team_id:{team_id}] is created successfully by admin [user_id:{user_id}].")
 
 async def handle_start(message: types.Message, state: FSMContext):
     """Обработка стартовой команды с инвайт-ссылкой"""
@@ -671,7 +586,6 @@ async def handle_start(message: types.Message, state: FSMContext):
     log_action(f"User [id:{user_id}] started the bot")
     log_action(f"User [id:{user_id}] used /start")
 
-    # Проверяем, состоит ли пользователь уже в какой-либо команде
     current_team = await get_user_team(user_id)
 
     if current_team:
@@ -694,12 +608,14 @@ async def handle_start(message: types.Message, state: FSMContext):
         try:
             team_id = int(team_id)
         except ValueError:
+            log_action(f"Invalid invite link from user [user_id:{user_id}]")
             return await message.answer("Некорректная ссылка!")
         
         success = await join_team(message, team_id, token)
 
         if success:
             team_name = await get_team_name(team_id)
+            log_action(f"The user [user_id:{user_id}] come into team [team_id:{team_id}] successfully.")
             return await message.answer(f'Вы успешно присоединились к команде {team_name}!')
         return await message.answer("Не удалось вступить: неверный токен или вы уже в этой команде")
 
@@ -725,5 +641,3 @@ async def cmd_team_status(message: types.Message):
         await format_game_state(state),
         parse_mode="HTML"
     )
-
-

@@ -1,13 +1,20 @@
-from datetime import datetime, timedelta
-import asyncio
-from aiogram import Bot
+from datetime import timedelta
 
-
-async def schedule_message(bot: Bot, chat_id: int, delay_minutes: int, message_text: str):
-    """Запланировать отправку сообщения через указанное время"""
-    await asyncio.sleep(delay_minutes * 60)
-    try:
-        await bot.send_message(chat_id=chat_id, text=message_text)
-    except Exception as e:
-        print(f"Не удалось отправить сообщение: {e}")
-
+def format_timedelta(td: timedelta) -> str:
+    """Convert timedelta to human-readable format"""
+    total_seconds = int(td.total_seconds())
+    days, remainder = divmod(total_seconds, 86400)
+    hours, remainder = divmod(remainder, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    
+    parts = []
+    if days:
+        parts.append(f"{days}d")
+    if hours:
+        parts.append(f"{hours}h")
+    if minutes:
+        parts.append(f"{minutes}m")
+    if seconds or not parts:  # Show seconds if nothing else
+        parts.append(f"{seconds}s")
+    
+    return " ".join(parts)

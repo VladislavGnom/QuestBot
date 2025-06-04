@@ -24,14 +24,9 @@ from handlers.help_functions import format_timedelta
 from help.logging import log_action
 from handlers.timer_manager import TimerManager, QuestionTimerManager
 from main import BASE_DIR, bot
-
-
-CAPTAIN_PASSWORD = '1234'
-ADMIN_PASSWORD = '12345'
-QUESTION_TIME_LIMIT = 5    # в минутах
-FIRST_CLUE_OF_QUESTION = 1    # в минутах
-SECOND_CLUE_OF_QUESTION = 3    # в минутах
-THIRD_CLUE_OF_QUESTION = 4    # в минутах
+from config.config import (CAPTAIN_PASSWORD, ADMIN_PASSWORD, 
+                           QUESTION_TIME_LIMIT, FIRST_CLUE_OF_QUESTION,
+                           SECOND_CLUE_OF_QUESTION, THIRD_CLUE_OF_QUESTION)
 
 timer_manager = TimerManager()
 question_timer_manager = QuestionTimerManager()

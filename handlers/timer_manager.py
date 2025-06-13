@@ -1,17 +1,19 @@
+import os
 import asyncio
 from datetime import datetime, timedelta
-from aiogram import Bot
+from aiogram import Bot, types
+from main import BASE_DIR
 
 class TimerManager:
     def __init__(self):
         self.timers = {}  # {chat_id: {timer_id: task}}
     
-    async def add_timer(self, chat_id: int, bot: Bot, delay: int, message: str, timer_id: str):
+    async def add_timer(self, chat_id: int, bot: Bot, delay: int, message: str, media_path: str, timer_id: str):
         """Добавление нового таймера"""
         await self.cancel_timer(chat_id, timer_id)
         
         task = asyncio.create_task(
-            self._send_timed_message(chat_id, bot, delay, message, timer_id)
+            self._send_timed_message(chat_id, bot, delay, message, media_path, timer_id)
         )
         
         if chat_id not in self.timers:
@@ -34,11 +36,17 @@ class TimerManager:
                 self.timers[chat_id][timer_id].cancel()
                 del self.timers[chat_id][timer_id]
     
-    async def _send_timed_message(self, chat_id: int, bot: Bot, delay: int, message: str, timer_id: str):
+    async def _send_timed_message(self, chat_id: int, bot: Bot, delay: int, message: str, media_path: str, timer_id: str):
         try:
             await asyncio.sleep(delay * 60)    # минуты
+
+            if media_path:
+                path_to_question_photo = os.path.join(BASE_DIR, media_path)
+                photo = types.FSInputFile(path_to_question_photo)
+                await bot.send_photo(chat_id, photo)
+
             await bot.send_message(chat_id, message)
-        except asyncio.CancelledError:
+        except (asyncio.CancelledError | Exception):
             pass
         finally:
             if chat_id in self.timers and timer_id in self.timers[chat_id]:

@@ -38,6 +38,11 @@
           "Посчитайте другие струи",
           "Посмотрите внимательнее на небо"
         ],
+        "hints_media_paths": [
+          "",
+          "images/map2.png",
+          ""
+        ],
         "difficulty": 2,
         "question_type": "text",
         "media_path": "images/map1.png",
@@ -52,6 +57,11 @@
           "Глубоко вдохните",
           "Оглянитесь назад"
         ],
+        "hints_media_paths": [
+          "",
+          "images/map2.png",
+          ""
+        ],
         "difficulty": 1,
         "question_type": "photo",
         "media_path": "images/map2.png",
@@ -62,6 +72,11 @@
         "question_text": "Назовите год постройки библиотеки",
         "answer": "1897",
         "answer_hints": "Посмотрите на фасад",
+        "hints_media_paths": [
+          "",
+          "images/map2.png",
+          ""
+        ],
         "difficulty": 3,
         "question_type": "text",
         "media_path": "images/map3.png",

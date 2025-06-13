@@ -81,6 +81,7 @@ async def init_db():
                 question_text TEXT NOT NULL,      -- Текст вопроса
                 answer TEXT NOT NULL,             -- Правильный ответ
                 answer_hints TEXT,                 -- Подсказки JSON массив [clue1, clue2, clue3]
+                hints_media_paths TEXT,            -- Фото для подсказок JSON массив [media_clue1, media_clue2, media_clue3]
                 difficulty INTEGER DEFAULT 1,     -- Сложность (1-5)
                 question_type TEXT DEFAULT 'text',-- text/photo/video/audio
                 media_path TEXT,                  -- Путь к медиафайлу

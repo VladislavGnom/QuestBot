@@ -276,6 +276,7 @@ async def start_quest(message: types.Message, state: FSMContext):
         question = choice(questions)    # рандомный вопрос из соответственной локации
         question_id = question.get('id')
         answer_hints = json.loads(question.get('answer_hints'))
+        hints_media_paths = json.loads(question.get('hints_media_paths'))
         question_media_path = question.get('media_path')
     except IndexError:    # выбрана локация для которой нет вопросов
         await message.answer("На вашу локацию нет вопросов в БД.")
@@ -305,9 +306,31 @@ async def start_quest(message: types.Message, state: FSMContext):
     # планируем сообщения подсказок
     try:
         fisrt_clue, second_clue, third_clue = answer_hints
-        await timer_manager.add_timer(chat_id, bot, FIRST_CLUE_OF_QUESTION, message=f"Подсказка #1: {fisrt_clue}", timer_id="clue1")
-        await timer_manager.add_timer(chat_id, bot, SECOND_CLUE_OF_QUESTION, message=f"Подсказка #2: {second_clue}", timer_id="clue2")
-        await timer_manager.add_timer(chat_id, bot, THIRD_CLUE_OF_QUESTION, message=f"Подсказка #3: {third_clue}", timer_id="clue3")
+        media_fc, media_sc, media_tc = hints_media_paths
+        await timer_manager.add_timer(
+            chat_id, 
+            bot, 
+            FIRST_CLUE_OF_QUESTION, 
+            message=f"Подсказка #1: {fisrt_clue}",
+            media_path=media_fc, 
+            timer_id="clue1"
+        )
+        await timer_manager.add_timer(
+            chat_id, 
+            bot, 
+            SECOND_CLUE_OF_QUESTION, 
+            message=f"Подсказка #2: {second_clue}", 
+            media_path=media_sc, 
+            timer_id="clue2"
+        )
+        await timer_manager.add_timer(
+            chat_id, 
+            bot, 
+            THIRD_CLUE_OF_QUESTION, 
+            message=f"Подсказка #3: {third_clue}", 
+            media_path=media_tc, 
+            timer_id="clue3"
+        )
     except:
         ...
 

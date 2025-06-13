@@ -560,11 +560,12 @@ async def process_answer(message: types.Message, state: FSMContext):
         # await message.answer_location(latitude=latitude, longitude=longtitude)
 
         location_data = await get_full_location(location_id=location_id)
+        letter_for_location = location_data.get('letter_for_location')
         media_path = location_data.get('image_path')
         path_to_map_photo = os.path.join(BASE_DIR, media_path)
         photo = types.FSInputFile(path_to_map_photo)
         await bot.send_photo(chat_id, photo)
-        await message.answer('Следующая точка маршрута!')
+        await message.answer('Следующая точка маршрута!' + f'Буква за этап {letter_for_location}')
     except:
         await message.answer("Карта не найдена")
         

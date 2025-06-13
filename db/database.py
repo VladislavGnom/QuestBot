@@ -68,6 +68,7 @@ async def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,               -- Название локации
                 description TEXT,                 -- Описание для игроков
+                letter_for_location TEXT,         -- Буква за этап
                 coordinates TEXT,                 -- "lat,lon" или "x,y,z"
                 image_path TEXT,                  -- Путь к изображению
                 is_hidden BOOLEAN DEFAULT FALSE,  -- Скрыта ли локация

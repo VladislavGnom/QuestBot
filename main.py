@@ -35,6 +35,7 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.request_captain_role, Command("become_captain"))
     dp.message.register(handlers.request_admin_role, Command("become_admin"))
     dp.message.register(handlers.cmd_my_location, Command("mylocation"))
+    dp.message.register(handlers.cmd_players_locations, Command("players_locations"))
     dp.message.register(handlers.cmd_set_location, Command("setlocation"))
     dp.message.register(invalid_command, F.text)
 

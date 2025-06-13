@@ -43,6 +43,28 @@ async def cmd_my_location(message: types.Message, state: FSMContext):
     location = await get_player_location(user_id)
     await message.answer(f"Ваша текущая локация: {location}")
 
+async def cmd_players_locations(message: types.Message, state: FSMContext):
+    """Показывает текущие локации игроков в команде"""
+    await state.clear()
+
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /players_locations")
+
+    user_id = message.from_user.id
+    team_id = await get_user_team(user_id=user_id)
+
+    if not team_id:  return await message.answer(f"Ошибка: вы не в команде.")
+
+    players = await get_team_players(team_id=team_id)
+    team_name = await get_team_name(team_id=team_id)
+    text = f"Данные расстановки игроков (команда - {team_name}):\n"
+
+    for player in players:
+        text += f"{player['username']} (локация {player['location']})\n"
+
+    await message.answer(text)
+
 async def cmd_set_location(message: types.Message, state: FSMContext):
     """Запрос на изменение локации"""
     await state.clear()

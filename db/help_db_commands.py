@@ -161,6 +161,20 @@ async def get_team_name(team_id: int):
 
         row = await cursor.fetchone()
         return row[0] if row else None
+    
+async def set_lyrics_for_team(team_id: int, lyrics_text: str):
+    """Устанавливает кричалку для команды. Возвращает True если успешно, иначе False"""
+    async with get_db_connection() as conn:
+        await conn.execute(
+            "UPDATE teams SET lyrics_text = ? WHERE id = ?",
+            (lyrics_text, team_id)
+        )
+
+        try:
+            await conn.commit()
+            return True
+        except aiosqlite.Error:
+            return False
 
 async def is_admin(user_id: int):
     """Возвращает True если админ существует и пользователь им является иначе False"""
@@ -240,12 +254,13 @@ async def get_username(user_id: int) -> int | None:
     
 
 async def set_player_location(user_id: int, location: int):
-    """Устанавливает локацию игрока"""
+    """Устанавливает локацию игрока."""
     async with get_db_connection() as conn:
         await conn.execute(
             "UPDATE players SET location = ? WHERE user_id = ?",
             (location, user_id)
         )
+
         await conn.commit()
 
 async def get_player_location(user_id: int) -> int:

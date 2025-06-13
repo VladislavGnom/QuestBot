@@ -11,6 +11,7 @@ async def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 admin_id INTEGER NOT NULL,
+                lyrics_text TEXT,
                 invite_token TEXT UNIQUE,
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP
             )

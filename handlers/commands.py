@@ -18,7 +18,7 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  create_or_upgrade_admin, get_full_location, get_location_questions,
                                  init_team_state, update_team_state, get_team_state, get_player_by_id,
                                  update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team,
-                                 get_status_team_game, set_lyrics_for_team)
+                                 get_status_team_game, set_lyrics_for_team, get_team_lyrics)
 from handlers.messages import format_game_state
 from handlers.help_functions import format_timedelta
 from help.logging import log_action
@@ -108,10 +108,36 @@ async def cmd_set_team_lyrics(message: types.Message, state: FSMContext):
         return await message.answer("Ошибка при добавлении кричалки, повторите позже.")
     
     await message.answer(
-        f"Кричалка для команды '{team_name}' установлена!\nКричалка:\n\n{lyrics_text}"
+        f"Кричалка для команды - '{team_name}' установлена!\nКричалка:\n\n{lyrics_text}"
     )
     log_action(f"The lyrics fot team [team_id:{team_id}] is created successfully by user [user_id:{user_id}].")
 
+async def cmd_get_team_lyrics(message: types.Message, state: FSMContext):
+    """Получение кричалки команды"""
+    await state.clear()
+
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /get_lyrics")
+
+    team_id = await get_user_team(user_id=user_id)
+
+    if not team_id:
+        return await message.answer("Вы не состоите в команде, поэтому не можете иметь кричалку!")
+    
+    team_name = await get_team_name(team_id=team_id)
+    lyrics_text = await get_team_lyrics(team_id=team_id)
+
+    if not lyrics_text: 
+        log_action(f"The lyrics for team [team_id:{team_id}] is got failed by a user [user_id:{user_id}].")
+
+        return await message.answer("Кричалки пока не существует, запросите капитана установить её.")
+    
+    await message.answer(
+        f"Кричалка для команды - '{team_name}':\n\n{lyrics_text}"
+    )
+    log_action(f"The lyrics for team [team_id:{team_id}] is got successfully by a user [user_id:{user_id}].")
+    
 async def handle_location_reply(message: types.Message, state: FSMContext):
     """Обработка ответа с номером локации"""
     await state.clear()

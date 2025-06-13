@@ -176,6 +176,17 @@ async def set_lyrics_for_team(team_id: int, lyrics_text: str):
         except aiosqlite.Error:
             return False
 
+async def get_team_lyrics(team_id: int):
+    """Получает кричалку команды, если её нет то возвращает None"""
+    async with get_db_connection() as conn:
+        cursor = await conn.execute(
+            "SELECT lyrics_text FROM teams WHERE id = ?",
+            (team_id,)
+        )
+
+        row = await cursor.fetchone()
+        return row[0] if row else None
+
 async def is_admin(user_id: int):
     """Возвращает True если админ существует и пользователь им является иначе False"""
     async with get_db_connection() as conn:

@@ -37,6 +37,7 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.cmd_my_location, Command("mylocation"))
     dp.message.register(handlers.cmd_players_locations, Command("players_locations"))
     dp.message.register(handlers.cmd_set_team_lyrics, Command("set_lyrics"))
+    dp.message.register(handlers.cmd_get_team_lyrics, Command("get_lyrics"))
     dp.message.register(handlers.cmd_set_location, Command("setlocation"))
     dp.message.register(invalid_command, F.text)
 

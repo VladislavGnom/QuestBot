@@ -524,6 +524,8 @@ async def process_answer(message: types.Message, state: FSMContext):
             log_action(f"User [id:{user_id}] completed question [question_id:{question.get('id')}] in quest [Base Quest]")
     
     current_player_idx += 1
+    current_player = players[current_player_idx]    # следующий игрок
+    location_id = current_player["location"]    # локация следующего игрока
     next_players = players[current_player_idx:]
     if not next_players:
         await update_team_state(
@@ -553,9 +555,15 @@ async def process_answer(message: types.Message, state: FSMContext):
         return
     
     try:
+        # location_data = await get_full_location(location_id=location_id)
+        # latitude, longtitude = location_data.get('coordinates').split(',')
+        # await message.answer_location(latitude=latitude, longitude=longtitude)
+
         location_data = await get_full_location(location_id=location_id)
-        latitude, longtitude = location_data.get('coordinates').split(',')
-        await message.answer_location(latitude=latitude, longitude=longtitude)
+        media_path = location_data.get('image_path')
+        path_to_map_photo = os.path.join(BASE_DIR, media_path)
+        photo = types.FSInputFile(path_to_map_photo)
+        await bot.send_photo(chat_id, photo)
         await message.answer('Следующая точка маршрута!')
     except:
         await message.answer("Карта не найдена")

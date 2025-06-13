@@ -40,6 +40,7 @@ async def init_db():
                 deadline TEXT,       -- TIMESTAMP
                 question_deadline TEXT,
                 correct_answers INTEGER DEFAULT 0,
+                is_pretend_on_right_answer BOOLEAN DEFAULT 1,    -- зачислять ли правильный ответ за вопрос
                 status TEXT DEFAULT 'waiting',  -- waiting/playing/finished
                 created_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
                 updated_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),

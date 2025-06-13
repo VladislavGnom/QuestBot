@@ -373,6 +373,7 @@ async def process_answer(message: types.Message, state: FSMContext):
     question_num = user_data["current_question_num"]
     correct_answers = user_data["correct_answers"]
     players_ids = user_data["players_order"]
+    is_pretend_on_right_answer = user_data["is_pretend_on_right_answer"]
     question_deadline = user_data["question_deadline"]
 
     is_question_deadline_passed = False
@@ -400,6 +401,13 @@ async def process_answer(message: types.Message, state: FSMContext):
     if not is_question_deadline_passed:
         if message.text.lower().strip() != question.get("answer").lower().strip():
             await message.answer("❌ Неверно! Попробуйте еще раз.")
+
+            is_pretend_on_right_answer = False    # закрываем возможность на получения балла за вопрос
+
+            await update_team_state(
+                is_pretend_on_right_answer=is_pretend_on_right_answer, 
+            )
+
             log_action(f"User [id:{user_id}] unsuccessfully answered question [question_id:{question.get('id')}] in quest [Base Quest]")
             return
         else:
@@ -407,7 +415,9 @@ async def process_answer(message: types.Message, state: FSMContext):
             await timer_manager.cancel_timer(chat_id)
             await question_timer_manager.cancel_timer(message.chat.id, "question_timer")
 
-            correct_answers += 1
+            if is_pretend_on_right_answer:    # если первая попытка то зачисляем ответ
+                correct_answers += 1
+
             await message.answer("✅ Верно, молодец!")
             log_action(f"User [id:{user_id}] completed question [question_id:{question.get('id')}] in quest [Base Quest]")
     

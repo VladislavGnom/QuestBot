@@ -24,6 +24,7 @@ from handlers.help_functions import format_timedelta
 from help.logging import log_action
 from handlers.timer_manager import TimerManager, QuestionTimerManager
 from main import BASE_DIR, bot
+from keyboards import start_markup, captain_user_markup, default_user_markup
 from config.config import (CAPTAIN_PASSWORD, ADMIN_PASSWORD, 
                            QUESTION_TIME_LIMIT, FIRST_CLUE_OF_QUESTION,
                            SECOND_CLUE_OF_QUESTION, THIRD_CLUE_OF_QUESTION)
@@ -227,7 +228,8 @@ async def process_captain_password(message: types.Message, state: FSMContext):
         f"Команда '{team_name}' создана!\n"
         f"Пригласительная ссылка:\n{invite_link}\n\n"
         "Отправьте эту ссылку участникам вашей команды.",
-        disable_web_page_preview=True
+        disable_web_page_preview=True, 
+        reply_markup=captain_user_markup
     )
     await state.clear()
 
@@ -583,6 +585,7 @@ async def process_answer(message: types.Message, state: FSMContext):
         current_player_idx=current_player_idx, 
         current_question_num=question_num + 1,
         correct_answers=correct_answers,
+        is_pretend_on_right_answer=True, 
     )
 
     await state.set_state(QuestStates.waiting_for_location_confirmation)
@@ -693,7 +696,7 @@ async def cmd_create_team(message: types.Message, state: FSMContext):
     )
     log_action(f"The team [team_id:{team_id}] is created successfully by admin [user_id:{user_id}].")
 
-async def handle_start(message: types.Message, state: FSMContext):
+async def handle_start(message: types.Message, state: FSMContext, start_without_link=False):
     """Обработка стартовой команды с инвайт-ссылкой"""
     await state.clear()
     
@@ -732,11 +735,26 @@ async def handle_start(message: types.Message, state: FSMContext):
         if success:
             team_name = await get_team_name(team_id)
             log_action(f"The user [user_id:{user_id}] come into team [team_id:{team_id}] successfully.")
-            return await message.answer(f'Вы успешно присоединились к команде {team_name}!')
+            return await message.answer(
+                f'Вы успешно присоединились к команде {team_name}!',
+                reply_markup=default_user_markup
+                )
         return await message.answer("Не удалось вступить: неверный токен или вы уже в этой команде")
 
-    # Обычный старт без ссылки
-    await message.answer("Добро пожаловать! Для вступления в команду используйте инвайт-ссылку.")
+    if start_without_link:
+        # Обычный старт без ссылки
+        await message.answer("Добро пожаловать! Для вступления в команду используйте инвайт-ссылку.")
+    else:
+        await message.answer("Добро пожаловать! Выберите одну из опций ниже:", reply_markup=start_markup)
+
+
+async def handle_sign_up_as_captain(callback: types.CallbackQuery, state: FSMContext):
+    await request_captain_role(message=callback.message, state=state)
+    await callback.answer("")
+
+async def handle_sign_up_as_player(callback: types.CallbackQuery, state: FSMContext):
+    await handle_start(message=callback.message, state=state, start_without_link=True)
+    await callback.answer("")
 
 async def cmd_team_status(message: types.Message):
     user_id = message.from_user.id

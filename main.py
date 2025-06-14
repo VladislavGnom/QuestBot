@@ -25,6 +25,8 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.process_answer, StateFilter(QuestStates.waiting_for_answer))
     dp.callback_query.register(handlers.confirm_arrival, StateFilter(QuestStates.waiting_for_location_confirmation), F.data == 'arrived')
     dp.callback_query.register(handlers.handle_player_location_change, F.data.startswith("setloc_"))
+    dp.callback_query.register(handlers.handle_sign_up_as_captain, F.data == "sign_up_as_captain")
+    dp.callback_query.register(handlers.handle_sign_up_as_player, F.data == "sign_up_as_player")
     dp.message.register(handlers.handle_location_reply, F.reply_to_message & F.text.isdigit())
     dp.message.register(handlers.handle_start, Command("start"))
     dp.message.register(handlers.start_quest, Command('begin'))

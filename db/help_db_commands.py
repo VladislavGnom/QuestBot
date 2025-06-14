@@ -672,3 +672,19 @@ async def get_game_state_for_team(team_id: int):
             'players': players,
             'current_question': question
         }
+
+
+async def delete_user_from_system(user_id: int) -> tuple[bool, Exception]:
+    """Удаляет пользователя из системы. True - если успешно, иначе False"""
+    async with get_db_connection() as conn:
+        # Удаляем использованную передачу
+        await conn.execute(
+            "DELETE FROM players WHERE user_id = ?",
+            (user_id,)
+        )
+
+        try:
+            await conn.commit()
+            return True, None 
+        except aiosqlite.Error as error:
+            return False, error

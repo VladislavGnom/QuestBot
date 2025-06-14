@@ -18,7 +18,7 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  create_or_upgrade_admin, get_full_location, get_location_questions,
                                  init_team_state, update_team_state, get_team_state, get_player_by_id,
                                  update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team,
-                                 get_status_team_game, set_lyrics_for_team, get_team_lyrics)
+                                 get_status_team_game, set_lyrics_for_team, get_team_lyrics, delete_user_from_system)
 from handlers.messages import format_game_state
 from handlers.help_functions import format_timedelta
 from help.logging import log_action
@@ -74,13 +74,38 @@ async def cmd_set_location(message: types.Message, state: FSMContext):
 
     log_action(f"User [id:{user_id}] used /setlocation")
 
-    if not await is_team_captain(message.from_user.id):
+    if not await is_team_captain(user_id):
         return await message.answer("Только капитан может менять локации!")
     
     await message.answer(
         "Введите номер новой локации:",
         reply_markup=types.ForceReply(selective=True)
     )
+
+
+async def cmd_delete_me_from_system(message: types.Message, state: FSMContext):
+    """Запрос на удаление себя из системы(для повторного входа в дальнейшем или других целей)"""
+    await state.clear()
+
+    user_id = message.from_user.id
+
+    log_action(f"User [id:{user_id}] used /delete_me_from_system")
+
+    if not await get_user_team(user_id):
+        return await message.answer("Только пользователи в команде могут удалить себя из системы!")
+    
+    status, exc = await delete_user_from_system(user_id=user_id)
+
+    if status:
+        await message.answer(
+            "Операция выполнена успешно, вы больше не состоите в системе.",
+            reply_markup=types.ReplyKeyboardRemove()
+        )
+    else:
+        log_action(f"Error when user is tried to delete yourself from system: {exc}.")
+        await message.answer(
+            "Ошибка при удалении из системы. За подробностями обращайтесь к организаторам."
+        )
 
 async def cmd_set_team_lyrics(message: types.Message, state: FSMContext):
     """Запрос на установку/изменение кричалки команды"""
@@ -335,9 +360,12 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
         return
     
     if is_test_mode:
+        log_action(f"User [id:{user_id}] started quest in the test mode [Base Quest]")
+
         # creating needed players for the quest in the test mode
         j = 0
         new_players_list = []
+        
         for location_id in range(1, 7):
             cur_player = players[j]
             cur_player['location'] = location_id

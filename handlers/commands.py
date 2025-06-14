@@ -319,31 +319,36 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
     log_action(f"Players from team [team_id:{team_id}]: {players}")
 
     if not is_test_mode:
-        if not players:
-            await message.answer("В команде нет игроков!")
-            return
-        elif len(players) < 6: 
+        if len(players) < 6: 
             await message.answer("В команде недостаточно игроков чтобы начать квест!\n\nНужное кол-во: 6.")
-            return
-        elif len(players) > 6:
-            await message.answer("В команде больше допустимого кол-ва игроков!\n\nНужное кол-во: 6.")
             return
 
         if [players.count(pl['location']) for pl in players].count(1) != len(players):
             await message.answer("В команде есть игроки стоящие на одинаковых локациях!\n\nИзмените это используя меню из кнопок.")
             return
     
+    if not players:
+        await message.answer("В команде нет игроков!")
+        return
+    elif len(players) > 6:
+        await message.answer("В команде больше допустимого кол-ва игроков!\n\nНужное кол-во: 6.")
+        return
+    
     if is_test_mode:
         # creating needed players for the quest in the test mode
         j = 0
-        for _ in range(6 - len(players)):
+        new_players_list = []
+        for location_id in range(1, 7):
             cur_player = players[j]
-            players.append(cur_player)
+            cur_player['location'] = location_id
+            new_players_list.append(cur_player)
 
             if j + 1 < len(players):
                 j += 1
             else:
                 j = 0
+        
+        players = new_players_list
 
     # сортировка игроков по локации
     players.sort(key=lambda pl: pl['location'])

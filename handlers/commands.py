@@ -24,7 +24,7 @@ from handlers.help_functions import format_timedelta
 from help.logging import log_action
 from handlers.timer_manager import TimerManager, QuestionTimerManager
 from main import BASE_DIR, bot
-from keyboards import start_markup, captain_user_markup, default_user_markup
+from keyboards import start_markup, captain_user_markup, default_user_markup, accept_state_markup
 from config.config import (CAPTAIN_PASSWORD, ADMIN_PASSWORD, 
                            QUESTION_TIME_LIMIT, FIRST_CLUE_OF_QUESTION,
                            SECOND_CLUE_OF_QUESTION, THIRD_CLUE_OF_QUESTION)
@@ -621,7 +621,8 @@ async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
 
     await bot.send_message(
         target_user_id, 
-        f"Предыдущий игрок закончил свой ход, ваша очередь!\n\nДля перехода на свой ход используйте /accept_state"
+        f"Предыдущий игрок закончил свой ход, ваша очередь!\n\nДля перехода на свой ход используйте кнопку ниже",
+        reply_markup=accept_state_markup,
     )
 
     await state.clear()
@@ -754,6 +755,10 @@ async def handle_sign_up_as_captain(callback: types.CallbackQuery, state: FSMCon
 
 async def handle_sign_up_as_player(callback: types.CallbackQuery, state: FSMContext):
     await handle_start(message=callback.message, state=state, start_without_link=True)
+    await callback.answer("")
+
+async def handle_accept_state(callback: types.CallbackQuery, state: FSMContext):
+    await cmd_accept_state(message=callback.message, state=state)
     await callback.answer("")
 
 async def cmd_team_status(message: types.Message):

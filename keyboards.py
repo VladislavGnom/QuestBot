@@ -13,3 +13,7 @@ captain_user_markup = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text="Моя локация"), KeyboardButton(text="Расстановка игроков"), KeyboardButton(text="Получить текст кричалки")],
     [KeyboardButton(text="Установить кричалку"), KeyboardButton(text="Поменять расстановку"), KeyboardButton(text="Начать квест")],
 ], resize_keyboard=True)
+
+accept_state_markup = InlineKeyboardMarkup(keyboard=[
+    [InlineKeyboardButton(text="Принять ход", callback_data="accept_state")]
+])

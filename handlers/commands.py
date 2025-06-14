@@ -148,10 +148,10 @@ async def handle_location_reply(message: types.Message, state: FSMContext):
     
     try:
         new_location = int(message.text)
-        if new_location < 1 or new_location > 10:  # Предположим, у нас 10 локаций
+        if new_location < 1 or new_location > 6:  # We have 6 locations
             raise ValueError
     except ValueError:
-        return await message.answer("Некорректный номер локации. Введите число от 1 до 10")
+        return await message.answer("Некорректный номер локации. Введите число от 1 до 6")
     
     team_id = await get_user_team(message.from_user.id)
     players = await get_team_players(team_id)
@@ -320,6 +320,16 @@ async def start_quest(message: types.Message, state: FSMContext):
 
     if not players:
         await message.answer("В команде нет игроков!")
+        return
+    elif len(players) < 6: 
+        await message.answer("В команде недостаточно игроков чтобы начать квест!\n\nНужное кол-во: 6.")
+        return
+    elif len(players) > 6:
+        await message.answer("В команде больше допустимого кол-ва игроков!\n\nНужное кол-во: 6.")
+        return
+
+    if [players.count(pl['location']) for pl in players].count(1) != len(players):
+        await message.answer("В команде есть игроки стоящие на одинаковых локациях!\n\nИзмените это используя меню из кнопок.")
         return
     
     # сортировка игроков по локации

@@ -302,7 +302,7 @@ async def cmd_help(message: types.Message, state: FSMContext):
 
     await message.answer(HELP, parse_mode="HTML")
 
-async def start_quest_for_team(team_id: int, question_id: int):
+async def start_quest_for_team(team_id: int, question_id: int, is_test_mode=False):
     """Инициализирует квест для команды""" 
     players = await get_team_players(team_id)
     players_ids = [pl["id"] for pl in players]    # [user_id1, user_id2, ...]
@@ -318,6 +318,7 @@ async def start_quest_for_team(team_id: int, question_id: int):
         correct_answers=0,
         question_deadline = question_deadline,
         status='playing',
+        is_test_mode=is_test_mode,
         deadline=datetime.now() + timedelta(hours=1)  # +1 час на прохождение
     )
 
@@ -455,7 +456,7 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
         first_player_id, 
         "Квест начат! Первый игрок получил вопрос."
     )
-    await start_quest_for_team(team_id=team_id, question_id=question_id)
+    await start_quest_for_team(team_id=team_id, question_id=question_id, is_test_mode=is_test_mode)
 
     await state.set_state(QuestStates.waiting_for_answer) 
     log_action(f"User [id:{user_id}] started quest [Base Quest]")
@@ -608,6 +609,12 @@ async def process_answer(message: types.Message, state: FSMContext):
         )
 
         log_action(f"The team [team_id:{team_id}] has finished the quest [Base quest].")
+
+
+        is_test_mode = user_data["is_test_mode"]
+    
+        if is_test_mode:    # processing removing all achievements for test mode of the quest
+            ...
 
         await state.clear()
         return

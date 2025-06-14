@@ -43,6 +43,7 @@ async def init_db():
                 correct_answers INTEGER DEFAULT 0,
                 is_pretend_on_right_answer BOOLEAN DEFAULT 1,    -- зачислять ли правильный ответ за вопрос
                 status TEXT DEFAULT 'waiting',  -- waiting/playing/finished
+                is_test_mode BOOLEAN DEFAULT 0,
                 created_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
                 updated_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
                 ended_at TEXT,

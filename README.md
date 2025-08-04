@@ -1,4 +1,3 @@
-```markdown
 # QuestBot - Telegram-бот для проведения квестов �♂️🗺️
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)

@@ -1,17 +1,27 @@
 import json
 from aiogram import types
-from db.help_db_commands import get_location_questions, get_team_name
+from db.help_db_commands import get_location_questions, get_team_name, is_team_captain
+from keyboards import captain_user_markup, default_user_markup
 
 async def echo(message: types.Message):
     await message.answer(f"Вы написали: {message.text}")
 
 async def invalid_command(message: types.Message):
     message_text = message.text
+    user_id = message.from_user.id
+
+    current_keyboard = captain_user_markup if is_team_captain(user_id) else default_user_markup
 
     if message_text.startswith('/'):
         await message.answer(f"Ошибка! Неверная команда - {message.text}")
     else:
         await message.answer(f"Ошибка! Я не понимаю ваш запрос: {message.text}\n\nВоспользуйтесь /help для ознакомления со мной.")
+
+    # Отправляем новое сообщение с reply-клавиатурой
+    await message.answer(
+        "Выберите следующее действие:",
+        reply_markup=current_keyboard
+    )
 
 async def format_game_state(state: dict) -> str:
     """Форматирует состояние игры в читаемый текст"""

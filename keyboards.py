@@ -15,6 +15,6 @@ captain_user_markup = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text="Начать квест в тестовом режиме")]
 ], resize_keyboard=True)
 
-accept_state_markup = InlineKeyboardMarkup(keyboard=[
+accept_state_markup = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="Принять ход", callback_data="accept_state")]
 ])

@@ -19,6 +19,17 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=storage)
 logger = logging.getLogger(__name__)
 
+def load_text_commands(dp: Dispatcher):
+    dp.message.register(handlers.cmd_my_location, F.text == "Моя локация")
+    dp.message.register(handlers.cmd_players_locations, F.text == "Расстановка игроков")
+    dp.message.register(handlers.cmd_get_team_lyrics, F.text == "Получить текст кричалки")
+    dp.message.register(handlers.cmd_set_team_lyrics, F.text == "Установить кричалку")
+    dp.message.register(handlers.cmd_set_location, F.text == "Поменять расстановку")
+    dp.message.register(handlers.start_quest, F.text == "Начать квест")
+    dp.message.register(handlers.start_quest_in_test_mode, F.text == "Начать квест в тестовом режиме")
+
+
+
 def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.process_captain_password, StateFilter(WaitForPassword.waiting_for_captain_password))
     dp.message.register(handlers.process_admin_password, StateFilter(WaitForPassword.waiting_for_admin_password))
@@ -43,6 +54,9 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(handlers.cmd_get_team_lyrics, Command("get_lyrics"))
     dp.message.register(handlers.cmd_set_location, Command("setlocation"))
     dp.message.register(handlers.cmd_delete_me_from_system, Command("delete_me_from_system"))
+    
+    load_text_commands(dp)
+
     dp.message.register(invalid_command, F.text)
 
 async def on_startup():

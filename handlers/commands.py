@@ -82,6 +82,58 @@ async def cmd_set_location(message: types.Message, state: FSMContext):
         reply_markup=types.ForceReply(selective=True)
     )
 
+async def handle_location_reply(message: types.Message, state: FSMContext):
+    """Обработка ответа с номером локации"""
+    await state.clear()
+
+    if not message.reply_to_message.text == "Введите номер новой локации:":
+        return
+    
+    try:
+        new_location = int(message.text)
+        if new_location < 1 or new_location > 6:  # We have 6 locations
+            raise ValueError
+    except ValueError:
+        return await message.answer("Некорректный номер локации. Введите число от 1 до 6")
+    
+    team_id = await get_user_team(message.from_user.id)
+    players = await get_team_players(team_id)
+    
+    builder = InlineKeyboardBuilder()
+    for player in players:
+        builder.button(
+            text=f"{player['username']} (локация {player['location']})", 
+            callback_data=f"setloc_{player['id']}_{new_location}"
+        )
+    builder.adjust(1)
+    
+    await message.answer(
+        f"Выберите игрока для перемещения на локацию {new_location}:",
+        reply_markup=builder.as_markup()
+    )
+
+async def handle_player_location_change(callback: types.CallbackQuery):
+    """Обработка выбора игрока для перемещения"""
+    _, user_id, new_location = callback.data.split('_')
+    user_id = int(user_id)
+    new_location = int(new_location)
+    
+    current_keyboard = captain_user_markup if is_team_captain(user_id) else default_user_markup
+    
+    await set_player_location(user_id, new_location)
+    await callback.message.edit_text(
+        f"Игрок перемещен на локацию {new_location}",
+        reply_markup=None
+    )
+
+    # Отправляем новое сообщение с reply-клавиатурой
+    await callback.message.answer(
+        "Выберите следующее действие:",
+        reply_markup=current_keyboard
+    )
+    await callback.answer()
+
+    log_action(f"User [id:{user_id}] was changed location to {new_location}")
 
 async def cmd_delete_me_from_system(message: types.Message, state: FSMContext):
     """Запрос на удаление себя из системы(для повторного входа в дальнейшем или других целей)"""
@@ -163,51 +215,7 @@ async def cmd_get_team_lyrics(message: types.Message, state: FSMContext):
         f"Кричалка для команды - '{team_name}':\n\n{lyrics_text}"
     )
     log_action(f"The lyrics for team [team_id:{team_id}] is got successfully by a user [user_id:{user_id}].")
-    
-async def handle_location_reply(message: types.Message, state: FSMContext):
-    """Обработка ответа с номером локации"""
-    await state.clear()
 
-    if not message.reply_to_message.text == "Введите номер новой локации:":
-        return
-    
-    try:
-        new_location = int(message.text)
-        if new_location < 1 or new_location > 6:  # We have 6 locations
-            raise ValueError
-    except ValueError:
-        return await message.answer("Некорректный номер локации. Введите число от 1 до 6")
-    
-    team_id = await get_user_team(message.from_user.id)
-    players = await get_team_players(team_id)
-    
-    builder = InlineKeyboardBuilder()
-    for player in players:
-        builder.button(
-            text=f"{player['username']} (локация {player['location']})", 
-            callback_data=f"setloc_{player['id']}_{new_location}"
-        )
-    builder.adjust(1)
-    
-    await message.answer(
-        f"Выберите игрока для перемещения на локацию {new_location}:",
-        reply_markup=builder.as_markup()
-    )
-
-async def handle_player_location_change(callback: types.CallbackQuery):
-    """Обработка выбора игрока для перемещения"""
-    _, user_id, new_location = callback.data.split('_')
-    user_id = int(user_id)
-    new_location = int(new_location)
-    
-    await set_player_location(user_id, new_location)
-    await callback.message.edit_text(
-        f"Игрок перемещен на локацию {new_location}",
-        reply_markup=None
-    )
-    await callback.answer()
-
-    log_action(f"User [id:{user_id}] was changed location to {new_location}")
 
 async def request_captain_role(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
@@ -368,7 +376,7 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
         new_players_list = []
         
         for location_id in range(1, 7):
-            cur_player = players[j]
+            cur_player = players[j].copy()
             cur_player['location'] = location_id
             new_players_list.append(cur_player)
 
@@ -392,12 +400,17 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
         question = choice(questions)    # рандомный вопрос из соответственной локации
         question_id = question.get('id')
         answer_hints = json.loads(question.get('answer_hints'))
+        print(question.get('hints_media_paths'))
         hints_media_paths = json.loads(question.get('hints_media_paths'))
         question_media_path = question.get('media_path')
     except IndexError:    # выбрана локация для которой нет вопросов
         await message.answer("На вашу локацию нет вопросов в БД.")
         log_action(f"Error: Location [location_id:{location_id}] has not have any questions.")
         return
+    except TypeError as error:    
+        await message.answer("Ошибка с данными в БД")
+        log_action(f"Error: {error}")
+
 
     try:
         path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
@@ -781,8 +794,13 @@ async def handle_start(message: types.Message, state: FSMContext, start_without_
             "Ожидайте начала квеста от капитана команды.\n"
             f"Капитан: {await mention_user(captain_id)}"
         )
-            
-        return await message.answer(text)
+        
+        current_keyboard = captain_user_markup if is_team_captain(user_id) else default_user_markup
+
+        return await message.answer(
+            text, 
+            reply_markup=current_keyboard
+        )
 
     args = message.text.split()[1] if len(message.text.split()) > 1 else None
     
@@ -843,3 +861,6 @@ async def cmd_team_status(message: types.Message):
         await format_game_state(state),
         parse_mode="HTML"
     )
+
+async def start_quest_in_test_mode(message: types.Message, state: FSMContext):
+    await start_quest(message=message, state=state, is_test_mode=True)

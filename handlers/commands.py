@@ -3,6 +3,7 @@ import json
 from random import choice
 from datetime import datetime, timedelta
 from aiogram import types, Dispatcher, Bot
+from aiogram.types import ReplyKeyboardRemove
 from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -422,12 +423,17 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
     try:
         path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
         photo = types.FSInputFile(path_to_question_photo)
-        await bot.send_photo(first_player_id, photo, caption=f"Игра началась! Ваш вопрос: {question.get('question_text')}")
+        await bot.send_photo(
+            first_player_id, 
+            photo, 
+            caption=f"Игра началась! Ваш вопрос: {question.get('question_text')}",
+            reply_markup=ReplyKeyboardRemove()
+        )
     except Exception:
         await bot.send_message(
             first_player_id, 
             f"Игра началась! Ваш вопрос: {question.get('question_text')}",
-            reply_markup=None
+            reply_markup=ReplyKeyboardRemove()
         )
 
     # добавляем таймер для вопроса
@@ -517,13 +523,13 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
             player_id, 
             photo, 
             caption=f"Вопрос {question_num}: {question.get('question_text')}",
-            reply_markup=None
+            reply_markup=ReplyKeyboardRemove()
         )
     except Exception:        
         await bot.send_message(
             player_id, 
             f"Вопрос {question_num}: {question.get('question_text')}",
-            reply_markup=None
+            reply_markup=ReplyKeyboardRemove()
         )
 
     question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)

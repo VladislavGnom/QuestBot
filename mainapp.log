@@ -3725,3 +3725,69 @@ client_session: <aiohttp.client.ClientSession object at 0x7fcfe9f6fc20>
 2025-08-06 12:13:31,852 - WARNING - Received SIGINT signal
 2025-08-06 12:13:31,853 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
 2025-08-06 12:13:31,853 - INFO - Polling stopped
+2025-08-06 12:18:30,011 - INFO - Start polling
+2025-08-06 12:18:30,337 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:18:38,641 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 12:18:38,641 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 12:18:40,196 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 12:18:40,196 - INFO - Update id=491369279 is handled. Duration 1567 ms by bot id=7928066551
+2025-08-06 12:18:50,198 - WARNING - Received SIGINT signal
+2025-08-06 12:18:50,199 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:18:50,199 - INFO - Polling stopped
+2025-08-06 12:18:50,342 - WARNING - Received SIGINT signal
+2025-08-06 12:18:50,451 - ERROR - unhandled exception during asyncio.run() shutdown
+task: <Task finished name='Task-15' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:18:50,452 - ERROR - unhandled exception during asyncio.run() shutdown
+task: <Task finished name='Task-14' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:18:50,452 - ERROR - unhandled exception during asyncio.run() shutdown
+task: <Task finished name='Task-16' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:18:50,642 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f0a0f2c7cb0>
+2025-08-06 12:18:50,642 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7f0a0f2ddc70>, 11626.041794489)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7f0a0f2c7d70>

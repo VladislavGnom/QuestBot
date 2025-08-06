@@ -1989,3 +1989,408 @@ IndexError: list index out of range
 2025-08-06 10:08:22,105 - INFO - Polling stopped
 2025-08-06 10:08:22,546 - ERROR - Unclosed client session
 client_session: <aiohttp.client.ClientSession object at 0x7f97ba5dd3d0>
+2025-08-06 10:15:47,741 - INFO - Start polling
+2025-08-06 10:15:48,013 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:15:48,471 - INFO - Update id=491369132 is handled. Duration 341 ms by bot id=7928066551
+2025-08-06 10:16:16,719 - WARNING - Received SIGINT signal
+2025-08-06 10:16:16,720 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:16:16,720 - INFO - Polling stopped
+2025-08-06 10:16:16,847 - WARNING - Received SIGINT signal
+2025-08-06 10:16:21,853 - INFO - Start polling
+2025-08-06 10:16:22,428 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:16:31,204 - INFO - User [id:1636968793] started the bot
+2025-08-06 10:16:31,204 - INFO - User [id:1636968793] used /start
+2025-08-06 10:16:31,598 - INFO - Update id=491369133 is handled. Duration 394 ms by bot id=7928066551
+2025-08-06 10:16:35,489 - INFO - User [id:7928066551] used /become_captain
+2025-08-06 10:16:35,826 - INFO - Update id=491369134 is handled. Duration 338 ms by bot id=7928066551
+2025-08-06 10:16:42,524 - INFO - Update id=491369135 is handled. Duration 382 ms by bot id=7928066551
+2025-08-06 10:16:47,053 - INFO - User [id:1636968793] used /mylocation
+2025-08-06 10:16:47,151 - INFO - Update id=491369136 is handled. Duration 99 ms by bot id=7928066551
+2025-08-06 10:16:48,799 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 10:16:48,799 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 10:16:48,926 - INFO - Error: the JSON object must be str, bytes or bytearray, not NoneType
+2025-08-06 10:16:49,406 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 10:16:49,406 - INFO - Update id=491369137 is handled. Duration 615 ms by bot id=7928066551
+2025-08-06 10:17:00,069 - INFO - User [id:1636968793] completed question [question_id:1] in quest [Base Quest]
+2025-08-06 10:17:01,877 - INFO - Update id=491369138 is handled. Duration 1945 ms by bot id=7928066551
+2025-08-06 10:17:03,530 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 10:17:04,159 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 10:17:04,159 - INFO - Update id=491369139 is handled. Duration 632 ms by bot id=7928066551
+2025-08-06 10:17:04,879 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 10:17:05,379 - INFO - Update id=491369140 is not handled. Duration 501 ms by bot id=7928066551
+2025-08-06 10:17:05,379 - ERROR - Cause exception while process update id=491369140 by bot id=7928066551
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 857, in handle_accept_state
+    await cmd_accept_state(update=callback, state=state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 761, in cmd_accept_state
+    await send_question(target_user_id, message, state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 509, in send_question
+    answer_hints = json.loads(question.get('answer_hints'))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2025-08-06 10:17:12,567 - INFO - Update id=491369141 is handled. Duration 318 ms by bot id=7928066551
+2025-08-06 10:20:20,418 - WARNING - Received SIGINT signal
+2025-08-06 10:20:20,418 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:20:20,419 - INFO - Polling stopped
+2025-08-06 10:20:20,537 - WARNING - Received SIGINT signal
+2025-08-06 10:20:20,902 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7fcb2545e720>
+2025-08-06 10:20:25,679 - INFO - Start polling
+2025-08-06 10:20:26,021 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:20:26,134 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 10:20:26,135 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 10:20:26,737 - INFO - Error: the JSON object must be str, bytes or bytearray, not NoneType
+2025-08-06 10:20:27,200 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 10:20:27,200 - INFO - Update id=491369142 is handled. Duration 1072 ms by bot id=7928066551
+2025-08-06 10:20:35,525 - INFO - User [id:1636968793] completed question [question_id:2] in quest [Base Quest]
+2025-08-06 10:20:36,309 - INFO - Update id=491369143 is handled. Duration 876 ms by bot id=7928066551
+2025-08-06 10:20:37,507 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 10:20:37,924 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 10:20:37,924 - INFO - Update id=491369144 is handled. Duration 420 ms by bot id=7928066551
+2025-08-06 10:20:39,199 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 10:20:39,694 - INFO - Update id=491369145 is not handled. Duration 496 ms by bot id=7928066551
+2025-08-06 10:20:39,695 - ERROR - Cause exception while process update id=491369145 by bot id=7928066551
+JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 863, in handle_accept_state
+    await cmd_accept_state(update=callback, state=state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 767, in cmd_accept_state
+    await send_question(target_user_id, message, state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 511, in send_question
+    answer_hints = json.loads(question.get('answer_hints'))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2025-08-06 10:20:43,837 - INFO - Update id=491369146 is handled. Duration 398 ms by bot id=7928066551
+2025-08-06 10:22:58,558 - WARNING - Received SIGINT signal
+2025-08-06 10:22:58,559 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:22:58,559 - INFO - Polling stopped
+2025-08-06 10:22:58,678 - WARNING - Received SIGINT signal
+2025-08-06 10:22:59,004 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7effccb49f10>
+2025-08-06 10:23:03,944 - INFO - Start polling
+2025-08-06 10:23:04,772 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:23:04,884 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 10:23:04,884 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 10:23:05,317 - INFO - Error: the JSON object must be str, bytes or bytearray, not NoneType
+2025-08-06 10:23:05,748 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 10:23:05,749 - INFO - Update id=491369147 is handled. Duration 873 ms by bot id=7928066551
+2025-08-06 10:23:15,591 - INFO - User [id:1636968793] completed question [question_id:2] in quest [Base Quest]
+2025-08-06 10:23:17,372 - INFO - Update id=491369148 is handled. Duration 1904 ms by bot id=7928066551
+2025-08-06 10:23:18,580 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 10:23:18,988 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 10:23:18,988 - INFO - Update id=491369149 is handled. Duration 411 ms by bot id=7928066551
+2025-08-06 10:23:20,317 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 10:23:20,863 - INFO - Update id=491369150 is not handled. Duration 547 ms by bot id=7928066551
+2025-08-06 10:23:20,864 - ERROR - Cause exception while process update id=491369150 by bot id=7928066551
+TypeError: catching classes that do not inherit from BaseException is not allowed
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 511, in send_question
+    answer_hints = json.loads(question.get('answer_hints'))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 864, in handle_accept_state
+    await cmd_accept_state(update=callback, state=state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 768, in cmd_accept_state
+    await send_question(target_user_id, message, state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 513, in send_question
+    except (TypeError | json.decoder.JSONDecodeError) as error:
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 10:23:24,604 - INFO - Update id=491369151 is handled. Duration 400 ms by bot id=7928066551
+2025-08-06 10:24:08,780 - WARNING - Received SIGINT signal
+2025-08-06 10:24:08,781 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:24:08,781 - INFO - Polling stopped
+2025-08-06 10:24:09,224 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7fce4c7a0320>
+2025-08-06 10:24:14,202 - INFO - Start polling
+2025-08-06 10:24:18,083 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:24:18,210 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 10:24:19,412 - INFO - Error: Expecting value: line 1 column 1 (char 0)
+2025-08-06 10:24:19,572 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 10:24:19,693 - INFO - Update id=491369152 is handled. Duration 1484 ms by bot id=7928066551
+2025-08-06 10:24:22,908 - INFO - Update id=491369153 is not handled. Duration 158 ms by bot id=7928066551
+2025-08-06 10:24:22,908 - ERROR - Cause exception while process update id=491369153 by bot id=7928066551
+TypeError: update_team_state() missing 1 required positional argument: 'team_id'
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 591, in process_answer
+    await update_team_state(
+          ^^^^^^^^^^^^^^^^^^
+TypeError: update_team_state() missing 1 required positional argument: 'team_id'
+2025-08-06 10:24:38,495 - INFO - User [id:1636968793] completed question [question_id:3] in quest [Base Quest]
+2025-08-06 10:24:38,910 - INFO - Update id=491369154 is handled. Duration 820 ms by bot id=7928066551
+2025-08-06 10:24:42,083 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 10:24:42,673 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 10:24:42,673 - INFO - Update id=491369155 is handled. Duration 592 ms by bot id=7928066551
+2025-08-06 10:24:44,742 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 10:24:44,896 - INFO - Update id=491369156 is not handled. Duration 155 ms by bot id=7928066551
+2025-08-06 10:24:44,896 - ERROR - Cause exception while process update id=491369156 by bot id=7928066551
+IndexError: Cannot choose from an empty sequence
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 864, in handle_accept_state
+    await cmd_accept_state(update=callback, state=state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 768, in cmd_accept_state
+    await send_question(target_user_id, message, state)
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 494, in send_question
+    question = choice(questions)    # рандомный вопрос из соответственной локации
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/random.py", line 347, in choice
+    raise IndexError('Cannot choose from an empty sequence')
+IndexError: Cannot choose from an empty sequence
+2025-08-06 10:27:03,505 - WARNING - Received SIGINT signal
+2025-08-06 10:27:03,506 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:27:03,506 - INFO - Polling stopped
+2025-08-06 10:27:03,650 - WARNING - Received SIGINT signal
+2025-08-06 10:27:03,975 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f876a3dcd40>
+2025-08-06 10:27:08,675 - INFO - Start polling
+2025-08-06 10:27:09,029 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:27:11,210 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 10:27:11,610 - INFO - Error: there arent any questions for location [location_id:3]
+2025-08-06 10:27:11,718 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 10:27:11,840 - INFO - Update id=491369157 is handled. Duration 631 ms by bot id=7928066551
+2025-08-06 10:31:47,653 - WARNING - Received SIGINT signal
+2025-08-06 10:31:47,653 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:31:47,654 - INFO - Polling stopped
+2025-08-06 10:31:47,805 - WARNING - Received SIGINT signal
+2025-08-06 10:31:52,864 - INFO - Start polling
+2025-08-06 10:31:53,791 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:31:53,976 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 10:31:54,435 - INFO - Error: there arent any questions for location [location_id:3]
+2025-08-06 10:31:54,545 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 10:31:54,654 - INFO - Update id=491369158 is handled. Duration 678 ms by bot id=7928066551
+2025-08-06 10:32:07,375 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 10:32:07,375 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 10:32:07,509 - INFO - Error: the JSON object must be str, bytes or bytearray, not NoneType
+2025-08-06 10:32:08,168 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 10:32:08,168 - INFO - Update id=491369159 is handled. Duration 800 ms by bot id=7928066551
+2025-08-06 10:32:20,500 - WARNING - Received SIGINT signal
+2025-08-06 10:32:20,501 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 10:32:20,501 - INFO - Polling stopped
+2025-08-06 10:32:20,968 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7fa0abfd3890>
+2025-08-06 10:32:20,968 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7fa0abfee930>, 5236.55404802)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7fa0abfd37d0>

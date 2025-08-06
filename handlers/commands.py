@@ -18,7 +18,7 @@ from db.help_db_commands import (add_player_to_team, get_team_players,
                                  create_or_upgrade_admin, get_full_location, get_location_questions,
                                  init_team_state, update_team_state, get_team_state, get_player_by_id,
                                  update_team_state, prepare_state_transfer, apply_state_transfer, get_game_state_for_team,
-                                 get_status_team_game, set_lyrics_for_team, get_team_lyrics, delete_user_from_system)
+                                 get_status_team_game, set_lyrics_for_team, get_team_lyrics, delete_user_from_system, clear_team_game_states)
 from handlers.messages import format_game_state
 from handlers.help_functions import format_timedelta
 from help.logging import log_action
@@ -489,11 +489,17 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
 
     current_player = players[current_player_idx]
-    location_id = current_player['location']
-    questions = await get_location_questions(location_id=location_id)
-    question = choice(questions)    # рандомный вопрос из соответственной локации
-    question_id = question.get('id')
-    question_media_path = question.get('media_path')
+    location_id = question_num    # question_num is similar to location_id. generally, its the same
+    
+    try:
+        questions = await get_location_questions(location_id=location_id)
+        question = choice(questions)    # рандомный вопрос из соответственной локации
+        question_id = question.get('id')
+        question_media_path = question.get('media_path')
+    except IndexError as error:
+        await clear_team_game_states(team_id=team_id)
+        log_action(f'Error: there arent any questions for location [location_id:{location_id}]')
+        return await message.answer("Ошибка: нет вопросов для этой локации")
 
     try:
         path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
@@ -506,7 +512,14 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
         )
 
     question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
-    answer_hints = json.loads(question.get('answer_hints'))
+
+    try:
+        answer_hints = json.loads(question.get('answer_hints'))
+        print(question.get('hints_media_paths'))
+    except json.decoder.JSONDecodeError as error:    
+        await message.answer("Ошибка с данными в БД")
+        log_action(f"Error: {error}")
+    
 
     # добавляем таймер для вопроса
     await question_timer_manager.add_timer(
@@ -564,11 +577,8 @@ async def process_answer(message: types.Message, state: FSMContext):
     
     
     current_player = players[current_player_idx]
-    print(current_player)
-    location_id = current_player["location"]
-    print(current_player['location'])
+    location_id = question_num    # question_num is similar to location_id. generally, its the same
     questions = await get_location_questions(location_id=location_id)
-    print(f'{questions=}')
     question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    
 
     if question_deadline and datetime.fromisoformat(question_deadline) < datetime.now():
@@ -603,7 +613,7 @@ async def process_answer(message: types.Message, state: FSMContext):
     
     current_player_idx += 1
     next_players = players[current_player_idx:]
-    
+
     if not next_players:
         await update_team_state(
             team_id=team_id, 
@@ -638,7 +648,7 @@ async def process_answer(message: types.Message, state: FSMContext):
         return
     
     current_player = players[current_player_idx]    # следующий игрок
-    location_id = current_player["location"]    # локация следующего игрока
+    location_id = question_num + 1   # question_num is similar to location_id. generally, its the same
     
     try:
         # location_data = await get_full_location(location_id=location_id)

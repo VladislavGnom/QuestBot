@@ -10,7 +10,7 @@ async def invalid_command(message: types.Message):
     message_text = message.text
     user_id = message.from_user.id
 
-    current_keyboard = captain_user_markup if is_team_captain(user_id) else default_user_markup
+    current_keyboard = captain_user_markup if await is_team_captain(user_id) else default_user_markup
 
     if message_text.startswith('/'):
         await message.answer(f"Ошибка! Неверная команда - {message.text}")

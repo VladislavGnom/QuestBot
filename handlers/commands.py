@@ -647,7 +647,7 @@ async def process_answer(message: types.Message, state: FSMContext):
 
 
     if not is_question_deadline_passed:
-        if message.text.lower().strip() != question.get("answer").lower().strip():
+        if "".join(message.text.lower().strip().split()) != "".join(question.get("answer").lower().strip().split()):
             await message.answer("❌ Неверно! Попробуйте еще раз.")
 
             if is_pretend_on_right_answer:
@@ -715,7 +715,7 @@ async def process_answer(message: types.Message, state: FSMContext):
         is_test_mode = user_data["is_test_mode"]
     
         if is_test_mode:    # processing removing all achievements for test mode of the quest
-            ...
+            await clear_team_game_states(team_id=team_id)
 
         await state.clear()
         return

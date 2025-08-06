@@ -2645,3 +2645,1083 @@ connector: <aiohttp.connector.TCPConnector object at 0x7fe937784a70>
 2025-08-06 11:54:20,823 - INFO - User [id:1636968793] used /accept_state
 2025-08-06 11:54:22,386 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
 2025-08-06 11:54:22,486 - INFO - Update id=491369201 is handled. Duration 1663 ms by bot id=7928066551
+2025-08-06 11:56:48,437 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-319' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:56:48,439 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-320' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:56:48,794 - INFO - User [id:1636968793] completed question [question_id:2] in quest [Base Quest]
+2025-08-06 11:56:49,891 - INFO - Update id=491369202 is handled. Duration 1465 ms by bot id=7928066551
+2025-08-06 11:57:42,319 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:57:43,092 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:57:43,092 - INFO - Update id=491369203 is handled. Duration 776 ms by bot id=7928066551
+2025-08-06 11:57:44,364 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:57:44,947 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:57:45,037 - INFO - Update id=491369204 is handled. Duration 674 ms by bot id=7928066551
+2025-08-06 11:58:12,414 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-468' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:58:12,415 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-469' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:58:12,415 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-470' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:58:12,728 - INFO - User [id:1636968793] completed question [question_id:3] in quest [Base Quest]
+2025-08-06 11:58:13,856 - INFO - Update id=491369205 is handled. Duration 1454 ms by bot id=7928066551
+2025-08-06 11:58:24,034 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:58:24,435 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:58:24,436 - INFO - Update id=491369206 is handled. Duration 406 ms by bot id=7928066551
+2025-08-06 11:58:25,502 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:58:26,235 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:58:26,345 - INFO - Update id=491369207 is handled. Duration 844 ms by bot id=7928066551
+2025-08-06 11:58:40,326 - INFO - User [id:1636968793] unsuccessfully answered question [question_id:4] in quest [Base Quest]
+2025-08-06 11:58:40,326 - INFO - Update id=491369208 is handled. Duration 305 ms by bot id=7928066551
+2025-08-06 11:58:51,128 - INFO - User [id:1636968793] unsuccessfully answered question [question_id:4] in quest [Base Quest]
+2025-08-06 11:58:51,128 - INFO - Update id=491369209 is handled. Duration 425 ms by bot id=7928066551
+2025-08-06 11:59:04,941 - INFO - User [id:1636968793] unsuccessfully answered question [question_id:4] in quest [Base Quest]
+2025-08-06 11:59:04,941 - INFO - Update id=491369210 is handled. Duration 131 ms by bot id=7928066551
+2025-08-06 11:59:13,595 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-516' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:13,596 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-517' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:13,596 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-518' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:13,705 - INFO - User [id:1636968793] completed question [question_id:4] in quest [Base Quest]
+2025-08-06 11:59:14,624 - INFO - Update id=491369211 is handled. Duration 1042 ms by bot id=7928066551
+2025-08-06 11:59:17,157 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:59:18,196 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:59:18,197 - INFO - Update id=491369212 is handled. Duration 1042 ms by bot id=7928066551
+2025-08-06 11:59:19,226 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:59:19,936 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:59:20,070 - INFO - Update id=491369213 is handled. Duration 845 ms by bot id=7928066551
+2025-08-06 11:59:32,336 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-589' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:32,337 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-590' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:32,337 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-591' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:32,457 - INFO - User [id:1636968793] completed question [question_id:5] in quest [Base Quest]
+2025-08-06 11:59:33,491 - INFO - Update id=491369214 is handled. Duration 1166 ms by bot id=7928066551
+2025-08-06 11:59:35,396 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:59:35,756 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:59:35,756 - INFO - Update id=491369215 is handled. Duration 362 ms by bot id=7928066551
+2025-08-06 11:59:38,364 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:59:38,987 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:59:39,134 - INFO - Update id=491369216 is handled. Duration 771 ms by bot id=7928066551
+2025-08-06 11:59:50,211 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-623' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:50,212 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-624' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:50,213 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-625' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 11:59:50,317 - INFO - User [id:1636968793] completed question [question_id:6] in quest [Base Quest]
+2025-08-06 11:59:50,592 - INFO - The team [team_id:1] has finished the quest [Base quest].
+2025-08-06 11:59:50,592 - INFO - Update id=491369217 is handled. Duration 393 ms by bot id=7928066551
+2025-08-06 12:00:15,307 - WARNING - Received SIGINT signal
+2025-08-06 12:00:15,308 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:00:15,308 - INFO - Polling stopped
+2025-08-06 12:00:15,435 - WARNING - Received SIGINT signal
+2025-08-06 12:00:15,738 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f7483fe1520>
+2025-08-06 12:00:20,317 - INFO - Start polling
+2025-08-06 12:00:20,733 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:00:21,371 - INFO - User [id:1636968793] started the bot
+2025-08-06 12:00:21,371 - INFO - User [id:1636968793] used /start
+2025-08-06 12:00:21,939 - INFO - Update id=491369218 is handled. Duration 568 ms by bot id=7928066551
+2025-08-06 12:00:24,876 - INFO - Update id=491369219 is handled. Duration 156 ms by bot id=7928066551
+2025-08-06 12:01:35,666 - WARNING - Received SIGINT signal
+2025-08-06 12:01:35,666 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:01:35,666 - INFO - Polling stopped
+2025-08-06 12:01:35,825 - WARNING - Received SIGINT signal
+2025-08-06 12:01:47,709 - INFO - Start polling
+2025-08-06 12:01:48,323 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:01:50,305 - INFO - User [id:1636968793] started the bot
+2025-08-06 12:01:50,305 - INFO - User [id:1636968793] used /start
+2025-08-06 12:01:51,772 - INFO - Update id=491369220 is handled. Duration 1467 ms by bot id=7928066551
+2025-08-06 12:01:53,033 - INFO - User [id:7928066551] used /become_captain
+2025-08-06 12:01:53,333 - INFO - Update id=491369221 is handled. Duration 300 ms by bot id=7928066551
+2025-08-06 12:01:59,683 - INFO - Update id=491369222 is handled. Duration 894 ms by bot id=7928066551
+2025-08-06 12:02:03,581 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 12:02:03,581 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 12:02:05,018 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 12:02:05,018 - INFO - Update id=491369223 is handled. Duration 1445 ms by bot id=7928066551
+2025-08-06 12:02:10,258 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-27' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:02:10,259 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-28' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:02:10,259 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-29' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:02:10,383 - INFO - User [id:1636968793] completed question [question_id:1] in quest [Base Quest]
+2025-08-06 12:02:11,461 - INFO - Update id=491369224 is handled. Duration 1214 ms by bot id=7928066551
+2025-08-06 12:02:13,400 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:02:13,720 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:02:13,720 - INFO - Update id=491369225 is handled. Duration 324 ms by bot id=7928066551
+2025-08-06 12:02:31,441 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:02:33,939 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:02:34,019 - INFO - Update id=491369226 is handled. Duration 2578 ms by bot id=7928066551
+2025-08-06 12:03:01,818 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-54' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:01,818 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-55' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:01,819 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-56' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:02,191 - INFO - User [id:1636968793] completed question [question_id:2] in quest [Base Quest]
+2025-08-06 12:03:03,727 - INFO - Update id=491369227 is handled. Duration 1923 ms by bot id=7928066551
+2025-08-06 12:03:06,031 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:03:06,614 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:03:06,614 - INFO - Update id=491369228 is handled. Duration 587 ms by bot id=7928066551
+2025-08-06 12:03:07,759 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:03:08,484 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:03:08,706 - INFO - Update id=491369229 is handled. Duration 948 ms by bot id=7928066551
+2025-08-06 12:03:19,517 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-104' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:19,517 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-105' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:19,518 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-106' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:19,670 - INFO - User [id:1636968793] completed question [question_id:3] in quest [Base Quest]
+2025-08-06 12:03:20,331 - INFO - Update id=491369230 is handled. Duration 826 ms by bot id=7928066551
+2025-08-06 12:03:21,514 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:03:21,843 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:03:21,843 - INFO - Update id=491369231 is handled. Duration 331 ms by bot id=7928066551
+2025-08-06 12:03:23,002 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:03:23,613 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:03:23,792 - INFO - Update id=491369232 is handled. Duration 791 ms by bot id=7928066551
+2025-08-06 12:03:33,156 - INFO - User [id:1636968793] unsuccessfully answered question [question_id:4] in quest [Base Quest]
+2025-08-06 12:03:33,157 - INFO - Update id=491369233 is handled. Duration 556 ms by bot id=7928066551
+2025-08-06 12:03:44,943 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-137' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:44,944 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-138' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:44,944 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-139' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:45,104 - INFO - User [id:1636968793] completed question [question_id:4] in quest [Base Quest]
+2025-08-06 12:03:45,886 - INFO - Update id=491369234 is handled. Duration 956 ms by bot id=7928066551
+2025-08-06 12:03:47,108 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:03:47,568 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:03:47,568 - INFO - Update id=491369235 is handled. Duration 464 ms by bot id=7928066551
+2025-08-06 12:03:49,285 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:03:50,040 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:03:50,208 - INFO - Update id=491369236 is handled. Duration 924 ms by bot id=7928066551
+2025-08-06 12:03:57,492 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-183' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:57,493 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-184' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:57,493 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-185' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:03:57,605 - INFO - User [id:1636968793] completed question [question_id:5] in quest [Base Quest]
+2025-08-06 12:03:58,896 - INFO - Update id=491369237 is handled. Duration 1416 ms by bot id=7928066551
+2025-08-06 12:03:59,943 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:04:00,546 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:04:00,546 - INFO - Update id=491369238 is handled. Duration 607 ms by bot id=7928066551
+2025-08-06 12:04:01,658 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:04:02,657 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:04:02,796 - INFO - Update id=491369239 is handled. Duration 1139 ms by bot id=7928066551
+2025-08-06 12:04:45,785 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-212' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:04:45,785 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-213' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:04:45,786 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-214' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:04:46,175 - INFO - User [id:1636968793] completed question [question_id:6] in quest [Base Quest]
+2025-08-06 12:04:46,693 - INFO - The team [team_id:1] has finished the quest [Base quest].
+2025-08-06 12:04:46,697 - INFO - Update id=491369240 is handled. Duration 928 ms by bot id=7928066551
+2025-08-06 12:04:52,063 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 12:04:52,063 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 12:04:54,276 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 12:04:54,276 - INFO - Update id=491369241 is handled. Duration 2222 ms by bot id=7928066551
+2025-08-06 12:04:59,036 - INFO - User [id:1636968793] unsuccessfully answered question [question_id:1] in quest [Base Quest]
+2025-08-06 12:04:59,036 - INFO - Update id=491369242 is handled. Duration 567 ms by bot id=7928066551
+2025-08-06 12:08:59,457 - WARNING - Received SIGINT signal
+2025-08-06 12:08:59,458 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:08:59,458 - INFO - Polling stopped
+2025-08-06 12:08:59,569 - WARNING - Received SIGINT signal
+2025-08-06 12:08:59,882 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f8d48164170>
+2025-08-06 12:08:59,882 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7f8d494deb70>, 11030.737852313), (<aiohttp.client_proto.ResponseHandler object at 0x7f8d48063bf0>, 11035.324261663)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7f8d48164500>
+2025-08-06 12:09:04,583 - INFO - Start polling
+2025-08-06 12:09:04,856 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:09:05,835 - INFO - User [id:1636968793] started the bot
+2025-08-06 12:09:05,835 - INFO - User [id:1636968793] used /start
+2025-08-06 12:09:06,139 - INFO - Update id=491369243 is handled. Duration 305 ms by bot id=7928066551
+2025-08-06 12:09:07,242 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 12:09:07,242 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 12:09:10,581 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 12:09:10,581 - INFO - Update id=491369244 is handled. Duration 3346 ms by bot id=7928066551
+2025-08-06 12:09:17,228 - INFO - User [id:1636968793] unsuccessfully answered question [question_id:1] in quest [Base Quest]
+2025-08-06 12:09:17,228 - INFO - Update id=491369245 is handled. Duration 126 ms by bot id=7928066551
+2025-08-06 12:09:18,851 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-17' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:18,852 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-18' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:18,852 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:19,020 - INFO - User [id:1636968793] completed question [question_id:1] in quest [Base Quest]
+2025-08-06 12:09:20,530 - INFO - Update id=491369246 is handled. Duration 1697 ms by bot id=7928066551
+2025-08-06 12:09:25,668 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:09:26,199 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:09:26,200 - INFO - Update id=491369247 is handled. Duration 535 ms by bot id=7928066551
+2025-08-06 12:09:28,010 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:09:32,071 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:09:32,467 - INFO - Update id=491369248 is handled. Duration 4458 ms by bot id=7928066551
+2025-08-06 12:09:41,894 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-48' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:41,895 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-49' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:41,895 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-50' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:41,985 - INFO - User [id:1636968793] completed question [question_id:2] in quest [Base Quest]
+2025-08-06 12:09:43,183 - INFO - Update id=491369249 is handled. Duration 1302 ms by bot id=7928066551
+2025-08-06 12:09:44,936 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:09:45,218 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:09:45,218 - INFO - Update id=491369250 is handled. Duration 286 ms by bot id=7928066551
+2025-08-06 12:09:46,633 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:09:47,289 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:09:47,357 - INFO - Update id=491369251 is handled. Duration 724 ms by bot id=7928066551
+2025-08-06 12:09:56,898 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-80' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:56,898 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-81' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:56,899 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-82' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:09:57,000 - INFO - User [id:1636968793] completed question [question_id:3] in quest [Base Quest]
+2025-08-06 12:09:58,233 - INFO - Update id=491369252 is handled. Duration 1345 ms by bot id=7928066551
+2025-08-06 12:09:59,325 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:09:59,681 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:09:59,681 - INFO - Update id=491369253 is handled. Duration 359 ms by bot id=7928066551
+2025-08-06 12:10:01,268 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:10:02,217 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:10:02,305 - INFO - Update id=491369254 is handled. Duration 1039 ms by bot id=7928066551
+2025-08-06 12:10:11,295 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-112' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:11,295 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-113' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:11,296 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-114' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:11,484 - INFO - User [id:1636968793] completed question [question_id:4] in quest [Base Quest]
+2025-08-06 12:10:12,353 - INFO - Update id=491369255 is handled. Duration 1071 ms by bot id=7928066551
+2025-08-06 12:10:18,360 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:10:18,897 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:10:18,897 - INFO - Update id=491369256 is handled. Duration 541 ms by bot id=7928066551
+2025-08-06 12:10:19,921 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:10:20,584 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:10:20,651 - INFO - Update id=491369257 is handled. Duration 731 ms by bot id=7928066551
+2025-08-06 12:10:28,729 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-142' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:28,730 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-143' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:28,730 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-144' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:28,835 - INFO - User [id:1636968793] completed question [question_id:5] in quest [Base Quest]
+2025-08-06 12:10:31,013 - INFO - Update id=491369258 is handled. Duration 2295 ms by bot id=7928066551
+2025-08-06 12:10:32,894 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 12:10:33,240 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 12:10:33,240 - INFO - Update id=491369259 is handled. Duration 348 ms by bot id=7928066551
+2025-08-06 12:10:34,302 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 12:10:35,336 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 12:10:35,412 - INFO - Update id=491369260 is handled. Duration 1111 ms by bot id=7928066551
+2025-08-06 12:10:50,476 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-171' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:50,476 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-172' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:50,477 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-173' coro=<TimerManager._send_timed_message() done, defined at /home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py:39> exception=TypeError('catching classes that do not inherit from BaseException is not allowed')>
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 41, in _send_timed_message
+    await asyncio.sleep(delay * 60)    # минуты
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/timer_manager.py", line 49, in _send_timed_message
+    except (asyncio.CancelledError | Exception):
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2025-08-06 12:10:50,784 - INFO - User [id:1636968793] completed question [question_id:6] in quest [Base Quest]
+2025-08-06 12:10:50,998 - INFO - The team [team_id:1] has finished the quest [Base quest].
+2025-08-06 12:10:51,002 - INFO - Update id=491369261 is handled. Duration 539 ms by bot id=7928066551
+2025-08-06 12:10:59,961 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 12:11:00,098 - INFO - Update id=491369262 is handled. Duration 142 ms by bot id=7928066551
+2025-08-06 12:11:06,250 - INFO - User [id:1636968793] used /players_locations
+2025-08-06 12:11:06,401 - INFO - Update id=491369263 is handled. Duration 152 ms by bot id=7928066551
+2025-08-06 12:11:10,783 - INFO - User [id:1636968793] used /get_lyrics
+2025-08-06 12:11:10,787 - INFO - The lyrics for team [team_id:1] is got failed by a user [user_id:1636968793].
+2025-08-06 12:11:10,959 - INFO - Update id=491369264 is handled. Duration 176 ms by bot id=7928066551
+2025-08-06 12:11:22,558 - WARNING - Received SIGINT signal
+2025-08-06 12:11:22,559 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:11:22,559 - INFO - Polling stopped
+2025-08-06 12:11:22,694 - WARNING - Received SIGINT signal
+2025-08-06 12:11:23,000 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7fcfe9f6fc20>
+2025-08-06 12:11:27,596 - INFO - Start polling
+2025-08-06 12:11:28,101 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:11:28,272 - INFO - User [id:1636968793] started the bot
+2025-08-06 12:11:28,273 - INFO - User [id:1636968793] used /start
+2025-08-06 12:11:28,691 - INFO - Update id=491369265 is handled. Duration 419 ms by bot id=7928066551
+2025-08-06 12:11:31,728 - INFO - User [id:7928066551] started the bot
+2025-08-06 12:11:31,729 - INFO - User [id:7928066551] used /start
+2025-08-06 12:11:31,961 - INFO - Update id=491369266 is handled. Duration 234 ms by bot id=7928066551
+2025-08-06 12:11:59,783 - INFO - User [id:1636968793] started the bot
+2025-08-06 12:11:59,783 - INFO - User [id:1636968793] used /start
+2025-08-06 12:12:00,066 - INFO - Update id=491369267 is handled. Duration 283 ms by bot id=7928066551
+2025-08-06 12:12:09,293 - INFO - User [id:1636968793] used /mylocation
+2025-08-06 12:12:09,490 - INFO - Update id=491369268 is handled. Duration 199 ms by bot id=7928066551
+2025-08-06 12:12:11,480 - INFO - User [id:1636968793] used /players_locations
+2025-08-06 12:12:11,603 - INFO - Update id=491369269 is handled. Duration 125 ms by bot id=7928066551
+2025-08-06 12:12:13,584 - INFO - User [id:1636968793] used /get_lyrics
+2025-08-06 12:12:13,713 - INFO - Update id=491369270 is handled. Duration 129 ms by bot id=7928066551
+2025-08-06 12:12:15,814 - INFO - Update id=491369271 is handled. Duration 128 ms by bot id=7928066551
+2025-08-06 12:12:16,963 - INFO - User [id:1636968793] used /setlocation
+2025-08-06 12:12:17,156 - INFO - Update id=491369272 is handled. Duration 195 ms by bot id=7928066551
+2025-08-06 12:12:18,950 - INFO - User [id:1636968793] used /set_lyrics
+2025-08-06 12:12:19,064 - INFO - Update id=491369273 is handled. Duration 115 ms by bot id=7928066551
+2025-08-06 12:12:21,154 - INFO - Update id=491369274 is handled. Duration 99 ms by bot id=7928066551
+2025-08-06 12:12:26,992 - INFO - User [id:1636968793] used /help
+2025-08-06 12:12:27,148 - INFO - Update id=491369275 is handled. Duration 157 ms by bot id=7928066551
+2025-08-06 12:12:29,753 - INFO - User [id:1636968793] started the bot
+2025-08-06 12:12:29,753 - INFO - User [id:1636968793] used /start
+2025-08-06 12:12:29,880 - INFO - Update id=491369276 is handled. Duration 127 ms by bot id=7928066551
+2025-08-06 12:12:30,777 - INFO - User [id:7928066551] used /become_captain
+2025-08-06 12:12:31,191 - INFO - Update id=491369277 is handled. Duration 414 ms by bot id=7928066551
+2025-08-06 12:12:35,655 - INFO - Update id=491369278 is handled. Duration 481 ms by bot id=7928066551
+2025-08-06 12:13:31,852 - WARNING - Received SIGINT signal
+2025-08-06 12:13:31,853 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 12:13:31,853 - INFO - Polling stopped

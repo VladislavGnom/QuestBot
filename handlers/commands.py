@@ -310,9 +310,9 @@ async def cmd_help(message: types.Message, state: FSMContext):
 
     await message.answer(HELP, parse_mode="HTML")
 
-async def start_quest_for_team(team_id: int, question_id: int, is_test_mode=False):
-    """Инициализирует квест для команды""" 
-    players = await get_team_players(team_id)
+async def start_quest_for_team(team_id: int, question_id: int, players: list[dict], is_test_mode=False):
+    """Инициализирует квест для команды"""
+    players = players
     players_ids = [pl["id"] for pl in players]    # [user_id1, user_id2, ...]
     question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
     await init_team_state(team_id=team_id, players=players_ids)
@@ -469,13 +469,13 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
         first_player_id, 
         "Квест начат! Первый игрок получил вопрос."
     )
-    await start_quest_for_team(team_id=team_id, question_id=question_id, is_test_mode=is_test_mode)
+    await start_quest_for_team(team_id=team_id, question_id=question_id, players=players, is_test_mode=is_test_mode)
 
     await state.set_state(QuestStates.waiting_for_answer) 
     log_action(f"User [id:{user_id}] started quest [Base Quest]")
 
 async def send_question(player_id: int, message: types.Message, state: FSMContext): 
-    user_id = message.from_user.id
+    user_id = player_id
     chat_id = message.chat.id
 
     team_id = await get_user_team(user_id=user_id)
@@ -487,7 +487,7 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
 
     # получение экземпляров игроков
     players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
-    
+
     current_player = players[current_player_idx]
     location_id = current_player['location']
     questions = await get_location_questions(location_id=location_id)
@@ -555,14 +555,20 @@ async def process_answer(message: types.Message, state: FSMContext):
     # получение экземпляров игроков
     players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
 
+        
+    print(f'{players=}')
+
     if message.from_user.id != players[current_player_idx].get('user_id'):
         await message.answer("Сейчас не ваш ход!")
         return
     
     
     current_player = players[current_player_idx]
+    print(current_player)
     location_id = current_player["location"]
+    print(current_player['location'])
     questions = await get_location_questions(location_id=location_id)
+    print(f'{questions=}')
     question = list(filter(lambda q: q["id"] == current_question_idx, questions))[0]    
 
     if question_deadline and datetime.fromisoformat(question_deadline) < datetime.now():
@@ -596,9 +602,8 @@ async def process_answer(message: types.Message, state: FSMContext):
             log_action(f"User [id:{user_id}] completed question [question_id:{question.get('id')}] in quest [Base Quest]")
     
     current_player_idx += 1
-    current_player = players[current_player_idx]    # следующий игрок
-    location_id = current_player["location"]    # локация следующего игрока
     next_players = players[current_player_idx:]
+    
     if not next_players:
         await update_team_state(
             team_id=team_id, 
@@ -631,6 +636,9 @@ async def process_answer(message: types.Message, state: FSMContext):
 
         await state.clear()
         return
+    
+    current_player = players[current_player_idx]    # следующий игрок
+    location_id = current_player["location"]    # локация следующего игрока
     
     try:
         # location_data = await get_full_location(location_id=location_id)
@@ -706,8 +714,18 @@ async def confirm_arrival(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer()
     log_action(f"The move of game passed to next player [user_id:{target_user_id}].")
 
-async def cmd_accept_state(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
+async def cmd_accept_state(update: types.Message | types.CallbackQuery, state: FSMContext):
+    if isinstance(update, types.Message):
+        user_id = update.from_user.id
+        message = update
+    elif isinstance(update, types.CallbackQuery):
+        print('111')
+        user_id = update.from_user.id
+        message = update.message
+    else:
+        raise ValueError("Unsupported update type")
+    
+    print(user_id)
 
     log_action(f"User [id:{user_id}] used /accept_state")
 
@@ -716,7 +734,7 @@ async def cmd_accept_state(message: types.Message, state: FSMContext):
         user_data = await get_team_state(team_id=team_id)
         current_player_idx = user_data["current_player_idx"]
         players_ids = user_data["players_order"]
-    except:
+    except Exception as error:
         await message.answer("Ошибка: вы не состоите в системе или не имеете права на эту команду.")
         return
 
@@ -839,7 +857,7 @@ async def handle_sign_up_as_player(callback: types.CallbackQuery, state: FSMCont
     await callback.answer("")
 
 async def handle_accept_state(callback: types.CallbackQuery, state: FSMContext):
-    await cmd_accept_state(message=callback.message, state=state)
+    await cmd_accept_state(update=callback, state=state)
     await callback.answer("")
 
 async def cmd_team_status(message: types.Message):

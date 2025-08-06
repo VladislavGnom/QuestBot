@@ -2394,3 +2394,254 @@ client_session: <aiohttp.client.ClientSession object at 0x7fa0abfd3890>
 2025-08-06 10:32:20,968 - ERROR - Unclosed connector
 connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7fa0abfee930>, 5236.55404802)]']
 connector: <aiohttp.connector.TCPConnector object at 0x7fa0abfd37d0>
+2025-08-06 11:09:10,662 - INFO - Start polling
+2025-08-06 11:09:11,042 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:09:17,064 - INFO - Update id=491369160 is handled. Duration 367 ms by bot id=7928066551
+2025-08-06 11:09:23,422 - INFO - User [id:1636968793] started the bot
+2025-08-06 11:09:23,422 - INFO - User [id:1636968793] used /start
+2025-08-06 11:09:23,537 - INFO - Update id=491369161 is handled. Duration 115 ms by bot id=7928066551
+2025-08-06 11:09:24,445 - INFO - User [id:7928066551] used /become_captain
+2025-08-06 11:09:24,745 - INFO - Update id=491369162 is handled. Duration 300 ms by bot id=7928066551
+2025-08-06 11:09:29,892 - INFO - Update id=491369163 is handled. Duration 432 ms by bot id=7928066551
+2025-08-06 11:09:35,026 - INFO - User [id:1636968793] started the bot
+2025-08-06 11:09:35,026 - INFO - User [id:1636968793] used /start
+2025-08-06 11:09:35,186 - INFO - Update id=491369164 is handled. Duration 160 ms by bot id=7928066551
+2025-08-06 11:09:42,465 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:09:42,465 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:09:42,603 - INFO - Error: the JSON object must be str, bytes or bytearray, not NoneType
+2025-08-06 11:09:43,630 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:09:43,630 - INFO - Update id=491369165 is handled. Duration 1172 ms by bot id=7928066551
+2025-08-06 11:10:13,482 - INFO - User [id:1636968793] completed question [question_id:1] in quest [Base Quest]
+2025-08-06 11:10:14,512 - INFO - Update id=491369166 is handled. Duration 1383 ms by bot id=7928066551
+2025-08-06 11:10:25,153 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:10:25,504 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:10:25,504 - INFO - Update id=491369167 is handled. Duration 355 ms by bot id=7928066551
+2025-08-06 11:10:28,507 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:10:32,471 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:10:32,570 - INFO - Update id=491369168 is handled. Duration 4064 ms by bot id=7928066551
+2025-08-06 11:13:00,911 - INFO - User [id:1636968793] completed question [question_id:2] in quest [Base Quest]
+2025-08-06 11:13:01,922 - INFO - Update id=491369169 is handled. Duration 1325 ms by bot id=7928066551
+2025-08-06 11:13:04,466 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:13:04,790 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:13:04,790 - INFO - Update id=491369170 is handled. Duration 328 ms by bot id=7928066551
+2025-08-06 11:13:06,203 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:13:06,801 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:13:06,956 - INFO - Update id=491369171 is handled. Duration 754 ms by bot id=7928066551
+2025-08-06 11:13:23,356 - INFO - User [id:1636968793] completed question [question_id:3] in quest [Base Quest]
+2025-08-06 11:13:24,543 - INFO - Update id=491369172 is handled. Duration 1573 ms by bot id=7928066551
+2025-08-06 11:13:26,877 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:13:27,327 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:13:27,327 - INFO - Update id=491369173 is handled. Duration 453 ms by bot id=7928066551
+2025-08-06 11:13:28,409 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:13:29,105 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:13:29,212 - INFO - Update id=491369174 is handled. Duration 804 ms by bot id=7928066551
+2025-08-06 11:13:46,759 - INFO - Update id=491369175 is not handled. Duration 268 ms by bot id=7928066551
+2025-08-06 11:13:46,759 - ERROR - Cause exception while process update id=491369175 by bot id=7928066551
+TypeError: update_team_state() missing 1 required positional argument: 'team_id'
+Traceback (most recent call last):
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 309, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 158, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/venv/lib/python3.12/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "/home/vlad/Desktop/Projects/Python/Telegram/questBot/my_bot/handlers/commands.py", line 597, in process_answer
+    await update_team_state(
+          ^^^^^^^^^^^^^^^^^^
+TypeError: update_team_state() missing 1 required positional argument: 'team_id'
+2025-08-06 11:14:14,577 - INFO - User [id:1636968793] completed question [question_id:4] in quest [Base Quest]
+2025-08-06 11:14:17,609 - INFO - Update id=491369176 is handled. Duration 3329 ms by bot id=7928066551
+2025-08-06 11:14:21,194 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:14:21,523 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:14:21,523 - INFO - Update id=491369177 is handled. Duration 333 ms by bot id=7928066551
+2025-08-06 11:14:22,622 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:14:23,583 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:14:23,696 - INFO - Update id=491369178 is handled. Duration 1075 ms by bot id=7928066551
+2025-08-06 11:14:41,379 - INFO - User [id:1636968793] completed question [question_id:5] in quest [Base Quest]
+2025-08-06 11:14:45,356 - INFO - Update id=491369179 is handled. Duration 5395 ms by bot id=7928066551
+2025-08-06 11:14:49,763 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:14:51,071 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:14:53,380 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:14:53,381 - INFO - Update id=491369180 is handled. Duration 3620 ms by bot id=7928066551
+2025-08-06 11:14:53,604 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:14:53,690 - INFO - Update id=491369181 is handled. Duration 2620 ms by bot id=7928066551
+2025-08-06 11:15:13,104 - INFO - User [id:1636968793] completed question [question_id:6] in quest [Base Quest]
+2025-08-06 11:15:13,525 - INFO - The team [team_id:1] has finished the quest [Base quest].
+2025-08-06 11:15:13,526 - INFO - Update id=491369182 is handled. Duration 817 ms by bot id=7928066551
+2025-08-06 11:36:23,556 - WARNING - Received SIGINT signal
+2025-08-06 11:36:23,557 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:36:23,557 - INFO - Polling stopped
+2025-08-06 11:36:23,668 - WARNING - Received SIGINT signal
+2025-08-06 11:36:23,985 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f02cd127c20>
+2025-08-06 11:36:35,466 - INFO - Start polling
+2025-08-06 11:36:35,753 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:36:44,754 - INFO - User [id:1636968793] started the bot
+2025-08-06 11:36:44,754 - INFO - User [id:1636968793] used /start
+2025-08-06 11:36:45,091 - INFO - Update id=491369183 is handled. Duration 337 ms by bot id=7928066551
+2025-08-06 11:36:46,444 - INFO - User [id:7928066551] used /become_captain
+2025-08-06 11:36:46,669 - INFO - Update id=491369184 is handled. Duration 225 ms by bot id=7928066551
+2025-08-06 11:36:52,390 - INFO - Update id=491369185 is handled. Duration 584 ms by bot id=7928066551
+2025-08-06 11:38:15,538 - WARNING - Received SIGINT signal
+2025-08-06 11:38:15,539 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:38:15,539 - INFO - Polling stopped
+2025-08-06 11:38:15,666 - WARNING - Received SIGINT signal
+2025-08-06 11:38:26,838 - INFO - Start polling
+2025-08-06 11:38:27,725 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:38:31,505 - INFO - User [id:1636968793] started the bot
+2025-08-06 11:38:31,505 - INFO - User [id:1636968793] used /start
+2025-08-06 11:38:31,793 - INFO - Update id=491369186 is handled. Duration 288 ms by bot id=7928066551
+2025-08-06 11:38:33,318 - INFO - User [id:7928066551] used /become_captain
+2025-08-06 11:38:33,526 - INFO - Update id=491369187 is handled. Duration 208 ms by bot id=7928066551
+2025-08-06 11:38:37,551 - INFO - Update id=491369188 is handled. Duration 446 ms by bot id=7928066551
+2025-08-06 11:39:11,182 - INFO - User [id:1636968793] started the bot
+2025-08-06 11:39:11,182 - INFO - User [id:1636968793] used /start
+2025-08-06 11:39:11,566 - INFO - Update id=491369189 is handled. Duration 384 ms by bot id=7928066551
+2025-08-06 11:39:15,385 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:39:15,385 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:39:16,876 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:39:16,876 - INFO - Update id=491369190 is handled. Duration 1498 ms by bot id=7928066551
+2025-08-06 11:39:35,144 - WARNING - Received SIGINT signal
+2025-08-06 11:39:35,144 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:39:35,145 - INFO - Polling stopped
+2025-08-06 11:39:35,578 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f3a523c6450>
+2025-08-06 11:39:35,579 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7f3a51355fd0>, 9270.385842984)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7f3a5133b830>
+2025-08-06 11:39:58,026 - INFO - Start polling
+2025-08-06 11:39:58,524 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:39:59,624 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:39:59,625 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:40:01,259 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:40:01,259 - INFO - Update id=491369191 is handled. Duration 1644 ms by bot id=7928066551
+2025-08-06 11:42:23,054 - WARNING - Received SIGINT signal
+2025-08-06 11:42:23,055 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:42:23,055 - INFO - Polling stopped
+2025-08-06 11:42:23,166 - WARNING - Received SIGINT signal
+2025-08-06 11:42:23,494 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f37b787d6a0>
+2025-08-06 11:42:23,494 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7f37b88062d0>, 9438.78652138)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7f37b880fa10>
+2025-08-06 11:42:28,143 - INFO - Start polling
+2025-08-06 11:42:28,632 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:42:28,768 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:42:28,769 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:42:30,284 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:42:30,284 - INFO - Update id=491369192 is handled. Duration 1523 ms by bot id=7928066551
+2025-08-06 11:43:35,725 - WARNING - Received SIGINT signal
+2025-08-06 11:43:35,725 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:43:35,726 - INFO - Polling stopped
+2025-08-06 11:43:35,812 - WARNING - Received SIGINT signal
+2025-08-06 11:43:36,178 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f0e92d7c140>
+2025-08-06 11:43:36,178 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7f0e92d61c70>, 9511.151384405)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7f0e92d4a2a0>
+2025-08-06 11:43:40,728 - INFO - Start polling
+2025-08-06 11:43:41,540 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:43:41,657 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:43:41,657 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:43:43,098 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:43:43,099 - INFO - Update id=491369193 is handled. Duration 1455 ms by bot id=7928066551
+2025-08-06 11:46:00,050 - WARNING - Received SIGINT signal
+2025-08-06 11:46:00,051 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:46:00,051 - INFO - Polling stopped
+2025-08-06 11:46:00,154 - WARNING - Received SIGINT signal
+2025-08-06 11:46:00,514 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f0aceb8fdd0>
+2025-08-06 11:46:05,138 - INFO - Start polling
+2025-08-06 11:46:05,445 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:46:05,594 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:46:05,594 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:46:06,381 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:46:06,382 - INFO - Update id=491369194 is handled. Duration 796 ms by bot id=7928066551
+2025-08-06 11:46:46,298 - WARNING - Received SIGINT signal
+2025-08-06 11:46:46,298 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:46:46,298 - INFO - Polling stopped
+2025-08-06 11:46:46,433 - WARNING - Received SIGINT signal
+2025-08-06 11:46:46,739 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f4adc4c3f80>
+2025-08-06 11:46:46,739 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7f4adbf79cd0>, 9701.988680622)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7f4adc4e5ac0>
+2025-08-06 11:46:51,521 - INFO - Start polling
+2025-08-06 11:46:52,401 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:46:52,535 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:46:52,535 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:46:52,987 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:46:52,987 - INFO - Update id=491369195 is handled. Duration 463 ms by bot id=7928066551
+2025-08-06 11:47:14,801 - WARNING - Received SIGINT signal
+2025-08-06 11:47:14,801 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:47:14,802 - INFO - Polling stopped
+2025-08-06 11:47:14,913 - WARNING - Received SIGINT signal
+2025-08-06 11:47:15,244 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7f40badab9b0>
+2025-08-06 11:47:15,244 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7f40badedcd0>, 9730.718144891)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7f40badab830>
+2025-08-06 11:47:19,602 - INFO - Start polling
+2025-08-06 11:47:20,180 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:47:21,916 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:47:21,916 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:47:22,473 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:47:22,473 - INFO - Update id=491369196 is handled. Duration 566 ms by bot id=7928066551
+2025-08-06 11:48:04,440 - WARNING - Received SIGINT signal
+2025-08-06 11:48:04,441 - INFO - Polling stopped for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:48:04,441 - INFO - Polling stopped
+2025-08-06 11:48:04,568 - WARNING - Received SIGINT signal
+2025-08-06 11:48:04,879 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x7fe937785eb0>
+2025-08-06 11:48:04,879 - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x7fe9377c1cd0>, 9779.566170699)]']
+connector: <aiohttp.connector.TCPConnector object at 0x7fe937784a70>
+2025-08-06 11:48:09,920 - INFO - Start polling
+2025-08-06 11:48:10,296 - INFO - Run polling for bot @quest_Velikiye_Luki_bot id=7928066551 - 'Живая нить поколений'
+2025-08-06 11:48:10,403 - INFO - Players from team [team_id:1]: [{'id': 1636968793, 'username': 'Vladislav_5367', 'name': 'Vlad Gnom', 'is_captain': True, 'location': 1}]
+2025-08-06 11:48:10,403 - INFO - User [id:1636968793] started quest in the test mode [Base Quest]
+2025-08-06 11:48:11,773 - INFO - User [id:1636968793] started quest [Base Quest]
+2025-08-06 11:48:11,774 - INFO - Update id=491369197 is handled. Duration 1383 ms by bot id=7928066551
+2025-08-06 11:49:57,457 - INFO - User [id:1636968793] unsuccessfully answered question [question_id:1] in quest [Base Quest]
+2025-08-06 11:49:57,458 - INFO - Update id=491369198 is handled. Duration 363 ms by bot id=7928066551
+2025-08-06 11:54:03,719 - INFO - User [id:1636968793] has not any time to answer question [question_id:1] in quest [Base Quest]
+2025-08-06 11:54:04,491 - INFO - Update id=491369199 is handled. Duration 1270 ms by bot id=7928066551
+2025-08-06 11:54:16,768 - INFO - User [id:1636968793] used /confirm_arrival
+2025-08-06 11:54:17,163 - INFO - The move of game passed to next player [user_id:1636968793].
+2025-08-06 11:54:17,163 - INFO - Update id=491369200 is handled. Duration 398 ms by bot id=7928066551
+2025-08-06 11:54:20,823 - INFO - User [id:1636968793] used /accept_state
+2025-08-06 11:54:22,386 - INFO - Move of game is transfered successfully from player1 [user_id:1636968793] to player2 [user_id:1636968793].
+2025-08-06 11:54:22,486 - INFO - Update id=491369201 is handled. Duration 1663 ms by bot id=7928066551

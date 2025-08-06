@@ -418,7 +418,7 @@ async def get_location_questions(location_id: int) -> list[dict]:
     """Возвращает список вопросов для локации в виде словарей"""
     async with get_db_connection() as conn:
         cursor = await conn.execute(
-            """SELECT id, question_text, answer, answer_hints, 
+            """SELECT id, question_text, answer, answer_hints, hints_media_paths, 
                       difficulty, question_type, media_path, cost
                FROM questions 
                WHERE location_id = ?""",

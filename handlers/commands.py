@@ -257,6 +257,8 @@ async def process_captain_password(message: types.Message, state: FSMContext):
 
     invite_link = await generate_invite_link(message.bot, team_id, team_name)
     
+    await message.answer(WELCOME) 
+
     await message.answer(
         f"Команда '{team_name}' создана!\n"
         f"Пригласительная ссылка:\n{invite_link}\n\n"
@@ -400,8 +402,11 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
         question = choice(questions)    # рандомный вопрос из соответственной локации
         question_id = question.get('id')
         answer_hints = json.loads(question.get('answer_hints'))
-        print(question.get('hints_media_paths'))
-        hints_media_paths = json.loads(question.get('hints_media_paths'))
+        hints_media_paths_db = question.get('hints_media_paths')
+
+        if hints_media_paths_db:
+            hints_media_paths = json.loads(hints_media_paths_db)
+
         question_media_path = question.get('media_path')
     except IndexError:    # выбрана локация для которой нет вопросов
         await message.answer("На вашу локацию нет вопросов в БД.")
@@ -409,8 +414,10 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
         return
     except TypeError as error:    
         await message.answer("Ошибка с данными в БД")
-        log_action(f"Error: {error}")
-
+        log_action(f"Error: {error=}")
+        return 
+    except Exception as error:
+        log_action(f"Error: {error=}")
 
     try:
         path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
@@ -419,7 +426,8 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
     except Exception:
         await bot.send_message(
             first_player_id, 
-            f"Игра началась! Ваш вопрос: {question.get('question_text')}"
+            f"Игра началась! Ваш вопрос: {question.get('question_text')}",
+            reply_markup=None
         )
 
     # добавляем таймер для вопроса
@@ -436,6 +444,7 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
     try:
         fisrt_clue, second_clue, third_clue = answer_hints
         media_fc, media_sc, media_tc = hints_media_paths
+
         await timer_manager.add_timer(
             chat_id, 
             bot, 
@@ -460,8 +469,8 @@ async def start_quest(message: types.Message, state: FSMContext, is_test_mode=Fa
             media_path=media_tc, 
             timer_id="clue3"
         )
-    except:
-        ...
+    except Exception as error:
+        log_action(f"Error: {error=}")
 
     # уведомляем остальных участников команды
     await notify_team_except_current(
@@ -504,22 +513,29 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
     try:
         path_to_question_photo = os.path.join(BASE_DIR, question_media_path)
         photo = types.FSInputFile(path_to_question_photo)
-        await bot.send_photo(player_id, photo, caption=f"Вопрос {question_num}: {question.get('question_text')}")
+        await bot.send_photo(
+            player_id, 
+            photo, 
+            caption=f"Вопрос {question_num}: {question.get('question_text')}",
+            reply_markup=None
+        )
     except Exception:        
         await bot.send_message(
             player_id, 
-            f"Вопрос {question_num}: {question.get('question_text')}"
+            f"Вопрос {question_num}: {question.get('question_text')}",
+            reply_markup=None
         )
 
     question_deadline = datetime.now() + timedelta(minutes=QUESTION_TIME_LIMIT)
 
-    try:
-        answer_hints = json.loads(question.get('answer_hints'))
-        print(question.get('hints_media_paths'))
-    except json.decoder.JSONDecodeError as error:    
-        await message.answer("Ошибка с данными в БД")
-        log_action(f"Error: {error}")
+    # try:
+    #     answer_hints = json.loads(question.get('answer_hints'))
+    #     print(question.get('hints_media_paths'))
+    # except json.decoder.JSONDecodeError as error:    
+    #     await message.answer("Ошибка с данными в БД")
+    #     log_action(f"Error: {error}")
     
+    # answer_hints = json.loads(question.get('answer_hints'))
 
     # добавляем таймер для вопроса
     await question_timer_manager.add_timer(
@@ -530,12 +546,48 @@ async def send_question(player_id: int, message: types.Message, state: FSMContex
         timer_id="question_timer"
     )
 
+    try:
+        question_id = question.get('id')
+        answer_hints = json.loads(question.get('answer_hints'))
+        hints_media_paths_db = question.get('hints_media_paths')
+
+        if hints_media_paths_db:
+            hints_media_paths = json.loads(hints_media_paths_db)
+
+        question_media_path = question.get('media_path')
+    except IndexError:    # выбрана локация для которой нет вопросов
+        await message.answer("На вашу локацию нет вопросов в БД.")
+        log_action(f"Error: Location [location_id:{location_id}] has not have any questions.")
+        return 
+
     # планируем сообщения подсказок
     try:
         fisrt_clue, second_clue, third_clue = answer_hints
-        await timer_manager.add_timer(chat_id, bot, FIRST_CLUE_OF_QUESTION, message=f"Подсказка #1: {fisrt_clue}", timer_id="clue1")
-        await timer_manager.add_timer(chat_id, bot, SECOND_CLUE_OF_QUESTION, message=f"Подсказка #2: {second_clue}", timer_id="clue2")
-        await timer_manager.add_timer(chat_id, bot, THIRD_CLUE_OF_QUESTION, message=f"Подсказка #3: {third_clue}", timer_id="clue3")
+        media_fc, media_sc, media_tc = hints_media_paths
+        await timer_manager.add_timer(
+            chat_id, 
+            bot, 
+            FIRST_CLUE_OF_QUESTION, 
+            message=f"Подсказка #1: {fisrt_clue}",
+            media_path=media_fc, 
+            timer_id="clue1"
+        )
+        await timer_manager.add_timer(
+            chat_id, 
+            bot, 
+            SECOND_CLUE_OF_QUESTION, 
+            message=f"Подсказка #2: {second_clue}", 
+            media_path=media_sc, 
+            timer_id="clue2"
+        )
+        await timer_manager.add_timer(
+            chat_id, 
+            bot, 
+            THIRD_CLUE_OF_QUESTION, 
+            message=f"Подсказка #3: {third_clue}", 
+            media_path=media_tc, 
+            timer_id="clue3"
+        )
     except:
         ...
     
@@ -568,8 +620,6 @@ async def process_answer(message: types.Message, state: FSMContext):
     # получение экземпляров игроков
     players = [await get_player_by_id(user_id=user_id) for user_id in players_ids]
 
-        
-    print(f'{players=}')
 
     if message.from_user.id != players[current_player_idx].get('user_id'):
         await message.answer("Сейчас не ваш ход!")
@@ -584,6 +634,14 @@ async def process_answer(message: types.Message, state: FSMContext):
     if question_deadline and datetime.fromisoformat(question_deadline) < datetime.now():
         is_question_deadline_passed = True
         await message.answer("❌ Время на ответ истекло!")
+        
+        is_pretend_on_right_answer = False    # закрываем возможность на получения балла за вопрос
+
+        await update_team_state(
+            team_id=team_id,
+            is_pretend_on_right_answer=is_pretend_on_right_answer, 
+        )
+        
         await message.answer(f"Правильный ответ: {question.get('answer')}")
         log_action(f"User [id:{user_id}] has not any time to answer question [question_id:{question.get('id')}] in quest [Base Quest]")
 
@@ -592,9 +650,13 @@ async def process_answer(message: types.Message, state: FSMContext):
         if message.text.lower().strip() != question.get("answer").lower().strip():
             await message.answer("❌ Неверно! Попробуйте еще раз.")
 
+            if is_pretend_on_right_answer:
+                await message.answer("Вы истратили свою попытку и ответили неверно, продолжайте отвечать, вопрос не будет засчитан.")
+
             is_pretend_on_right_answer = False    # закрываем возможность на получения балла за вопрос
 
             await update_team_state(
+                team_id=team_id,
                 is_pretend_on_right_answer=is_pretend_on_right_answer, 
             )
 
@@ -612,7 +674,12 @@ async def process_answer(message: types.Message, state: FSMContext):
             log_action(f"User [id:{user_id}] completed question [question_id:{question.get('id')}] in quest [Base Quest]")
     
     current_player_idx += 1
-    next_players = players[current_player_idx:]
+    try:
+        current_player = players[current_player_idx]    # следующий игрок
+        location_id = question_num + 1   # question_num is similar to location_id. generally, its the same
+        next_players = players[current_player_idx:]
+    except IndexError:
+        next_players = None
 
     if not next_players:
         await update_team_state(
@@ -636,6 +703,12 @@ async def process_answer(message: types.Message, state: FSMContext):
             f"🎉 Команда завершила квест!\n\nКоманда: {team_name}\nПравильных ответов: {correct_answers}/{len(players_ids)}\nВремя прохождения: {quest_time_passed}."
         )
 
+        await notify_team_except_current(
+            team_id, 
+            None, 
+            f"Всех участников команды ждём на месте сборов. Спасибо за игру!"
+        )
+
         log_action(f"The team [team_id:{team_id}] has finished the quest [Base quest].")
 
 
@@ -646,10 +719,7 @@ async def process_answer(message: types.Message, state: FSMContext):
 
         await state.clear()
         return
-    
-    current_player = players[current_player_idx]    # следующий игрок
-    location_id = question_num + 1   # question_num is similar to location_id. generally, its the same
-    
+
     try:
         # location_data = await get_full_location(location_id=location_id)
         # latitude, longtitude = location_data.get('coordinates').split(',')
@@ -661,7 +731,7 @@ async def process_answer(message: types.Message, state: FSMContext):
         path_to_map_photo = os.path.join(BASE_DIR, media_path)
         photo = types.FSInputFile(path_to_map_photo)
         await bot.send_photo(chat_id, photo)
-        await message.answer('Следующая точка маршрута!' + f'Буква за этап {letter_for_location}')
+        await message.answer(f'Отлично! Задание выполнено! Лови карту с отмеченной точкой передвижения. На следующем этапе тебя уже заждался твой сокомандник! Буква, полученная на этапе - «{letter_for_location}»')
     except:
         await message.answer("Карта не найдена")
         
@@ -845,10 +915,12 @@ async def handle_start(message: types.Message, state: FSMContext, start_without_
         if success:
             team_name = await get_team_name(team_id)
             log_action(f"The user [user_id:{user_id}] come into team [team_id:{team_id}] successfully.")
-            return await message.answer(
+            
+            await message.answer(
                 f'Вы успешно присоединились к команде {team_name}!',
                 reply_markup=default_user_markup
                 )
+            return await message.answer(WELCOME)
         return await message.answer("Не удалось вступить: неверный токен или вы уже в этой команде")
 
     if start_without_link:
